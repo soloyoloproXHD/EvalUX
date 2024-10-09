@@ -8,11 +8,12 @@ import { CustomIcon } from '../components/CustomIcon';
 interface AdaptButtonProps {
   texto: string;
   icon?: IconProp;
+  onClick?: () => void;
 }
 
-export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon }) => {
+export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onClick }) => {
   return (
-    <Button className='custom-adapt-button' variant="bordered" size="sm">
+    <Button className='custom-adapt-button' variant="bordered" size="sm" onClick={onClick}>
       {icon && <CustomIcon icon={icon} />}
       {texto}
     </Button>
