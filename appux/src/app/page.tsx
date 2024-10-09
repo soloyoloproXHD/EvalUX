@@ -1,24 +1,9 @@
 
 // app/page.tsx
-'use client';
 import { Nav } from '../components/Nav';
 import { Button } from "@nextui-org/react";
-import { useState } from 'react';
-import AppModalR from '@/components/ui/modalRegister';
 
 export default function Home() {
-
-  const [darkMode, setDarkMode] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOPenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="p-3">
       <div className="">
@@ -98,8 +83,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/*Modal de Registro*/}
-      <AppModalR show={isModalOpen} onClose={handleCloseModal}/>
+      
     </div>
   );
 }
