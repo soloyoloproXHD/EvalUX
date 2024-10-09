@@ -1,7 +1,6 @@
 
 // app/page.tsx
 import { Nav } from '../components/Nav';
-import { Button } from "@nextui-org/react";
 
 export default function Home() {
   return (
