@@ -1,8 +1,23 @@
+
 // app/page.tsx
+'use client';
 import { Nav } from '../components/Nav';
+import { Button } from "@nextui-org/react";
+import { useState } from 'react';
+import AppModalR from '@/components/ui/modalRegister';
 
 export default function Home() {
 
+  const [darkMode, setDarkMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOPenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="p-3">
@@ -62,9 +77,29 @@ export default function Home() {
                 </tr>
               </tbody>
             </table>
+
+          {/* Botones */}
+            {/*<div className="flex justify-end items-center gap-2">
+            <Button onClick={handleOPenModal} className='border-white text-white' variant="bordered" size="sm">
+              Registro
+            </Button>
+
+            <Button className='border-white text-white gap-1' variant="bordered" size="sm"
+              >
+                <FontAwesomeIcon icon={faArrowRightToBracket} className='text-white h-3' />
+              Iniciar Sesión
+            </Button>
+
+            <FontAwesomeIcon icon={faGithub} className='text-white h-5 hover:text-gris-200 transition duration-300' />
+
+            <FontAwesomeIcon icon={faMoon} onClick={() => setDarkMode(!darkMode)} className='hover:text-gris-200 text-white h-5 transition duration-300' />
+            */}
+
           </div>
         </div>
       </div>
+      {/*Modal de Registro*/}
+      <AppModalR show={isModalOpen} onClose={handleCloseModal}/>
     </div>
   );
 }
