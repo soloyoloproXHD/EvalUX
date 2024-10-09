@@ -1,10 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import "transition-style"; */
+@import 'animate.css';
 
 body {
   font-family: Lato, Helvetica, sans-serif;
-
 }
 
 @layer utilities {
@@ -41,8 +42,9 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
-    --background: 0 0% 3.9%;
+    --background: black;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -73,7 +75,56 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  p {
+    @apply text-black;
+  }
+
+  .dark p {
+    @apply text-white;
+  }
+}
+
+.custom-adapt-button {
+  border-color: var(--border-color, black);  
+  color: var(--text-color, black);
+}
+
+.custom-adapt-button:hover {
+  border-color: var(--border-color-hover, gray);
+  color: var(--text-color-hover, gray);
+}
+
+.dark .custom-adapt-button {
+  border-color: var(--border-color-dark, white);
+  color: var(--text-color-dark, white);
+}
+
+.dark .custom-adapt-button:hover {
+  border-color: var(--border-color-hover-dark, lightgray);
+  color: var(--text-color-hover-dark, lightgray);
+}
+
+.custom-icon {
+  border-color: var(--border-color, black);  
+  color: var(--text-color, black);
+}
+
+.custom-icon:hover {
+  border-color: var(--border-color-hover, gray);
+  color: var(--text-color-hover, gray);
+}
+
+.dark .custom-icon {
+  border-color: var(--border-color-dark, white);
+  color: var(--text-color-dark, white);
+}
+
+.dark .custom-icon:hover {
+  border-color: var(--border-color-hover-dark, lightgray);
+  color: var(--text-color-hover-dark, lightgray);
 }
