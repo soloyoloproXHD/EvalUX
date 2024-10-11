@@ -5,27 +5,26 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { AdaptButton } from '../components/AdaptButton';
 import { CustomIcon } from '../components/CustomIcon';
-import Logo from '../../public/img/Logo.png';
-import LogoW from '../../public/img/LogoW.png';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from '@nextui-org/react';
+import Logo from '../../public/img/Logo.png';
+import LogoW from '../../public/img/LogoW.png';
 import AppModalR from '@/components/ui/modalRegister';
-
+import Avatar from '../components/ui/avatar';
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const user = useState(true); // Ajusta según tu lógica de autenticación
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    if (!mounted) {
-        return null;
-    }
-
-    const handleOPenModal = () => {
+    const handleOpenModal = () => {
         setIsModalOpen(true);
     };
 
@@ -33,24 +32,69 @@ export const Nav = () => {
         setIsModalOpen(false);
     };
 
+    const menuItems = [
+        "Rubricas",
+        "Evaluaciones",
+        "Configuraciones",
+        "Cerrar Sesión"
+    ];
+
     return (
-        <nav className="flex justify-between items-center px-5 py-2 animate__animated animate__fadeIn">
-            {/* logo */}
-            <div className="flex justify-start items-center gap-2 text-white">
-                <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' />
-                <p className='text-lg font-semibold'>EvalUX</p>
-            </div>
-            {/* Botones */}
-            <div className="flex justify-end items-center gap-3">
-                <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} />
-                <CustomIcon icon={faGithub} size='lg' />
+        <Navbar onMenuOpenChange={setIsMenuOpen} className="animate__animated animate__fadeIn" maxWidth='full'>
+            <NavbarContent justify="start">
+                <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="sm:hidden"
+                />
+                <div className="flex justify-start items-center gap-2 text-white">
+                    <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' />
+                    <p className='text-lg font-semibold mr-4'>EvalUX</p>
+                </div>
+                <NavbarContent className="hidden sm:flex gap-4" justify="start">
+                    <NavbarItem>
+                        <Link href="/rubrica/index">Rubricas</Link>
+                    </NavbarItem>
+                    <NavbarItem>
+                        <Link color="foreground" href="#">Evaluaciones</Link>
+                    </NavbarItem>
+                </NavbarContent>
+            </NavbarContent>
+
+            <NavbarContent justify="end">
+                {!user ? (
+                    <>
+                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
+                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} />
+                        <CustomIcon icon={faGithub} size='lg' />
+                    </>
+                ) : (
+                    <>
+                        <p>paquita</p>
+                        <Avatar src="/img/avatar.png" alt="Avatar Image" />
+                    </>
+                )}
                 <ThemeSwitcher />
-            </div>
-            {/*Modal de Registro*/}
+            </NavbarContent>
+
+            <NavbarMenu className={`w-full ${isMenuOpen ? "block" : "hidden"} sm:hidden`}>
+                {menuItems.map((item, index) => (
+                    <NavbarMenuItem key={index}>
+                        <Link
+                            color={index === 2 ? "primary" : "foreground"}
+                            href="#"
+                            className="w-full"
+                            size="lg"
+                        >
+                            {item}
+                        </Link>
+                    </NavbarMenuItem>
+                ))}
+            </NavbarMenu>
+
+            {/* Modal de Registro */}
             <AppModalR show={isModalOpen} onClose={handleCloseModal} />
-        </nav>
+        </Navbar>
     );
-}
+};
 
 export default Nav;
