@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import AdaptButton from "@/components/AdaptButton";
 import CustomIcon from "@/components/CustomIcon";
@@ -52,3 +53,5 @@ export const IndexRubrica = () => {
         </div>
     );
 }
+
+export default IndexRubrica;

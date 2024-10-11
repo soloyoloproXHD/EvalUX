@@ -1,13 +1,13 @@
 
 // app/page.tsx
-import { Nav } from '../components/Nav';
+import { Dashboard } from '@/pages/dashboard';
 
 export default function Home() {
   return (
     <div className="p-3">
       <div className="">
         {/* navegacion */}
-        <Nav />
+      
         {/* contenido */}
         <div className='h-screen flex justify-center items-center'>
           {/* Texto */}
