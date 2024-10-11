@@ -11,12 +11,14 @@ import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, Navbar
 import Logo from '../../public/img/Logo.png';
 import LogoW from '../../public/img/LogoW.png';
 import AppModalR from '@/components/ui/modalRegister';
+import AppModalL from './ui/modalLogIn';
 import Avatar from '../components/ui/avatar';
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalLOpen, setIsModalLOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const user = useState(true); // Ajusta según tu lógica de autenticación
 
@@ -27,9 +29,15 @@ export const Nav = () => {
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
+    const handleOPenModalL = () => {
+        setIsModalLOpen(true);
+    };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+    };
+    const handleCloseModalL = () => {
+        setIsModalLOpen(false);
     };
 
     const menuItems = [
@@ -64,7 +72,7 @@ export const Nav = () => {
                 {!user ? (
                     <>
                         <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
-                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} />
+                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL}/>
                         <CustomIcon icon={faGithub} size='lg' />
                     </>
                 ) : (
@@ -93,6 +101,8 @@ export const Nav = () => {
 
             {/* Modal de Registro */}
             <AppModalR show={isModalOpen} onClose={handleCloseModal} />
+            {/*Modal de Inicio de Sesión*/}
+            <AppModalL show={isModalLOpen} onClose={handleCloseModalL}/>
         </Navbar>
     );
 };
