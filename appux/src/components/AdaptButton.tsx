@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from "@nextui-org/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { CustomIcon } from '../components/CustomIcon';
 
@@ -8,7 +7,7 @@ import { CustomIcon } from '../components/CustomIcon';
 interface AdaptButtonProps {
   texto: string;
   icon?: IconProp;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onClick }) => {
