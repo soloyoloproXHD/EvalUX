@@ -128,3 +128,15 @@ body {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
 }
+/* styles.css */
+.theme-svg {
+  transition: fill 0.3s ease;
+}
+
+.theme-svg.light {
+  fill: #000; /* Color para el modo claro */
+}
+
+.theme-svg.dark {
+  fill: #fff; /* Color para el modo oscuro */
+}

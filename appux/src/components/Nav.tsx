@@ -24,12 +24,11 @@ export const Nav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Simulación de usuario (null para no autenticado)
-    const user = null;
+    const user = {name: 'Usuario', photoURL: '/img/avatar.png'};
 
     useEffect(() => {
         setMounted(true);
-        console.log("Current theme:", theme);
-    }, [theme]);
+    }, []);
     
 
     const handleOpenModal = () => {

@@ -4,21 +4,25 @@ import AdaptButton from "@/components/AdaptButton";
 import CustomIcon from "@/components/CustomIcon";
 import { faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardBody } from "@nextui-org/react";
+import { useTheme } from 'next-themes';
 import { Help } from "../../components/ui/help";
 import { Image } from "@nextui-org/react";
 
 export const IndexRubrica = () => {
+    const { theme } = useTheme();
     type Rubrica = {
         title: string;
     };
 
-    // const rubricas: Rubrica[] | null = [
-    // { title: 'Rubrica enfocada a lo visual' },
-    // { title: 'Rubrica con peso en la Accesibilidad' },
-    // { title: 'Rubrica con requerimientos' },
-    // ];
 
-    const rubricas: Rubrica[] = [];
+
+    const rubricas: Rubrica[] | null = [
+    { title: 'Rubrica enfocada a lo visual' },
+    { title: 'Rubrica con peso en la Accesibilidad' },
+    { title: 'Rubrica con requerimientos' },
+    ];
+
+    // const rubricas: Rubrica[] = [];
     return (
         <div className="text-white py-8 px-12">
             {/* Encabezado con el título y los botones */}
@@ -45,9 +49,9 @@ export const IndexRubrica = () => {
                     ))}
                 </ul>
             ) : (
-                <div>
-                    <p>No hay rúbricas creadas</p>
-                    {/* <Image src="/svg/lupas.svg " /> */}
+                <div className="flex justify-center items-center flex-col p-16">
+                    <p className="text-xl">No hay rúbricas creadas</p>
+                    <Image src={theme === 'dark' ? '/svg/lupa.svg' : '/svg/ligth_lupa.svg'} alt="No hay rúbricas" className="mt-10" />
                 </div>
             )}
         </div>
