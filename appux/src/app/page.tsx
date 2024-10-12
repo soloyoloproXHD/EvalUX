@@ -5,8 +5,9 @@ import { Nav } from '../components/Nav';
 import { Button } from "@nextui-org/react";
 import dynamic from 'next/dynamic';
 
-// Cargar Typewriter dinámicamente solo en el cliente
+
 const Typewriter = dynamic(() => import('typewriter-effect'), { ssr: false });
+
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);

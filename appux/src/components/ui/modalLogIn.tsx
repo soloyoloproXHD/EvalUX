@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes';
 import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
-import AppModalL from "./modalLogIn";
+import AppModalR from "./modalRegister";
 
 
 interface ModalProps {
@@ -17,8 +17,8 @@ interface ModalProps {
   onClose: () => void;
 }
 
-export default function AppModalR({ show, onClose }: ModalProps) {
-  const [isModalLOpen, setIsModalLOpen] = useState(false);
+export default function AppModalL({ show, onClose }: ModalProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
 
@@ -32,31 +32,27 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   }, [show, onOpen, onClose]);
 
   const handleCloseModal = () => {
+    setIsModalOpen(false);
     onClose();
   };
+  const handleOPenModal = () => {
+    setIsModalOpen(true);
+  };
+
 
   const initialFormData = {
-    nombres: '',
-    apellidos: '',
     correoE: '',
-    contrasena: '',
-    ccontrasena: ''
+    contrasena: ''
   };
 
   const [formData, setFormData] = useState({
-    nombres: '',
-    apellidos: '',
     correoE: '',
-    contrasena: '',
-    ccontrasena: ''
+    contrasena: ''
   });
 
   const [errors, setErrors] = useState({
-    nombres: '',
-    apellidos: '',
     correoE: '',
-    contrasena: '',
-    ccontrasena: ''
+    contrasena: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,40 +71,16 @@ export default function AppModalR({ show, onClose }: ModalProps) {
     }
   };
 
-  const handleOPenModalL = () => {
-    setIsModalLOpen(true);
-  };
-  const handleCloseModalL = () => {
-    setIsModalLOpen(false);
-    onClose();
-  };
-
   const validateForm = () => { //validador del formulario
     const newErrors = { ...errors };
     let isValid = true;
 
-    if (formData.nombres.trim() === '') {
-      newErrors.nombres = "El campo de nombres no puede estar vacío";
-      isValid = false;
-    }
-    if (formData.apellidos.trim() === '') {
-      newErrors.apellidos = "El campo de apellidos no puede estar vacío";
-      isValid = false;
-    }
     if (formData.correoE.trim() === '') {
       newErrors.correoE = "El campo de correo no puede estar vacío";
       isValid = false;
     }
     if (formData.contrasena.trim() === '') {
       newErrors.contrasena = "El campo de contraseña no puede estar vacío";
-      isValid = false;
-    }
-    if (formData.ccontrasena.trim() === '') {
-      newErrors.ccontrasena = "El campo de repetir contraseña no puede estar vacío";
-      isValid = false;
-    }
-    if (formData.contrasena !== formData.ccontrasena) {
-      newErrors.ccontrasena = "Las contraseñas no coinciden";
       isValid = false;
     }
 
@@ -150,7 +122,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
         <ModalContent>
           <>
             <ModalHeader className="flex flex-col gap-1">
-              <div className="grid grid-cols-2 grid-rows-1 gap-5">
+              <div className="grid grid-cols-1 grid-rows-1 gap-5">
                 <div>
                   <div className="flex place-content-center items-center gap-2 mt-4 text-white">
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-12 w-auto' />
@@ -158,44 +130,14 @@ export default function AppModalR({ show, onClose }: ModalProps) {
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl text-center p-5">Crear Cuenta</p>
+                  <p className="text-2xl text-center p-5">Iniciar Sesión</p>
                 </div>
               </div>
             </ModalHeader>
             <ModalBody>
-              <div className="grid grid-cols-2 grid-rows-1 gap-5">
-                <div className="flex-1 items-center place-content-center">
-                  <div className="flex items-center">
-                    <Divider className="max-w-14" />
-                    <p className="text-center text-sm">¿Ya tienes una cuenta?</p>
-                    <Divider className="max-w-14" />
-                  </div>
-                  <div className="flex place-content-center items-center p-5">
-                    <AdaptButton icon={faArrowRightToBracket} texto="Iniciar Sesión" onClick={handleOPenModalL} />
-                  </div>
-                </div>
-                <div>
+              <div className="flex justify-center items-center h-full">
+                <div className="grid grid-cols-1 grid-rows-1 gap-5 max-w-xs">
                   <div className="gap-1">
-                    <AppInputOut
-                      type="text"
-                      size="md"
-                      label="Nombres"
-                      name="nombres"
-                      value={formData.nombres}
-                      onChange={handleChange}
-                      isInvalid={!!errors.nombres}
-                      errorMessage={errors.nombres}
-                    />
-                    <AppInputOut
-                      type="text"
-                      size="md"
-                      label="Apellidos"
-                      name="apellidos"
-                      value={formData.apellidos}
-                      onChange={handleChange}
-                      isInvalid={!!errors.apellidos}
-                      errorMessage={errors.apellidos}
-                    />
                     <AppInputOut
                       type="email"
                       size="md"
@@ -217,34 +159,33 @@ export default function AppModalR({ show, onClose }: ModalProps) {
                       errorMessage={errors.contrasena}
                       isPassword={true}
                     />
-                    <AppInputOut
-                      type="password"
-                      size="md"
-                      label="Confirmar Contraseña"
-                      name="ccontrasena"
-                      value={formData.ccontrasena}
-                      onChange={handleChange}
-                      isInvalid={!!errors.ccontrasena}
-                      errorMessage={errors.ccontrasena}
-                      isPassword={true}
-                    />
                   </div>
                   <p className="text-sm text-center p-3">
-                    Al crear una cuenta, aceptas las Condiciones de uso y el Aviso de Privacidad de EvalUX.
+                    Al continuar, aceptas las Condiciones de uso y el Aviso de Privacidad de EvalUX.
                   </p>
                   <div className="flex place-content-center items-center">
-                    <AdaptButton icon={faUserPlus} onClick={handleSubmit} texto="Continuar" />
+                    <AdaptButton icon={faArrowRightToBracket} onClick={handleSubmit} texto="Continuar" />
                   </div>
                 </div>
               </div>
             </ModalBody>
             <ModalFooter>
+              <div className="flex-1 items-center place-content-center">
+                <div className="flex place-content-center items-center">
+                  <Divider className="max-w-14" />
+                  <p className="text-center text-sm">¿Eres nuevo en EvalUX?</p>
+                  <Divider className="max-w-14" />
+                </div>
+                <div className="flex place-content-center items-center p-5">
+                  <AdaptButton icon={faUserPlus} texto="Crea tu cuenta de EvalUX" onClick={handleOPenModal}/>
+                </div>
+              </div>
             </ModalFooter>
           </>
         </ModalContent>
-        {/*Modal de Inicio de Sesión*/}
-        <AppModalL show={isModalLOpen} onClose={handleCloseModalL}/>
       </Modal>
+      {/*Modal de Registro*/}
+      <AppModalR show={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }
