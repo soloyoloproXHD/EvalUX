@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes';
 import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
+import AppModalR from "./modalRegister";
 
 
 interface ModalProps {
@@ -17,6 +18,7 @@ interface ModalProps {
 }
 
 export default function AppModalL({ show, onClose }: ModalProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
 
@@ -30,8 +32,13 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   }, [show, onOpen, onClose]);
 
   const handleCloseModal = () => {
+    setIsModalOpen(false);
     onClose();
   };
+  const handleOPenModal = () => {
+    setIsModalOpen(true);
+  };
+
 
   const initialFormData = {
     correoE: '',
@@ -83,7 +90,7 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   }
 
   //Validación del Correo
-  const validateEmail = (value: string) => 
+  const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
   const handleSubmit = (e: React.FormEvent) => { //manejador del formData
@@ -128,8 +135,8 @@ export default function AppModalL({ show, onClose }: ModalProps) {
               </div>
             </ModalHeader>
             <ModalBody>
-              <div className="grid grid-cols-1 grid-rows-1 gap-5 max-w-xs">
-                <div>
+              <div className="flex justify-center items-center h-full">
+                <div className="grid grid-cols-1 grid-rows-1 gap-5 max-w-xs">
                   <div className="gap-1">
                     <AppInputOut
                       type="email"
@@ -157,26 +164,28 @@ export default function AppModalL({ show, onClose }: ModalProps) {
                     Al continuar, aceptas las Condiciones de uso y el Aviso de Privacidad de EvalUX.
                   </p>
                   <div className="flex place-content-center items-center">
-                    <AdaptButton icon={faUserPlus} onClick={handleSubmit} texto="Continuar" />
-                  </div> 
-                </div> 
+                    <AdaptButton icon={faArrowRightToBracket} onClick={handleSubmit} texto="Continuar" />
+                  </div>
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
-                <div className="flex-1 items-center place-content-center">
-                  <div className="flex place-content-center items-center">
-                    <Divider className="max-w-14" />
-                    <p className="text-center text-sm">¿Eres nuevo en EvalUX?</p>
-                    <Divider className="max-w-14" />
-                  </div>
-                  <div className="flex place-content-center items-center p-5">
-                    <AdaptButton icon={faArrowRightToBracket} texto="Crea tu cuenta de EvalUX" />
-                  </div>
+              <div className="flex-1 items-center place-content-center">
+                <div className="flex place-content-center items-center">
+                  <Divider className="max-w-14" />
+                  <p className="text-center text-sm">¿Eres nuevo en EvalUX?</p>
+                  <Divider className="max-w-14" />
                 </div>
+                <div className="flex place-content-center items-center p-5">
+                  <AdaptButton icon={faUserPlus} texto="Crea tu cuenta de EvalUX" onClick={handleOPenModal}/>
+                </div>
+              </div>
             </ModalFooter>
           </>
         </ModalContent>
       </Modal>
+      {/*Modal de Registro*/}
+      <AppModalR show={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }
