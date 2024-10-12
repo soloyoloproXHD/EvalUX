@@ -1,89 +1,73 @@
-
 // app/page.tsx
+'use client';
+import { useEffect, useState } from 'react';
 import { Nav } from '../components/Nav';
 import { Button } from "@nextui-org/react";
+import dynamic from 'next/dynamic';
+
+// Cargar Typewriter dinámicamente solo en el cliente
+const Typewriter = dynamic(() => import('typewriter-effect'), { ssr: false });
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // No renderizar nada hasta que el componente esté montado
+  }
+
   return (
-    <div className="p-3">
+    <div className="p-3 overflow-y-hidden">
       <div className="">
         {/* navegacion */}
         <Nav />
         {/* contenido */}
-        <div className='h-screen flex justify-center items-center'>
+        <div className='h-screen flex justify-center items-center animate__animated animate__fadeIn'>
           {/* Texto */}
-          <div className='flex flex-col justify-center items-start w-1/3 p-10 gap-3 flex-wrap'>
-            <div className='text-xl font-bold'>
-              <p className='text-[#2D6086]'>La plataforma de</p>
-              <p className='text-[#2D6086]'>evaluación UX moderna</p>
+          <div className='flex flex-col justify-center items-start w-1/3 p-10 gap-3 flex-wrap ms-10
+                           rounded-lg shadow-lg hover:scale-[102%] 
+                          transition duration-300 glowingborder' >
+            <div className='text-3xl font-bold'>
+              <p className='text-[#2D6086] header2'>La plataforma de</p>
+              <p className='text-[#2D6086] header'>evaluación UX moderna</p>
             </div>
-            <p>
-              UXEval es una plataforma integral para la evaluación 
-              de experiencia de usuario. Permite a los profesionales 
-              y equipos de UX realizar evaluaciones detalladas, generar 
+            <p className='text-lg font-medium'>
+              UXEval es una plataforma integral para la evaluación
+              de experiencia de usuario. Permite a los profesionales
+              y equipos de UX realizar evaluaciones detalladas, generar
               informes y mejorar la calidad de sus productos digitales.
             </p>
+            <div className='flex justify-start items-center w-full mt-5'>
+              <Button color="default" className='font-semibold hover:scale-105 transition duration-300'>
+                Iniciar Evaluación {'>'}
+              </Button>
+            </div>
           </div>
-          {/* Table */}
-          <div className='p-5 w-2/3'>
-            <table className="table-auto border-collapse border border-gray-400">
-              <thead>
-                <tr>
-                  <th className="border border-gray-300 px-4 py-2">Criterio</th>
-                  <th className="border border-gray-300 px-4 py-2">Descripción</th>
-                  <th className="border border-gray-300 px-4 py-2">Puntuación</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 px-4 py-2">Funcionalidad</td>
-                  <td className="border border-gray-300 px-4 py-2">El software cumple con los requisitos funcionales especificados.</td>
-                  <td className="border border-gray-300 px-4 py-2">0-10</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 px-4 py-2">Usabilidad</td>
-                  <td className="border border-gray-300 px-4 py-2">El software es fácil de usar y entender.</td>
-                  <td className="border border-gray-300 px-4 py-2">0-10</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 px-4 py-2">Rendimiento</td>
-                  <td className="border border-gray-300 px-4 py-2">El software funciona de manera eficiente y rápida.</td>
-                  <td className="border border-gray-300 px-4 py-2">0-10</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 px-4 py-2">Seguridad</td>
-                  <td className="border border-gray-300 px-4 py-2">El software protege los datos y la privacidad del usuario.</td>
-                  <td className="border border-gray-300 px-4 py-2">0-10</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 px-4 py-2">Mantenimiento</td>
-                  <td className="border border-gray-300 px-4 py-2">El software es fácil de mantener y actualizar.</td>
-                  <td className="border border-gray-300 px-4 py-2">0-10</td>
-                </tr>
-              </tbody>
-            </table>
-
-          {/* Botones */}
-            {/*<div className="flex justify-end items-center gap-2">
-            <Button onClick={handleOPenModal} className='border-white text-white' variant="bordered" size="sm">
-              Registro
-            </Button>
-
-            <Button className='border-white text-white gap-1' variant="bordered" size="sm"
-              >
-                <FontAwesomeIcon icon={faArrowRightToBracket} className='text-white h-3' />
-              Iniciar Sesión
-            </Button>
-
-            <FontAwesomeIcon icon={faGithub} className='text-white h-5 hover:text-gris-200 transition duration-300' />
-
-            <FontAwesomeIcon icon={faMoon} onClick={() => setDarkMode(!darkMode)} className='hover:text-gris-200 text-white h-5 transition duration-300' />
-            */}
-
+          <div className='w-1/2 flex justify-center items-center'>
+            <div className='font-bold mb-10'>
+              <span className='text-[#2D6086] text-4xl mb-5'>Mi proyecto es </span>
+              <Typewriter
+                options={{
+                  strings: [
+                    '<span class="text-4xl italic text-red-500" >responsivo?</span>',
+                    '<span class="text-4xl italic text-green-500">intuitivo?</span>',
+                    '<span class="text-4xl italic text-blue-500">consistente?</span>',
+                    '<span class="text-4xl italic text-purple-500">accesible?</span>',
+                    '<span class="text-4xl italic text-orange-500">fácil de usar?</span>',
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  delay: 75,
+                  deleteSpeed: 50,
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
-      
     </div>
   );
 }
