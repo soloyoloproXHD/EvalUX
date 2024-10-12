@@ -10,12 +10,14 @@ import LogoW from '../../public/img/LogoW.png';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import AppModalR from '@/components/ui/modalRegister';
+import AppModalL from './ui/modalLogIn';
 
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalLOpen, setIsModalLOpen] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -28,9 +30,15 @@ export const Nav = () => {
     const handleOPenModal = () => {
         setIsModalOpen(true);
     };
+    const handleOPenModalL = () => {
+        setIsModalLOpen(true);
+    };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+    };
+    const handleCloseModalL = () => {
+        setIsModalLOpen(false);
     };
 
     return (
@@ -43,12 +51,14 @@ export const Nav = () => {
             {/* Botones */}
             <div className="flex justify-end items-center gap-3">
                 <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} />
+                <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL}/>
                 <CustomIcon icon={faGithub} size='lg' />
                 <ThemeSwitcher />
             </div>
             {/*Modal de Registro*/}
             <AppModalR show={isModalOpen} onClose={handleCloseModal} />
+            {/*Modal de Inicio de Sesión*/}
+            <AppModalL show={isModalLOpen} onClose={handleCloseModalL}/>
         </nav>
     );
 }
