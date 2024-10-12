@@ -2,7 +2,7 @@ CREATE TABLE "usuario" (
   "id" serial PRIMARY KEY,
   "nombres" varchar(30),
   "apellidos" varchar(30),
-  "correoE" varchar(30),
+  "correoE" varchar(30) UNIQUE,
   "contrasena" varchar(100),
   "img" text,
   "fecha_registro" date
@@ -28,21 +28,36 @@ CREATE TABLE "principio" (
 
 CREATE TABLE "categoria" (
   "id" serial PRIMARY KEY,
-  "contenido" varchar(550),
+  "contenido" varchar(400),
   "principio_id" int
 );
 
 CREATE TABLE "ecenario" (
   "id" serial PRIMARY KEY,
-  "contenido" varchar(550),
+  "contenido" varchar(400),
   "puntaje" int,
   "categoria_id" int
 );
 
 CREATE TABLE "incognita" (
   "id" serial PRIMARY KEY,
-  "pregunta" varchar(550),
+  "pregunta" varchar(400),
   "categoria_id" int
+);
+
+CREATE TABLE "reporte" (
+  "id" serial PRIMARY KEY,
+  "nombre" varchar(200),
+  "descripcion" varchar(500),
+  "v_usabilidad" int,
+  "v_accesibilidad" int,
+  "v_simplicidad" int,
+  "v_consistencia" int,
+  "v_centrado_en_el_usuario" int,
+  "v_final" int,
+  "usuario_id" int,
+  "rubrica_id" int,
+  "fecha_registro" date
 );
 
 ALTER TABLE "rubrica" ADD FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id");
@@ -56,6 +71,10 @@ ALTER TABLE "categoria" ADD FOREIGN KEY ("principio_id") REFERENCES "principio" 
 ALTER TABLE "ecenario" ADD FOREIGN KEY ("categoria_id") REFERENCES "categoria" ("id");
 
 ALTER TABLE "incognita" ADD FOREIGN KEY ("categoria_id") REFERENCES "categoria" ("id");
+
+ALTER TABLE "reporte" ADD FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id");
+
+ALTER TABLE "reporte" ADD FOREIGN KEY ("rubrica_id") REFERENCES "rubrica" ("id");
 
 /*INSERTS DE LOS PRINCIPIOS UX*/ 
 INSERT INTO principio (contenido) VALUES ('Usabilidad');
