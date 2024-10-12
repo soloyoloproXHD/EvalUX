@@ -78,6 +78,7 @@ body {
 
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.2s ease;
   }
 
   p {
@@ -128,6 +129,70 @@ body {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
 }
+/* styles.css */
+.theme-svg {
+  transition: fill 0.3s ease;
+}
+
+.theme-svg.light {
+  fill: #000; /* Color para el modo claro */
+}
+
+.theme-svg.dark {
+  fill: #fff; /* Color para el modo oscuro */
+}
+.title {
+  color: var(--title-color, #2D6086);
+}
+.title:hover {
+  color: var(--title-color-hover, #213240);
+}
+
+.dark .title {
+  color: var(--title-color-dark, white);
+}
+.dark .title:hover {
+  color: var(--title-color-hover-dark, #2D6086);
+}
+
+button:hover {
+  background-color: var(--button-bg, #2D6086);
+
+}
+
+/* Estilos generales para el botón de peligro */
+/* .button-danger {
+  background-color: var(--button-danger-bg, red);
+  color: var(--button-danger-text, white);
+  border-radius: 50%;
+  padding: 0.25rem; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+} */
+
+/* .button-danger:hover {
+  background-color: var(--button-danger-hover-bg, darkred);
+  color: var(--button-danger-hover-text, white);
+} */
+
+/* Estilos para el modo claro */
+/* @media (prefers-color-scheme: light) {
+  .button-danger {
+    --button-danger-bg: red;
+    --button-danger-text: white;
+    --button-danger-hover-bg: darkred;
+    --button-danger-hover-text: white;
+  }
+} */
+
+/* Estilos para el modo oscuro */
+/* @media (prefers-color-scheme: dark) {
+  .button-danger {
+    --button-danger-bg: darkred;
+    --button-danger-text: white;
+    --button-danger-hover-bg: red;
+    --button-danger-hover-text: black;
+  } */
+
 
 .dark .header {
   color: var(--text-color-dark, #2D6086);
