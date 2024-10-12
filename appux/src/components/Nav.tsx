@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightToBracket, faUserPlus, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightToBracket, faUserPlus, faTableList, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { AdaptButton } from '../components/AdaptButton';
@@ -15,7 +15,7 @@ import LogoW from '../../public/img/LogoW.png';
 import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import Avatar from '../components/ui/avatar';
-import { redirect } from 'next/navigation'; 
+import { redirect } from 'next/navigation';
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
@@ -25,19 +25,12 @@ export const Nav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Simulación de usuario (null para no autenticado)
-    const user = {name: 'Usuario', photoURL: '/img/avatar.png'};
+    const user = { name: 'Usuario', photoURL: '/img/avatar.png' };
 
 
     useEffect(() => {
         setMounted(true);
     }, []);
-    // useEffect(() => {
-    //     setMounted(true);
-    // }, []);
-
-    // if (!mounted) {
-    //     return null;
-    // }
     const handleOPenModal = () => {
         setIsModalOpen(true);
     };
@@ -56,7 +49,7 @@ export const Nav = () => {
 
     const handleRedirect = () => {
         if (mounted) {
-            redirect("/"); // Redirección usando `redirect` en vez de `useRouter`
+            redirect("/");
         }
     };
 
@@ -77,7 +70,7 @@ export const Nav = () => {
                 {/* Redirección en el logo usando redirect */}
                 <div
                     className="flex justify-start items-center gap-2 text-white"
-                     // Redirección directa usando `redirect`
+                // Redirección directa usando `redirect`
                 >
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
                     <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p>
@@ -85,9 +78,11 @@ export const Nav = () => {
                 {user ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
                         <NavbarItem>
+                            <FontAwesomeIcon icon={faTableList} className='me-1' />
                             <Link href="/rubrica">Rubricas</Link>
                         </NavbarItem>
                         <NavbarItem>
+                            <FontAwesomeIcon icon={faClipboardList} className='me-1'/>
                             <Link href="/evaluaciones">Evaluaciones</Link>
                         </NavbarItem>
                     </NavbarContent>
@@ -95,30 +90,18 @@ export const Nav = () => {
             </NavbarContent>
 
             <NavbarContent justify="end">
-                {!user ? (
+                {/* {!user ? ( */}
                     <>
-                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
+                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
                         <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
                         <CustomIcon icon={faGithub} size='lg' />
                     </>
-                ) : (
+                {/* ) : ( */}
                     <>
-                        <p>{user?.displayName || 'Usuario'}</p>
+                        {/* <p>{user?.displayName || 'Usuario'}</p> */}
                         <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" />
                     </>
-                )}
-
-        <nav className="flex justify-between items-center px-5 py-2 animate__animated animate__fadeIn">
-            {/* logo */}
-            <div className="flex justify-start items-center gap-2 text-white">
-                <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-9 w-auto' />
-                <p className='text-xl font-semibold'>EvalUX</p>
-            </div>
-            {/* Botones */}
-            <div className="flex justify-end items-center gap-3">
-                <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL}/>
-                <CustomIcon icon={faGithub} size='lg' />
+                {/* )} */}
 
                 <ThemeSwitcher />
             </NavbarContent>

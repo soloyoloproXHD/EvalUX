@@ -161,37 +161,37 @@ button:hover {
 }
 
 /* Estilos generales para el botón de peligro */
-.button-danger {
+/* .button-danger {
   background-color: var(--button-danger-bg, red);
   color: var(--button-danger-text, white);
   border-radius: 50%;
-  padding: 0.25rem; /* Ajusta el tamaño del botón */
+  padding: 0.25rem; 
   transition: background-color 0.3s ease, color 0.3s ease;
-}
+} */
 
-.button-danger:hover {
+/* .button-danger:hover {
   background-color: var(--button-danger-hover-bg, darkred);
   color: var(--button-danger-hover-text, white);
-}
+} */
 
 /* Estilos para el modo claro */
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   .button-danger {
     --button-danger-bg: red;
     --button-danger-text: white;
     --button-danger-hover-bg: darkred;
     --button-danger-hover-text: white;
   }
-}
+} */
 
 /* Estilos para el modo oscuro */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   .button-danger {
     --button-danger-bg: darkred;
     --button-danger-text: white;
     --button-danger-hover-bg: red;
     --button-danger-hover-text: black;
-  }
+  } */
 
 
 .dark .header {
