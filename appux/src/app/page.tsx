@@ -1,14 +1,18 @@
 // app/page.tsx
+
+import { Dashboard } from '@/pages/dashboard';
+
 import { Nav } from '../components/Nav';
 import { Button } from "@nextui-org/react";
 import TypewriterC from '@/components/ui/TypewriterC';
+
 
 export default function Home() {
   return (
     <div className="p-3 overflow-y-hidden">
       <div className="">
         {/* navegacion */}
-        <Nav />
+      
         {/* contenido */}
         <div className='h-screen flex justify-center items-center animate__animated animate__fadeIn'>
           {/* Texto */}
