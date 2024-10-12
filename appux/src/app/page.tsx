@@ -1,5 +1,4 @@
 // app/page.tsx
-import { useEffect, useState } from 'react';
 import { Nav } from '../components/Nav';
 import { Button } from "@nextui-org/react";
 import TypewriterC from '@/components/ui/TypewriterC';

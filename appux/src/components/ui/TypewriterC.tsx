@@ -14,7 +14,7 @@ export const TypewriterC = () => {
     }, []);
 
     if (!mounted) {
-        return null; // No renderizar nada hasta que el componente esté montado
+        return null;
     }
 
     return (
