@@ -78,6 +78,7 @@ body {
 
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.2s ease;
   }
 
   p {
@@ -90,7 +91,7 @@ body {
 }
 
 .custom-adapt-button {
-  border-color: var(--border-color, black);  
+  border-color: var(--border-color, black);
   color: var(--text-color, black);
 }
 
@@ -110,7 +111,7 @@ body {
 }
 
 .custom-icon {
-  border-color: var(--border-color, black);  
+  border-color: var(--border-color, black);
   color: var(--text-color, black);
 }
 
@@ -191,4 +192,28 @@ button:hover {
     --button-danger-hover-bg: red;
     --button-danger-hover-text: black;
   }
+
+
+.dark .header {
+  color: var(--text-color-dark, #2D6086);
+}
+
+.dark .header2 {
+  color: var(--text-color-dark, #467AA1);
+}
+
+/* .dark .glowingborder {
+  -webkit-box-shadow:0px 0px 80px 5px rgba(45,255,196,0.5);
+  -moz-box-shadow: 0px 0px 80px 5px rgba(45,255,196,0.5);
+  box-shadow: 0px 0px 80px 5px rgba(45,255,196,0.5);
+} */
+
+.dark .glowingborder:hover {
+  -webkit-box-shadow: 0px 0px 35px 0px rgba(45, 255, 196, 0.65);
+  -moz-box-shadow: 0px 0px 35px 0px rgba(45, 255, 196, 0.65);
+  box-shadow: 0px 0px 35px 0px rgba(45, 255, 196, 0.65);
+}
+
+.dark .text-shadow {
+  text-shadow: rgba(255, 255, 255, 0.5) -3px 3px 24px;
 }

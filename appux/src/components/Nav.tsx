@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { faArrowRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRightToBracket, faUserPlus, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { AdaptButton } from '../components/AdaptButton';
@@ -26,12 +27,18 @@ export const Nav = () => {
     // Simulación de usuario (null para no autenticado)
     const user = {name: 'Usuario', photoURL: '/img/avatar.png'};
 
+
     useEffect(() => {
         setMounted(true);
     }, []);
-    
+    // useEffect(() => {
+    //     setMounted(true);
+    // }, []);
 
-    const handleOpenModal = () => {
+    // if (!mounted) {
+    //     return null;
+    // }
+    const handleOPenModal = () => {
         setIsModalOpen(true);
     };
     const handleOPenModalL = () => {
@@ -100,6 +107,19 @@ export const Nav = () => {
                         <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" />
                     </>
                 )}
+
+        <nav className="flex justify-between items-center px-5 py-2 animate__animated animate__fadeIn">
+            {/* logo */}
+            <div className="flex justify-start items-center gap-2 text-white">
+                <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-9 w-auto' />
+                <p className='text-xl font-semibold'>EvalUX</p>
+            </div>
+            {/* Botones */}
+            <div className="flex justify-end items-center gap-3">
+                <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
+                <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL}/>
+                <CustomIcon icon={faGithub} size='lg' />
+
                 <ThemeSwitcher />
             </NavbarContent>
 
@@ -121,6 +141,7 @@ export const Nav = () => {
             {/* Modal de Inicio de Sesión */}
             <AppModalL show={isModalLOpen} onClose={handleCloseModalL} />
         </Navbar>
+
     );
 };
 
