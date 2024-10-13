@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  nombres        String?
+  apellidos      String?
+  correoE        String?
+  contrasena     String?
+  fecha_registro DateTime?
+  accounts       Account[]
+  sessions       Session[]
+  rubricas       Rubrica[]
+}
+
+model Account {
+  id                 Int       @id @default(autoincrement())
+  userId             Int
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  id_token           String?
+  scope              String?
+  session_state      String?
+  token_type         String?
+  user               User      @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  expires       DateTime
+  sessionToken  String
+  user          User      @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  identifier  String
+  token       String
+  expires     DateTime
+  @@id([identifier, token])
+}
+
+model Rubrica {
+  id           Int       @id @default(autoincrement())
+  nombre       String
+  ruta_rubrica String
+  usuario_id   Int
+  usuario      User      @relation(fields: [usuario_id], references: [id])
+  princ_rubs   PrincRub[]
+}
+
+model PrincRub {
+  id           Int       @id @default(autoincrement())
+  rubrica_id   Int
+  principio_id Int
+  rubrica      Rubrica   @relation(fields: [rubrica_id], references: [id])
+  principio    Principio @relation(fields: [principio_id], references: [id])
+}
+
+model Principio {
+  id         Int         @id @default(autoincrement())
+  contenido  String
+  categorias Categoria[]
+  princ_rubs PrincRub[]
+}
+
+model Categoria {
+  id           Int        @id @default(autoincrement())
+  contenido    String
+  principio_id Int
+  principio    Principio  @relation(fields: [principio_id], references: [id])
+  ecenarios    Ecenario[]
+  incognitas   Incognita[]
+}
+
+model Ecenario {
+  id           Int        @id @default(autoincrement())
+  contenido    String
+  puntaje      Int
+  categoria_id Int
+  categoria    Categoria  @relation(fields: [categoria_id], references: [id])
+}
+
+model Incognita {
+  id           Int        @id @default(autoincrement())
+  pregunta     String
+  categoria_id Int
+  categoria    Categoria  @relation(fields: [categoria_id], references: [id])
+}

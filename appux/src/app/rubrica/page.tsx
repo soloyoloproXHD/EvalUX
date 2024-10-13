@@ -8,21 +8,35 @@ import { useTheme } from 'next-themes';
 import { Help } from "../../components/ui/help";
 import { Image } from "@nextui-org/react";
 import Link from "next/link";
+import { auth } from "../../../auth";
+import { signOut } from "next-auth/react";
 
-export const IndexRubrica = () => {
+export const IndexRubrica = async () => {
+
+
     const { theme } = useTheme();
     type Rubrica = {
         title: string;
     };
 
 
-
+    const handleClick = async () => {
+        await signOut();
+    };
 
     const rubricas: Rubrica[] | null = [
         { title: 'Rubrica enfocada a lo visual' },
         { title: 'Rubrica con peso en la Accesibilidad' },
         { title: 'Rubrica con requerimientos' },
     ];
+
+    const session = await auth();
+    console.log(session);
+
+    if (!session) {
+        return <p>Acceso denegado</p>;
+    }
+
 
     // const rubricas: Rubrica[] = [];
     return (
@@ -58,6 +72,12 @@ export const IndexRubrica = () => {
                     <Image src={theme === 'dark' ? '/svg/lupa.svg' : '/svg/ligth_lupa.svg'} alt="No hay rúbricas" className="mt-10" />
                 </div>
             )}
+
+            {/* Botón para cerrar sesión */}
+            <div className="flex justify-end mt-5">
+                <AdaptButton texto="Cerrar sesión" onClick={handleClick} />
+            </div>
+            
         </div>
     );
 }

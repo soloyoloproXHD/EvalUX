@@ -10,6 +10,9 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalL from "./modalLogIn";
+import { signIn } from "next-auth/react"
+import { loginAction } from "../../../actions/auth-actions";
+import { useRouter } from 'next/navigation';
 
 
 interface ModalProps {
@@ -21,6 +24,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const [isModalLOpen, setIsModalLOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
+  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -121,9 +125,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
-  const handleSubmit = (e: React.FormEvent) => { //manejador del formData
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (validateForm()) {
       // Validar el formato del correo electrónico
       if (!validateEmail(formData.correoE)) {
@@ -133,10 +135,32 @@ export default function AppModalR({ show, onClose }: ModalProps) {
         }));
         return;
       }
+  
+      console.log(formData);
+      
+      const result = await signIn("credentials", {
+        redirect: true,
+        email: formData.correoE,
+        password: formData.contrasena,
+      });
+  
+      if (result?.ok) {
+        router.push('/rubrica'); // Redirigir a /rubrica después de un inicio de sesión exitoso
+      } else {
+        console.error("Error de inicio de sesión:", result?.error);
+      }
 
-      console.log(formData) //Manejar aquí el envio de los datos al backend
-      setFormData(initialFormData); //Limpieza de los inputs si el formulario es valido
-      handleCloseModal(); //Cerrado del modal
+      
+
+      // const loginData = {
+      //   email: formData.correoE,
+      //   password: formData.contrasena,
+      // };
+  
+      // await loginAction(loginData); 
+  
+      setFormData(initialFormData); // Limpieza de los inputs si el formulario es válido
+      handleCloseModal(); // Cerrado del modal
     } else {
       console.log("Formulario Inválido");
     }
