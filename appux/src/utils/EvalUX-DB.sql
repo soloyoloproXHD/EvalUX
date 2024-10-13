@@ -32,7 +32,6 @@ CREATE TABLE sessions (
 
 CREATE TABLE users (
   id SERIAL,
-  name VARCHAR(255),
   email VARCHAR(255),
   "emailVerified" TIMESTAMPTZ,
   image TEXT,
