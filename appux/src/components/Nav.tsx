@@ -27,7 +27,6 @@ export const Nav = () => {
     // Simulación de usuario (null para no autenticado)
     const user = { name: 'Usuario', photoURL: '/img/avatar.png' };
 
-
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -56,6 +55,7 @@ export const Nav = () => {
     const menuItems = [
         "Rubricas",
         "Evaluaciones",
+        'Perfil',
         "Configuraciones",
         "Cerrar Sesión"
     ];
@@ -116,6 +116,7 @@ export const Nav = () => {
                             {item}
                         </Link>
                     </NavbarMenuItem>
+                    
                 ))}
             </NavbarMenu>
 

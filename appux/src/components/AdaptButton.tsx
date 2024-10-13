@@ -3,7 +3,6 @@ import { Button } from "@nextui-org/react";
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { CustomIcon } from '../components/CustomIcon';
 
-
 interface AdaptButtonProps {
   texto: string;
   icon?: IconProp;
@@ -14,7 +13,7 @@ interface AdaptButtonProps {
 export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onClick, redirectUrl }) => {
   const handleRedirect = () => {
     if (redirectUrl) {
-      window.location.href = redirectUrl; // Redirige al URL especificado
+      window.location.href = redirectUrl;
     }
   };
   return (
