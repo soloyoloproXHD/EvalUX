@@ -59,7 +59,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
     ccontrasena: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { //validador de estado para errores
     const { name, value } = e.target;
     setFormData({
       ...formData,

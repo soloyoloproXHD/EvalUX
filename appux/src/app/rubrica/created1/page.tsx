@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody, Button } from "@nextui-org/react";
 import { X, Edit, Plus } from 'lucide-react';
 import Link from 'next/link';
@@ -57,6 +57,18 @@ const initialPrinciples: Principle[] = [
 ];
 
 export default function UXPrinciplesEvaluator() {
+    const [data, setData] = useState({ //guardado de created info
+        nombreR: "",
+        selectedP: []
+    });
+
+    useEffect(() => { //Obtenci+on de pestaña created
+        const savedData = sessionStorage.getItem('principiosData');
+        if (savedData) {
+            setData(JSON.parse(savedData));
+        }
+    }, [])
+    
     const [principles, setPrinciples] = useState<Principle[]>(initialPrinciples);
 
     const handleRemove = (principleId: string, subPrincipleId: string) => {
@@ -77,6 +89,7 @@ export default function UXPrinciplesEvaluator() {
         ));
     };
 
+    console.log(data);
     return (
         <div className="py-8 px-12">
             <div className="flex justify-between items-center mb-8">
