@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardBody, Button, Input } from "@nextui-org/react";
-import { X, Edit, Plus, Check } from 'lucide-react';
-import Link from 'next/link';
+import { Edit, Plus, Check } from 'lucide-react';
 import { AdaptButton } from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -83,7 +82,6 @@ export default function UXPrinciplesEvaluator() {
         const principle = principles.find(p => p.id === principleId);
         if (!principle) return;
 
-        const newSubPrincipleNumber = principle.subPrinciples.length + 1;
         const newSubPrinciple = {
             id: Date.now().toString(),
             name: "Edite este nombre"

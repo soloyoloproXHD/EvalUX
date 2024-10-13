@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightToBracket, faUserPlus, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightToBracket, faUserPlus} from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { AdaptButton } from '../components/AdaptButton';
@@ -27,21 +26,18 @@ export const Nav = () => {
     // Simulación de usuario (null para no autenticado)
     const user = {name: 'Usuario', photoURL: '/img/avatar.png'};
 
-
     useEffect(() => {
         setMounted(true);
     }, []);
-    // useEffect(() => {
-    //     setMounted(true);
-    // }, []);
 
-    // if (!mounted) {
-    //     return null;
-    // }
-    const handleOPenModal = () => {
+    if (!mounted) {
+        return null;
+    }
+
+    const handleOpenModal = () => {
         setIsModalOpen(true);
     };
-    const handleOPenModalL = () => {
+    const handleOpenModalL = () => {
         setIsModalLOpen(true);
     };
     const handleCloseModal = () => {
@@ -50,9 +46,6 @@ export const Nav = () => {
     const handleCloseModalL = () => {
         setIsModalLOpen(false);
     };
-    if (!mounted) {
-        return null;
-    }
 
     const handleRedirect = () => {
         if (mounted) {
@@ -74,13 +67,12 @@ export const Nav = () => {
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     className="sm:hidden"
                 />
-                {/* Redirección en el logo usando redirect */}
                 <div
                     className="flex justify-start items-center gap-2 text-white"
-                     // Redirección directa usando `redirect`
+                    onClick={handleRedirect}
                 >
-                    <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
-                    <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p>
+                    <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' />
+                    <p className='text-lg font-semibold mr-4'>EvalUX</p>
                 </div>
                 {user ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
@@ -98,50 +90,31 @@ export const Nav = () => {
                 {!user ? (
                     <>
                         <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
-                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
+                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
                         <CustomIcon icon={faGithub} size='lg' />
                     </>
                 ) : (
                     <>
-                        <p>{user?.displayName || 'Usuario'}</p>
+                        <p>{user?.name || 'Usuario'}</p>
                         <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" />
                     </>
                 )}
-
-        <nav className="flex justify-between items-center px-5 py-2 animate__animated animate__fadeIn">
-            {/* logo */}
-            <div className="flex justify-start items-center gap-2 text-white">
-                <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-9 w-auto' />
-                <p className='text-xl font-semibold'>EvalUX</p>
-            </div>
-            {/* Botones */}
-            <div className="flex justify-end items-center gap-3">
-                <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL}/>
-                <CustomIcon icon={faGithub} size='lg' />
-
                 <ThemeSwitcher />
             </NavbarContent>
 
             <NavbarMenu className={`w-full ${isMenuOpen ? "block" : "hidden"} sm:hidden`}>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={index}>
-                        <Link
-                            href="#"
-                            className="w-full"
-                        >
+                        <Link href="#" className="w-full">
                             {item}
                         </Link>
                     </NavbarMenuItem>
                 ))}
             </NavbarMenu>
 
-            {/* Modal de Registro */}
             <AppModalR show={isModalOpen} onClose={handleCloseModal} />
-            {/* Modal de Inicio de Sesión */}
             <AppModalL show={isModalLOpen} onClose={handleCloseModalL} />
         </Navbar>
-
     );
 };
 

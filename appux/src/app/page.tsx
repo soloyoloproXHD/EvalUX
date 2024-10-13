@@ -1,8 +1,4 @@
 // app/page.tsx
-
-import { Dashboard } from '@/pages/dashboard';
-
-import { Nav } from '../components/Nav';
 import { Button } from "@nextui-org/react";
 import TypewriterC from '@/components/ui/TypewriterC';
 

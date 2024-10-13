@@ -1,13 +1,12 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import React, { useEffect } from "react";
-import {Tooltip,} from "@nextui-org/react";
+import React from "react";
+import { Tooltip } from "@nextui-org/react";
 import { CustomIcon } from '../../components/CustomIcon';
 
 interface HelpProps {
-    text: String;
+    text: string; 
     icon?: IconProp;
 }
-
 
 export const Help: React.FC<HelpProps> = ({ icon, text }) => {
     return (

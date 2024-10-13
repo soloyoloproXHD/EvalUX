@@ -1,16 +1,14 @@
 'use client'
 import React from "react";
 import AdaptButton from "@/components/AdaptButton";
-import CustomIcon from "@/components/CustomIcon";
 import { faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardBody } from "@nextui-org/react";
 import { useTheme } from 'next-themes';
 import { Help } from "../../components/ui/help";
 import { Image } from "@nextui-org/react";
-import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-export const IndexRubrica = () => {
+const IndexRubrica = () => {
     const { theme } = useTheme();
     const router = useRouter();
     type Rubrica = {

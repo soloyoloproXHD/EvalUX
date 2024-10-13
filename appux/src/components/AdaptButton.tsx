@@ -8,15 +8,9 @@ interface AdaptButtonProps {
   texto: string;
   icon?: IconProp;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  redirectUrl?: string;
 }
 
-export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onClick, redirectUrl }) => {
-  const handleRedirect = () => {
-    if (redirectUrl) {
-      window.location.href = redirectUrl; // Redirige al URL especificado
-    }
-  };
+export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onClick }) => {
   return (
     <Button className='custom-adapt-button' variant="bordered" size="sm" onClick={onClick}>
       {icon && <CustomIcon icon={icon} />}

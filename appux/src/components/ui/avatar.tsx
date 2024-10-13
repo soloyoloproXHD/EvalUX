@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faRightFromBracket} from '@fortawesome/free-solid-svg-icons'

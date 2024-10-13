@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
 import { Card, CardBody, CardHeader, Button } from "@nextui-org/react";
-import Link from 'next/link';
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
 
 interface Subcategory {
     name: string;
@@ -59,6 +59,8 @@ const CategoryMatrix: React.FC<{ category: Category }> = ({ category }) => {
         console.log(`Clicked: ${category.name} - ${category.subcategories[subcategoryIndex].name} - Evaluation ${evaluationIndex + 1}`);
     };
 
+   
+
     return (
         <Card className="w-full mb-4">
             <CardHeader className="flex flex-col  px-4 pt-4 pb-0">
@@ -94,15 +96,17 @@ const CategoryMatrix: React.FC<{ category: Category }> = ({ category }) => {
 };
 
 export default function UXEvaluationMatrix() {
+    const router = useRouter();
+    const handleNext = () => {
+        router.push("/rubrica");
+    }
     return (
         <div className="p-4">
             <div className="py-8 px-12">
                 <div className="flex justify-between items-center mb-8">
                     <p className="text-2xl font-bold  title">Creación de Rubrica</p>
                     <div className="flex gap-x-2 px-4">
-                        <Link href={"/rubrica"}>
-                            <AdaptButton texto="Siguiente" icon={faCircleRight} />
-                        </Link>
+                            <AdaptButton texto="Siguiente" icon={faCircleRight}  onClick={handleNext}/>
                     </div>
                 </div>
                 {categories.map((category) => (
