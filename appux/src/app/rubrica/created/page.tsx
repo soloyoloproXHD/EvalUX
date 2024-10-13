@@ -7,9 +7,11 @@ import { AdaptButton } from "@/components/AdaptButton";
 import { Input } from "@nextui-org/react";
 import { Card, CardBody, Checkbox } from "@nextui-org/react";
 import { useTheme } from 'next-themes';
+import { useRouter } from "next/navigation";
 
 export const Created = () => {
     const { theme } = useTheme();
+    const router = useRouter();
 
     const principles = [
         { id: "usability", label: "Usabilidad" },
@@ -18,15 +20,18 @@ export const Created = () => {
         { id: "userCentered", label: "Centrado en el usuario" },
         { id: "simplicity", label: "Simplicidad" },
     ];
+
+    const handleNext = () => {
+        router.push("/rubrica/created1");
+    };
+
     return (
         <>
             <div className="py-8 px-12">
                 <div className="flex justify-between items-center mb-8">
                     <p className="text-2xl font-bold  title">Creación de Rubrica</p>
                     <div className="flex gap-x-2 px-4">
-                        <Link href={"/rubrica/created1"}>
-                            <AdaptButton texto="Siguiente" icon={faCircleRight} />
-                        </Link>
+                            <AdaptButton texto="Siguiente" icon={faCircleRight}  onClick={handleNext}/>
                     </div>
                 </div>
                 <div className="flex flex-col justify-start px-6 mb-6">

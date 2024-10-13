@@ -8,15 +8,18 @@ import { useTheme } from 'next-themes';
 import { Help } from "../../components/ui/help";
 import { Image } from "@nextui-org/react";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export const IndexRubrica = () => {
     const { theme } = useTheme();
+    const router = useRouter();
     type Rubrica = {
         title: string;
     };
 
-
-
+    const handleCreated = () => {
+        router.push("/rubrica/created");
+    }
 
     const rubricas: Rubrica[] | null = [
         { title: 'Rubrica enfocada a lo visual' },
@@ -31,9 +34,7 @@ export const IndexRubrica = () => {
             <div className="flex justify-between items-center mb-5">
                 <p className="text-2xl font-bold">Rúbricas</p>
                 <div className="flex gap-x-2">
-                    <Link href={"/rubrica/created"}>
-                        <AdaptButton texto="Nueva rúbrica" icon={faPlus} />
-                    </Link>
+                        <AdaptButton texto="Nueva rúbrica" icon={faPlus} onClick={handleCreated} />
                     <Help text='Pulse "Nueva rúbrica" para crear una rúbrica' icon={faQuestion} />
                 </div>
             </div>
