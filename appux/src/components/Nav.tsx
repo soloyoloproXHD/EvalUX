@@ -82,7 +82,7 @@ export const Nav = () => {
                             <Link href="/rubrica">Rubricas</Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <FontAwesomeIcon icon={faClipboardList} className='me-1'/>
+                            <FontAwesomeIcon icon={faClipboardList} className='me-1' />
                             <Link href="/evaluaciones">Evaluaciones</Link>
                         </NavbarItem>
                     </NavbarContent>
@@ -91,16 +91,16 @@ export const Nav = () => {
 
             <NavbarContent justify="end">
                 {/* {!user ? ( */}
-                    <>
-                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
-                        <CustomIcon icon={faGithub} size='lg' />
-                    </>
+                <>
+                    <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
+                    <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
+                    <CustomIcon icon={faGithub} size='lg' />
+                </>
                 {/* ) : ( */}
-                    <>
-                        {/* <p>{user?.displayName || 'Usuario'}</p> */}
-                        <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" />
-                    </>
+                <>
+                    {/* <p>{user?.displayName || 'Usuario'}</p> */}
+                    <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" />
+                </>
                 {/* )} */}
 
                 <ThemeSwitcher />
@@ -116,7 +116,7 @@ export const Nav = () => {
                             {item}
                         </Link>
                     </NavbarMenuItem>
-                    
+
                 ))}
             </NavbarMenu>
 
