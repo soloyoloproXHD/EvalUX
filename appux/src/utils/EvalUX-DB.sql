@@ -36,6 +36,11 @@ CREATE TABLE users (
   email VARCHAR(255),
   "emailVerified" TIMESTAMPTZ,
   image TEXT,
+  "nombres" VARCHAR(30),
+  "apellidos" VARCHAR(30),
+  "correoE" VARCHAR(30),
+  "contrasena" VARCHAR(100),
+  "fecha_registro" DATE,
   PRIMARY KEY (id)
 );
 
