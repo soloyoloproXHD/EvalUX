@@ -96,8 +96,9 @@ body {
 }
 
 .custom-adapt-button:hover {
-  border-color: var(--border-color-hover, gray);
-  color: var(--text-color-hover, gray);
+  border-color: var(--border-color-hover, black);
+  color: var(--text-color-hover, black);
+  background-color: rgba(45, 96, 134, 0.2);
 }
 
 .dark .custom-adapt-button {
@@ -108,6 +109,7 @@ body {
 .dark .custom-adapt-button:hover {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
+  background-color: rgba(153, 153, 153, 0.2);
 }
 
 .custom-icon {
@@ -129,21 +131,30 @@ body {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
 }
+
+.borderInput{
+  border: 10px solid var(--border-color, gray);
+}
+
 /* styles.css */
 .theme-svg {
   transition: fill 0.3s ease;
 }
 
 .theme-svg.light {
-  fill: #000; /* Color para el modo claro */
+  fill: #000;
+  /* Color para el modo claro */
 }
 
 .theme-svg.dark {
-  fill: #fff; /* Color para el modo oscuro */
+  fill: #fff;
+  /* Color para el modo oscuro */
 }
+
 .title {
   color: var(--title-color, #2D6086);
 }
+
 .title:hover {
   color: var(--title-color-hover, #213240);
 }
@@ -151,6 +162,7 @@ body {
 .dark .title {
   color: var(--title-color-dark, white);
 }
+
 .dark .title:hover {
   color: var(--title-color-hover-dark, #2D6086);
 }
@@ -192,7 +204,6 @@ button:hover {
     --button-danger-hover-bg: red;
     --button-danger-hover-text: black;
   } */
-
 
 .dark .header {
   color: var(--text-color-dark, #2D6086);
