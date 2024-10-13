@@ -1,49 +1,13 @@
--- Crear nuevas tablas para autenticación
-CREATE TABLE verification_token (
-  identifier TEXT NOT NULL,
-  expires TIMESTAMPTZ NOT NULL,
-  token TEXT NOT NULL,
-  PRIMARY KEY (identifier, token)
+CREATE TABLE "usuario" (
+  "id" serial PRIMARY KEY,
+  "nombres" varchar(30),
+  "apellidos" varchar(30),
+  "correoE" varchar(30),
+  "contrasena" varchar(100),
+  "img" text,
+  "fecha_registro" date
 );
 
-CREATE TABLE accounts (
-  id SERIAL,
-  "userId" INTEGER NOT NULL,
-  type VARCHAR(255) NOT NULL,
-  provider VARCHAR(255) NOT NULL,
-  "providerAccountId" VARCHAR(255) NOT NULL,
-  refresh_token TEXT,
-  access_token TEXT,
-  expires_at BIGINT,
-  id_token TEXT,
-  scope TEXT,
-  session_state TEXT,
-  token_type TEXT,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE sessions (
-  id SERIAL,
-  "userId" INTEGER NOT NULL,
-  expires TIMESTAMPTZ NOT NULL,
-  "sessionToken" VARCHAR(255) NOT NULL,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE users (
-  id SERIAL,
-  email VARCHAR(255),
-  "emailVerified" TIMESTAMPTZ,
-  image TEXT,
-  "nombres" VARCHAR(30),
-  "apellidos" VARCHAR(30),
-  "correoE" VARCHAR(30),
-  "contrasena" VARCHAR(100),
-  "fecha_registro" DATE,
-  PRIMARY KEY (id)
-);
-
--- Crear tablas existentes ajustadas
 CREATE TABLE "rubrica" (
   "id" serial PRIMARY KEY,
   "nombre" varchar(30),
@@ -64,25 +28,39 @@ CREATE TABLE "principio" (
 
 CREATE TABLE "categoria" (
   "id" serial PRIMARY KEY,
-  "contenido" varchar(550),
+  "contenido" varchar(400),
   "principio_id" int
 );
 
 CREATE TABLE "ecenario" (
   "id" serial PRIMARY KEY,
-  "contenido" varchar(550),
+  "contenido" varchar(400),
   "puntaje" int,
   "categoria_id" int
 );
 
 CREATE TABLE "incognita" (
   "id" serial PRIMARY KEY,
-  "pregunta" varchar(550),
+  "pregunta" varchar(400),
   "categoria_id" int
 );
 
--- Ajustar llaves foráneas
-ALTER TABLE "rubrica" ADD FOREIGN KEY ("usuario_id") REFERENCES "users" ("id");
+CREATE TABLE "reporte" (
+  "id" serial PRIMARY KEY,
+  "nombre" varchar(200),
+  "descripcion" varchar(500),
+  "v_usabilidad" int,
+  "v_accesibilidad" int,
+  "v_simplicidad" int,
+  "v_consistencia" int,
+  "v_centrado_en_el_usuario" int,
+  "v_final" int,
+  "usuario_id" int,
+  "rubrica_id" int,
+  "fecha_registro" date
+);
+
+ALTER TABLE "rubrica" ADD FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id");
 
 ALTER TABLE "princ_rub" ADD FOREIGN KEY ("rubrica_id") REFERENCES "rubrica" ("id");
 
@@ -94,10 +72,9 @@ ALTER TABLE "ecenario" ADD FOREIGN KEY ("categoria_id") REFERENCES "categoria" (
 
 ALTER TABLE "incognita" ADD FOREIGN KEY ("categoria_id") REFERENCES "categoria" ("id");
 
--- Agregar llaves foráneas para nuevas tablas
-ALTER TABLE accounts ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+ALTER TABLE "reporte" ADD FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id");
 
-ALTER TABLE sessions ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+ALTER TABLE "reporte" ADD FOREIGN KEY ("rubrica_id") REFERENCES "rubrica" ("id");
 
 /*INSERTS DE LOS PRINCIPIOS UX*/ 
 INSERT INTO principio (contenido) VALUES ('Usabilidad');
