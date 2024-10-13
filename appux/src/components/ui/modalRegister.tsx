@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes';
 import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
+import AppModalL from "./modalLogIn";
 
 
 interface ModalProps {
@@ -17,6 +18,7 @@ interface ModalProps {
 }
 
 export default function AppModalR({ show, onClose }: ModalProps) {
+  const [isModalLOpen, setIsModalLOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
 
@@ -73,6 +75,14 @@ export default function AppModalR({ show, onClose }: ModalProps) {
     }
   };
 
+  const handleOPenModalL = () => {
+    setIsModalLOpen(true);
+  };
+  const handleCloseModalL = () => {
+    setIsModalLOpen(false);
+    onClose();
+  };
+
   const validateForm = () => { //validador del formulario
     const newErrors = { ...errors };
     let isValid = true;
@@ -108,7 +118,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   }
 
   //Validación del Correo
-  const validateEmail = (value: string) => 
+  const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
   const handleSubmit = (e: React.FormEvent) => { //manejador del formData
@@ -161,7 +171,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
                     <Divider className="max-w-14" />
                   </div>
                   <div className="flex place-content-center items-center p-5">
-                    <AdaptButton icon={faArrowRightToBracket} texto="Iniciar Sesión" />
+                    <AdaptButton icon={faArrowRightToBracket} texto="Iniciar Sesión" onClick={handleOPenModalL} />
                   </div>
                 </div>
                 <div>
@@ -232,6 +242,8 @@ export default function AppModalR({ show, onClose }: ModalProps) {
             </ModalFooter>
           </>
         </ModalContent>
+        {/*Modal de Inicio de Sesión*/}
+        <AppModalL show={isModalLOpen} onClose={handleCloseModalL}/>
       </Modal>
     </>
   );
