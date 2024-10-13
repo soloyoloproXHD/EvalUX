@@ -1,13 +1,45 @@
-CREATE TABLE "usuario" (
-  "id" serial PRIMARY KEY,
-  "nombres" varchar(30),
-  "apellidos" varchar(30),
-  "correoE" varchar(30),
-  "contrasena" varchar(100),
-  "img" text,
-  "fecha_registro" date
+-- Crear nuevas tablas para autenticación
+CREATE TABLE verification_token (
+  identifier TEXT NOT NULL,
+  expires TIMESTAMPTZ NOT NULL,
+  token TEXT NOT NULL,
+  PRIMARY KEY (identifier, token)
 );
 
+CREATE TABLE accounts (
+  id SERIAL,
+  "userId" INTEGER NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  provider VARCHAR(255) NOT NULL,
+  "providerAccountId" VARCHAR(255) NOT NULL,
+  refresh_token TEXT,
+  access_token TEXT,
+  expires_at BIGINT,
+  id_token TEXT,
+  scope TEXT,
+  session_state TEXT,
+  token_type TEXT,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE sessions (
+  id SERIAL,
+  "userId" INTEGER NOT NULL,
+  expires TIMESTAMPTZ NOT NULL,
+  "sessionToken" VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE users (
+  id SERIAL,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  "emailVerified" TIMESTAMPTZ,
+  image TEXT,
+  PRIMARY KEY (id)
+);
+
+-- Crear tablas existentes ajustadas
 CREATE TABLE "rubrica" (
   "id" serial PRIMARY KEY,
   "nombre" varchar(30),
@@ -45,7 +77,8 @@ CREATE TABLE "incognita" (
   "categoria_id" int
 );
 
-ALTER TABLE "rubrica" ADD FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id");
+-- Ajustar llaves foráneas
+ALTER TABLE "rubrica" ADD FOREIGN KEY ("usuario_id") REFERENCES "users" ("id");
 
 ALTER TABLE "princ_rub" ADD FOREIGN KEY ("rubrica_id") REFERENCES "rubrica" ("id");
 
@@ -56,6 +89,11 @@ ALTER TABLE "categoria" ADD FOREIGN KEY ("principio_id") REFERENCES "principio" 
 ALTER TABLE "ecenario" ADD FOREIGN KEY ("categoria_id") REFERENCES "categoria" ("id");
 
 ALTER TABLE "incognita" ADD FOREIGN KEY ("categoria_id") REFERENCES "categoria" ("id");
+
+-- Agregar llaves foráneas para nuevas tablas
+ALTER TABLE accounts ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+
+ALTER TABLE sessions ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
 /*INSERTS DE LOS PRINCIPIOS UX*/ 
 INSERT INTO principio (contenido) VALUES ('Usabilidad');
