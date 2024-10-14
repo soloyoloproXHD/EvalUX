@@ -115,7 +115,7 @@ const Header: React.FC<{ handleAtras: () => void; handleNext: () => void }> = ({
         <p className="text-2xl font-bold title">Creación de Rubrica</p>
         <div className="flex gap-x-2 px-4">
             <AdaptButton texto="Atras" onClick={handleAtras} />
-            <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext} />
+            <AdaptButton texto="Finalizar" icon={faCircleRight} onClick={handleNext} />
         </div>
     </div>
 );
