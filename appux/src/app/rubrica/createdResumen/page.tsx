@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Card, CardBody, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
 import { NotificationTypewriter } from "../../../components/ui/notificacionwrite";
 import CategoryMatrix from '../../../components/rubricas/CategoryMatrix';
@@ -19,13 +19,6 @@ interface Category {
     subcategories: Subcategory[];
 }
 
-const evaluationCriteria = [
-    { label: "Excelente", value: 5, color: "bg-success" },
-    { label: "Bueno", value: 4, color: "bg-success-300" },
-    { label: "Aceptable", value: 3, color: "bg-primary-100" },
-    { label: "Satisfactorio", value: 2, color: "bg-warning" },
-    { label: "Insatisfactorio", value: 1, color: "bg-danger" },
-];
 
 const initialCategories: Category[] = [
     {

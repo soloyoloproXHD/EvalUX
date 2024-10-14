@@ -8,7 +8,6 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-import { faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 interface SubPrinciple {
     id: string;

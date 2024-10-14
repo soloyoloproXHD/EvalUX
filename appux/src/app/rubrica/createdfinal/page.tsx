@@ -1,16 +1,12 @@
 'use client'
 import React, { useState } from 'react';
-import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 
 // Importaciones de los componentes separados
-import CategoryHeader from '../../../components/rubricas/CategoryHeader';
 import CategoryMatrix from '../../../components/rubricas/CategoryMatrix';
-import EvaluationCell from '../../../components/rubricas/EvaluationCell';
-import SubcategoryRow from '../../../components/rubricas/SubcategoryRow'; // Si lo usas, dependiendo del código de cada archivo
+
 
 interface Subcategory {
     name: string;
@@ -23,13 +19,6 @@ interface Category {
     subcategories: Subcategory[];
 }
 
-const evaluationCriteria = [
-    { label: "Excelente", value: 5, color: "bg-success" },
-    { label: "Bueno", value: 4, color: "bg-success-300" },
-    { label: "Aceptable", value: 3, color: "bg-primary-100" },
-    { label: "Satisfactorio", value: 2, color: "bg-warning" },
-    { label: "Insatisfactorio", value: 1, color: "bg-danger" },
-];
 
 const initialCategories: Category[] = [
     {
