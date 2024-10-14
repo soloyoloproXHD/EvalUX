@@ -4,7 +4,13 @@ import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion'; // Importamos motion de framer-motion
+import { motion } from 'framer-motion';
+
+// Importaciones de los componentes separados
+import CategoryHeader from '../../../components/rubricas/CategoryHeader';
+import CategoryMatrix from '../../../components/rubricas/CategoryMatrix';
+import EvaluationCell from '../../../components/rubricas/EvaluationCell';
+import SubcategoryRow from '../../../components/rubricas/SubcategoryRow'; // Si lo usas, dependiendo del código de cada archivo
 
 interface Subcategory {
     name: string;
@@ -44,84 +50,12 @@ const initialCategories: Category[] = [
     },
 ];
 
-const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
-    <Textarea
-        className="w-full h-24 text-sm font-normal"
-        placeholder="Ingrese evaluación"
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-    />
-);
-
-const CategoryMatrix: React.FC<{
-    category: Category;
-    onUpdateCategory: (updatedCategory: Category) => void
-}> = ({ category, onUpdateCategory }) => {
-    const handleCellChange = (subcategoryIndex: number, evaluationIndex: number, value: string) => {
-        const updatedCategory = { ...category };
-        updatedCategory.subcategories[subcategoryIndex].evaluations[evaluationIndex] = value;
-        onUpdateCategory(updatedCategory);
-    };
-
-    const handleUnknownChange = (subcategoryIndex: number, value: string) => {
-        const updatedCategory = { ...category };
-        updatedCategory.subcategories[subcategoryIndex].unknown = value;
-        onUpdateCategory(updatedCategory);
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <Card className="w-full mb-4 text-white">
-                <CardHeader className="flex flex-col px-4 pt-4 pb-0">
-                    <h2 className="text-lg font-bold justify-center items-center">{category.name}</h2>
-                    <div className="flex w-full justify-between mt-2">
-                        <div className="w-1/6">Categorías</div>
-                        <div className="w-1/6">Incógnitas de evaluación</div>
-                        {evaluationCriteria.map((criteria) => (
-                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
-                                <span className="font-bold">{criteria.value}</span> {criteria.label}
-                            </div>
-                        ))}
-                    </div>
-                </CardHeader>
-                <CardBody className="px-4">
-                    {category.subcategories.map((subcategory, subcategoryIndex) => (
-                        <div key={subcategory.name} className="flex w-full mb-2">
-                            <div className="w-1/6 flex items-center">{subcategory.name}</div>
-                            <div className="w-1/6 pr-2">
-                                <Textarea
-                                    className="w-full h-24 text-sm font-normal"
-                                    placeholder="Ingrese incógnitas"
-                                    value={subcategory.unknown}
-                                    onChange={(e) => handleUnknownChange(subcategoryIndex, e.target.value)}
-                                />
-                            </div>
-                            {subcategory.evaluations.map((evaluation, evaluationIndex) => (
-                                <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
-                                    <EvaluationCell
-                                        value={evaluation}
-                                        onChange={(value) => handleCellChange(subcategoryIndex, evaluationIndex, value)}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </CardBody>
-            </Card>
-        </motion.div>
-    );
-};
-
 export default function UXEvaluationMatrix() {
     const router = useRouter();
     const [categories, setCategories] = useState<Category[]>(initialCategories);
 
     const handleNext = () => {
-        router.push("/rubrica");
+        router.push("/rubrica/createdResumen");
     };
     const handleAtras = () => {
         router.push("/rubrica/created1");
