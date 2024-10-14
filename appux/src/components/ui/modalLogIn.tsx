@@ -132,8 +132,8 @@ export default function AppModalL({ show, onClose }: ModalProps) {
       
         handleCloseModal();  // Cerrar el modal de inicio de sesión
         setFormData(initialFormData);  // Restablecer el formulario
-        router.push('/rubrica');  // Redi rigir después de guardar el token
-      })
+        window.location.href = '/rubrica'; 
+        })
       .catch(error => {
         console.error('Error en el proceso de inicio de sesión:', error);
       });
