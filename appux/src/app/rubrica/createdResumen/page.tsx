@@ -11,6 +11,7 @@ import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import axios from 'axios';
 
 interface Escenario {
     puntaje: number;

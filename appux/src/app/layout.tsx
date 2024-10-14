@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Nav } from '../components/Nav';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const geistSans = localFont({
@@ -34,6 +35,7 @@ export default function RootLayout({
         <Providers>
           <Nav />
           {children}
+          <ToastContainer />
         </Providers>
       </body>
     </html>
