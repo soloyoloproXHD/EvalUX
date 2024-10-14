@@ -72,7 +72,7 @@ const CategoryMatrix: React.FC<{
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <Card className="w-full mb-4 text-white">
+            <Card className="w-full mb-4">
                 <CardHeader className="flex flex-col px-4 pt-4 pb-0">
                     <h2 className="text-lg font-bold justify-center items-center">{selectedP.label}</h2>
                     <div className="flex w-full justify-between mt-2">
@@ -186,7 +186,7 @@ export default function UXEvaluationMatrix() {
     };
 
     return (
-        <div className="p-4 text-white min-h-screen">
+        <div className="p-4 min-h-screen">
             <div className="py-8 px-12">
                 <Header handleAtras={handleAtras} handleNext={handleNext} />
                 {data.selectedP.map((selectedP) => (
