@@ -141,6 +141,7 @@ export default function UXPrinciplesEvaluator() {
         router.push('/rubrica/created');
     }
 
+    console.log(data);
     return (
         <div className="py-8 px-8">
             <div className="flex justify-between items-center mb-8">
