@@ -27,14 +27,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <head></head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <Nav />
-          {children}
           <ToastContainer />
+          {children}
         </Providers>
       </body>
     </html>

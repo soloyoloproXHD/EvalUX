@@ -10,6 +10,7 @@ import { jsPDF } from "jspdf";
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+
 interface Escenario {
     puntaje: number;
     contenido: string;
@@ -120,11 +121,6 @@ const CategoryMatrix: React.FC<{
 
 function Resumen() {
     const router = useRouter();
-    
-
-    const handleEvaluate = () => {
-        console.log("Evaluating...");
-    };
 
     const handleCreateNewRubric = () => {
         router.push("/rubrica/created");
@@ -133,9 +129,9 @@ function Resumen() {
     const handleDownloadPDF = () => {
         const doc = new jsPDF({ orientation: "landscape" });
         doc.setFontSize(18);
-    
+
         const pageWidth = doc.internal.pageSize.getWidth();
-    
+
         // Agregar imagen y texto en el lado izquierdo
         const img = new Image();
         img.src = '/img/Logo.png';
@@ -149,7 +145,7 @@ function Resumen() {
             doc.text(data.nombreR, pageWidth / 2, imgY + imgHeight + 10, { align: "center" });
             doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
 
-    
+
             // Definir las columnas de la tabla
             const tableColumns = [
                 "Principio",
@@ -161,10 +157,10 @@ function Resumen() {
                 "Satisfactorio (2)",
                 "Insatisfactorio (1)",
             ];
-    
+
             // Formatear los datos del JSON para las filas de la tabla
             const tableRows: (string | number)[][] = [];
-    
+
             data.selectedP.forEach((principio) => {
                 principio.categorias.forEach((categoria) => {
                     const row = [
@@ -180,7 +176,7 @@ function Resumen() {
                     tableRows.push(row);
                 });
             });
-    
+
             // Generar la tabla en el PDF con autoTable
             autoTable(doc, {
                 head: [tableColumns],
@@ -211,7 +207,7 @@ function Resumen() {
                 },
                 theme: "grid",
             });
-    
+
             // Guardar el archivo PDF
             doc.save("Rubrica_de_AutoUX.pdf");
         };
@@ -300,7 +296,7 @@ function Resumen() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <Button color="primary" className="w-full mb-4" onClick={handleEvaluate}>
+                        <Button color="primary" className="w-full mb-4">
                             Evaluar
                         </Button>
                     </motion.div>
@@ -343,6 +339,7 @@ function Resumen() {
                         </motion.div>
                     </div>
                 </div>
+                {/* <ModalPremium show={isModalProOPen} onClose={handleProCloseModal} /> */}
             </div>
         </div>
     );

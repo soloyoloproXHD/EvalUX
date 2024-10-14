@@ -11,6 +11,7 @@ import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalR from "./modalRegister";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 interface ModalProps {
