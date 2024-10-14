@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Dashboard = () => {
+const Dashboard = () => {
     return (
         <>
           {/* Texto */}
@@ -76,3 +76,4 @@ export const Dashboard = () => {
         </>
     );
 }
+export default Dashboard;

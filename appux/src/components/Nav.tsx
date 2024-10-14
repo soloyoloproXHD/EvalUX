@@ -14,7 +14,6 @@ import Logo from '../../public/img/Logo.png';
 import LogoW from '../../public/img/LogoW.png';
 import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
-import Avatar from '../components/ui/avatar';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
@@ -50,10 +49,15 @@ export const Nav = () => {
     useEffect(() => {
         setMounted(true);
     }, []);
-    const handleOPenModal = () => {
+
+    if (!mounted) {
+        return null;
+    }
+
+    const handleOpenModal = () => {
         setIsModalOpen(true);
     };
-    const handleOPenModalL = () => {
+    const handleOpenModalL = () => {
         setIsModalLOpen(true);
     };
     const handleCloseModal = () => {
@@ -62,9 +66,6 @@ export const Nav = () => {
     const handleCloseModalL = () => {
         setIsModalLOpen(false);
     };
-    if (!mounted) {
-        return null;
-    }
 
     const handleRedirect = () => {
         if (mounted) {
@@ -108,8 +109,8 @@ export const Nav = () => {
             <NavbarContent justify="end">
                 {!isAuthenticated ?
                     <>
-                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
+                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
+                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
                         <CustomIcon icon={faGithub} size='lg' />
                     </>
                     :
@@ -136,10 +137,7 @@ export const Nav = () => {
             <NavbarMenu className={`w-full ${isMenuOpen ? "block" : "hidden"} sm:hidden`}>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={index}>
-                        <Link
-                            href="#"
-                            className="w-full"
-                        >
+                        <Link href="#" className="w-full">
                             {item}
                         </Link>
                     </NavbarMenuItem>
@@ -147,12 +145,9 @@ export const Nav = () => {
                 ))}
             </NavbarMenu>
 
-            {/* Modal de Registro */}
             <AppModalR show={isModalOpen} onClose={handleCloseModal} />
-            {/* Modal de Inicio de Sesión */}
             <AppModalL show={isModalLOpen} onClose={handleCloseModalL} />
         </Navbar>
-
     );
 };
 
