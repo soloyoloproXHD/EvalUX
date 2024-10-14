@@ -63,7 +63,7 @@ export default function ModalPremium({ show, onClose }: ModalProps) {
                   <Divider className="max-w-14" />
                 </div>
                 <div className="flex place-content-center items-center p-5">
-                  <AdaptButton icon={faCashRegister} texto="Actualizar a Premium" className="bg-green-900" />
+                  <AdaptButton icon={faCashRegister} texto="Actualizar a Premium"/>
                 </div>
               </div>
             </ModalFooter>
