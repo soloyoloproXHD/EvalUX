@@ -1,20 +1,27 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion'; // Importamos motion de framer-motion
 
-interface Subcategory {
-    name: string;
-    evaluations: (string | null)[];
-    unknown: string;
+interface Escenario {
+    puntaje: number;
+    contenido: string;
 }
 
-interface Category {
-    name: string;
-    subcategories: Subcategory[];
+interface Subcategory {
+    id: string;
+    contenido: string;
+    incognitas: string;
+    escenarios: Escenario[];
+}
+
+interface SelectedP {
+    id: number;
+    label: string;
+    categorias: Subcategory[];
 }
 
 const evaluationCriteria = [
@@ -23,25 +30,6 @@ const evaluationCriteria = [
     { label: "Aceptable", value: 3, color: "bg-primary-100" },
     { label: "Satisfactorio", value: 2, color: "bg-warning" },
     { label: "Insatisfactorio", value: 1, color: "bg-danger" },
-];
-
-const initialCategories: Category[] = [
-    {
-        name: "Usabilidad",
-        subcategories: [
-            { name: "Satisfacción del usuario", evaluations: [null, null, null, null, null], unknown: "" },
-            { name: "Claridad de la interfaz", evaluations: [null, null, null, null, null], unknown: "" },
-            { name: "Facilidad de aprendizaje", evaluations: [null, null, null, null, null], unknown: "" },
-        ],
-    },
-    {
-        name: "Accesibilidad",
-        subcategories: [
-            { name: "Perceptible", evaluations: [null, null, null, null, null], unknown: "" },
-            { name: "Operable", evaluations: [null, null, null, null, null], unknown: "" },
-            { name: "Comprensible", evaluations: [null, null, null, null, null], unknown: "" },
-        ],
-    },
 ];
 
 const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
@@ -54,19 +42,19 @@ const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string)
 );
 
 const CategoryMatrix: React.FC<{
-    category: Category;
-    onUpdateCategory: (updatedCategory: Category) => void
-}> = ({ category, onUpdateCategory }) => {
-    const handleCellChange = (subcategoryIndex: number, evaluationIndex: number, value: string) => {
-        const updatedCategory = { ...category };
-        updatedCategory.subcategories[subcategoryIndex].evaluations[evaluationIndex] = value;
-        onUpdateCategory(updatedCategory);
+    selectedP: SelectedP;
+    onUpdateSelectedP: (updatedSelectedP: SelectedP) => void
+}> = ({ selectedP, onUpdateSelectedP }) => {
+    const handleCellChange = (categoriaIndex: number, evaluationIndex: number, value: string) => {
+        const updatedSelectedP = { ...selectedP };
+        updatedSelectedP.categorias[categoriaIndex].escenarios[evaluationIndex].contenido = value;
+        onUpdateSelectedP(updatedSelectedP);
     };
 
-    const handleUnknownChange = (subcategoryIndex: number, value: string) => {
-        const updatedCategory = { ...category };
-        updatedCategory.subcategories[subcategoryIndex].unknown = value;
-        onUpdateCategory(updatedCategory);
+    const handleUnknownChange = (categoriaIndex: number, value: string) => {
+        const updatedSelectedP = { ...selectedP };
+        updatedSelectedP.categorias[categoriaIndex].incognitas = value;
+        onUpdateSelectedP(updatedSelectedP);
     };
 
     return (
@@ -77,34 +65,34 @@ const CategoryMatrix: React.FC<{
         >
             <Card className="w-full mb-4 text-white">
                 <CardHeader className="flex flex-col px-4 pt-4 pb-0">
-                    <h2 className="text-lg font-bold justify-center items-center">{category.name}</h2>
+                    <h2 className="text-lg font-bold justify-center items-center">{selectedP.label}</h2>
                     <div className="flex w-full justify-between mt-2">
                         <div className="w-1/6">Categorías</div>
                         <div className="w-1/6">Incógnitas de evaluación</div>
                         {evaluationCriteria.map((criteria) => (
-                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
+                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2  ${criteria.color}`}>
                                 <span className="font-bold">{criteria.value}</span> {criteria.label}
                             </div>
                         ))}
                     </div>
                 </CardHeader>
                 <CardBody className="px-4">
-                    {category.subcategories.map((subcategory, subcategoryIndex) => (
-                        <div key={subcategory.name} className="flex w-full mb-2">
-                            <div className="w-1/6 flex items-center">{subcategory.name}</div>
+                    {selectedP.categorias.map((categoria, categoriaIndex) => (
+                        <div key={categoria.id} className="flex w-full mb-2">
+                            <div className="w-1/6 flex items-center">{categoria.contenido}</div>
                             <div className="w-1/6 pr-2">
                                 <Textarea
                                     className="w-full h-24 text-sm font-normal"
                                     placeholder="Ingrese incógnitas"
-                                    value={subcategory.unknown}
-                                    onChange={(e) => handleUnknownChange(subcategoryIndex, e.target.value)}
+                                    value={categoria.incognitas}
+                                    onChange={(e) => handleUnknownChange(categoriaIndex, e.target.value)}
                                 />
                             </div>
-                            {subcategory.evaluations.map((evaluation, evaluationIndex) => (
+                            {evaluationCriteria.map((criteria, evaluationIndex) => (
                                 <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
                                     <EvaluationCell
-                                        value={evaluation}
-                                        onChange={(value) => handleCellChange(subcategoryIndex, evaluationIndex, value)}
+                                        value={categoria.escenarios[evaluationIndex]?.contenido || ""}
+                                        onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
                                     />
                                 </div>
                             ))}
@@ -116,38 +104,102 @@ const CategoryMatrix: React.FC<{
     );
 };
 
+const Header: React.FC<{ handleAtras: () => void; handleNext: () => void }> = ({ handleAtras, handleNext }) => (
+    <div className="flex justify-between items-center mb-8">
+        <p className="text-2xl font-bold title">Creación de Rubrica</p>
+        <div className="flex gap-x-2 px-4">
+            <AdaptButton texto="Atras" onClick={handleAtras} />
+            <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext} />
+        </div>
+    </div>
+);
+
 export default function UXEvaluationMatrix() {
     const router = useRouter();
-    const [categories, setCategories] = useState<Category[]>(initialCategories);
+    const [data, setData] = useState({
+        nombreR: "",
+        selectedP: [] as SelectedP[]
+    });
+
+    useEffect(() => {
+        // Inicialización de principiosData
+        const principiosData = {
+            nombreR: "Hola",
+            selectedP: [
+                {
+                    id: 1,
+                    label: "Usabilidad",
+                    categorias: [
+                        { id: "1", contenido: "Diavlo", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
+                        { id: "2", contenido: "Arcangel", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
+                    ]
+                },
+                {
+                    id: 2,
+                    label: "Accesibilidad",
+                    categorias: [
+                        { id: "3", contenido: "Jesu", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
+                        { id: "4", contenido: "Juan", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
+                    ]
+                },
+                {
+                    id: 3,
+                    label: "Aprendizaje",
+                    categorias: [
+                        { id: "5", contenido: "Maria", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
+                        { id: "6", contenido: "Jose", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
+                    ]
+                },
+                {
+                    id: 4,
+                    label: "Eficiencia",
+                    categorias: [
+                        { id: "7", contenido: "Maria", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
+                        { id: "8", contenido: "Jose", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
+                    ]
+                }
+            ]
+        };
+        sessionStorage.setItem('principiosData', JSON.stringify(principiosData));
+
+        // Obtención de principiosData
+        const savedData = sessionStorage.getItem('principiosData');
+        if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            setData(parsedData);
+            console.log(parsedData);
+        }
+    }, []);
 
     const handleNext = () => {
-        router.push("/rubrica");
+        sessionStorage.setItem('principiosData', JSON.stringify(data));
+        console.log(sessionStorage.getItem('principiosData'));
+        
+        // router.push("/rubrica");
     };
+
     const handleAtras = () => {
         router.push("/rubrica/created1");
     };
 
-    const handleUpdateCategory = (updatedCategory: Category) => {
-        setCategories(categories.map(category =>
-            category.name === updatedCategory.name ? updatedCategory : category
-        ));
+    const handleUpdateSelectedP = (updatedSelectedP: SelectedP) => {
+        setData(prevData => ({
+            ...prevData,
+            selectedP: prevData.selectedP.map(p =>
+                p.id === updatedSelectedP.id ? updatedSelectedP : p
+            )
+        }));
     };
 
     return (
         <div className="p-4 text-white min-h-screen">
             <div className="py-8 px-12">
-                <div className="flex justify-between items-center mb-8">
-                    <p className="text-2xl font-bold title">Creación de Rubrica</p>
-                    <div className="flex gap-x-2 px-4">
-                        <AdaptButton texto="Atras" onClick={handleAtras} />
-                        <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext} />
-                    </div>
-                </div>
-                {categories.map((category) => (
+                <Header handleAtras={handleAtras} handleNext={handleNext} />
+                {data.selectedP.map((selectedP) => (
                     <CategoryMatrix
-                        key={category.name}
-                        category={category}
-                        onUpdateCategory={handleUpdateCategory}
+                        key={selectedP.id}
+                        selectedP={selectedP}
+                        onUpdateSelectedP={handleUpdateSelectedP}
                     />
                 ))}
             </div>
