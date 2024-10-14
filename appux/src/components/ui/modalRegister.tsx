@@ -10,6 +10,7 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalL from "./modalLogIn";
+import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -21,6 +22,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const [isModalLOpen, setIsModalLOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
+  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -59,7 +61,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
     ccontrasena: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { //validador de estado para errores
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -121,26 +123,36 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
-  const handleSubmit = (e: React.FormEvent) => { //manejador del formData
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const { ccontrasena, ...dataToSend } = formData;
 
     if (validateForm()) {
-      // Validar el formato del correo electrónico
-      if (!validateEmail(formData.correoE)) {
-        setErrors(prev => ({
-          ...prev,
-          correoE: "Por favor ingrese un correo válido"
-        }));
-        return;
-      }
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataToSend),
+        });
 
-      console.log(formData) //Manejar aquí el envio de los datos al backend
-      setFormData(initialFormData); //Limpieza de los inputs si el formulario es valido
-      handleCloseModal(); //Cerrado del modal
-    } else {
-      console.log("Formulario Inválido");
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log('Success:', result.message);
+          handleCloseModalL()
+          router.push('/rubrica');
+        } else {
+          console.error('Error:', result.message);
+          setErrors(prev => ({ ...prev, correoE: result.message }));
+        }
+      } catch (error) {
+        console.error('Fetch Error:', error);
+      }
     }
   };
+
+
+
 
   if (!show) return null;
 
@@ -243,7 +255,7 @@ export default function AppModalR({ show, onClose }: ModalProps) {
           </>
         </ModalContent>
         {/*Modal de Inicio de Sesión*/}
-        <AppModalL show={isModalLOpen} onClose={handleCloseModalL}/>
+        <AppModalL show={isModalLOpen} onClose={handleCloseModalL} />
       </Modal>
     </>
   );

@@ -97,8 +97,9 @@ body {
 }
 
 .custom-adapt-button:hover {
-  border-color: var(--border-color-hover, gray);
-  color: var(--text-color-hover, gray);
+  border-color: var(--border-color-hover, black);
+  color: var(--text-color-hover, black);
+  background-color: rgba(45, 96, 134, 0.2);
 }
 
 .dark .custom-adapt-button {
@@ -109,6 +110,7 @@ body {
 .dark .custom-adapt-button:hover {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
+  background-color: rgba(153, 153, 153, 0.2);
 }
 
 .custom-icon {
@@ -129,6 +131,11 @@ body {
 .dark .custom-icon:hover {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
+}
+
+
+.borderInput{
+  border: 10px solid var(--border-color, gray);
 }
 
 /* styles.css */
@@ -168,18 +175,37 @@ button:hover {
 }
 
 /* Estilos generales para el botón de peligro */
-.button-danger {
+/* .button-danger {
   background-color: var(--button-danger-bg, red);
   color: var(--button-danger-text, white);
   border-radius: 50%;
-  padding: 0.25rem; /* Ajusta el tamaño del botón */
+  padding: 0.25rem; 
   transition: background-color 0.3s ease, color 0.3s ease;
-}
+} */
 
-.button-danger:hover {
+/* .button-danger:hover {
   background-color: var(--button-danger-hover-bg, darkred);
   color: var(--button-danger-hover-text, white);
-}
+} */
+
+/* Estilos para el modo claro */
+/* @media (prefers-color-scheme: light) {
+  .button-danger {
+    --button-danger-bg: red;
+    --button-danger-text: white;
+    --button-danger-hover-bg: darkred;
+    --button-danger-hover-text: white;
+  }
+} */
+
+/* Estilos para el modo oscuro */
+/* @media (prefers-color-scheme: dark) {
+  .button-danger {
+    --button-danger-bg: darkred;
+    --button-danger-text: white;
+    --button-danger-hover-bg: red;
+    --button-danger-hover-text: black;
+  } */
 
 .dark .header {
   color: var(--text-color-dark, #2D6086);
