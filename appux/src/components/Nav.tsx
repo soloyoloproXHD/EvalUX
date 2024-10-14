@@ -26,6 +26,9 @@ export const Nav = () => {
     // Simulación de usuario (null para no autenticado)
     const user = {name: 'Usuario', photoURL: '/img/avatar.png'};
 
+    // const user = null;
+
+
     useEffect(() => {
         setMounted(true);
     }, []);

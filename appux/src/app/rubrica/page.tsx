@@ -19,13 +19,13 @@ const IndexRubrica = () => {
         router.push("/rubrica/created");
     }
 
-    const rubricas: Rubrica[] | null = [
-        { title: 'Rubrica enfocada a lo visual' },
-        { title: 'Rubrica con peso en la Accesibilidad' },
-        { title: 'Rubrica con requerimientos' },
-    ];
+    // const rubricas: Rubrica[] | null = [
+    //     { title: 'Rubrica enfocada a lo visual' },
+    //     { title: 'Rubrica con peso en la Accesibilidad' },
+    //     { title: 'Rubrica con requerimientos' },
+    // ];
 
-    // const rubricas: Rubrica[] = [];
+    const rubricas: Rubrica[] = [];
     return (
         <div className="text-white py-8 px-12">
             {/* Encabezado con el título y los botones */}
