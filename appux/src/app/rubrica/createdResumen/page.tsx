@@ -10,6 +10,7 @@ import { jsPDF } from "jspdf";
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 interface Escenario {
     puntaje: number;
@@ -99,7 +100,7 @@ const CategoryMatrix: React.FC<{
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <Card className="w-full mb-4 text-white">
+            <Card className="w-full mb-4 ">
                 <CardHeader className="flex flex-col px-4 pt-4 pb-0">
                     <h2 className="text-lg font-bold justify-center items-center">{selectedP.label}</h2>
                     <div className="flex w-full justify-between mt-2">
@@ -172,32 +173,108 @@ function Resumen() {
     const handleDownloadPDF = () => {
         const doc = new jsPDF({ orientation: "landscape" });
         doc.setFontSize(18);
-
+    
         const pageWidth = doc.internal.pageSize.getWidth();
+    
+        // Agregar imagen y texto en el lado izquierdo
+        const img = new Image();
+        img.src = '/img/Logo.png';
+        img.onload = () => {
+            const imgWidth = 10; // Ancho de la imagen
+            const imgHeight = 10; // Alto de la imagen
+            const imgX = 10; // Posición X en el lado izquierdo
+            const imgY = 10; // Posición Y
+            doc.addImage(img, 'PNG', imgX, imgY, imgWidth, imgHeight);
+            doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" }); // Reducir la separación
+            doc.text(data.nombreR, pageWidth / 2, imgY + imgHeight + 10, { align: "center" });
+            doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
 
-        // Agregar fecha y hora en la esquina superior derecha
-        const currentDate = new Date();
-        const formattedDate = currentDate.toLocaleString(); // Formato local de fecha y hora
-        doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
-        doc.text(formattedDate, pageWidth - 10, 10, { align: "right" }); // Posición en la esquina derecha
+    
+            // Definir las columnas de la tabla
+            const tableColumns = [
+                "Principio",
+                "Categorías",
+                "Incógnitas de evaluación",
+                "Excelente (5)",
+                "Bueno (4)",
+                "Aceptable (3)",
+                "Satisfactorio (2)",
+                "Insatisfactorio (1)",
+            ];
+    
+            // Formatear los datos del JSON para las filas de la tabla
+            const tableRows: (string | number)[][] = [];
+    
+            data.selectedP.forEach((principio) => {
+                principio.categorias.forEach((categoria) => {
+                    const row = [
+                        principio.label, // Columna 'Principio'
+                        categoria.contenido, // Columna 'Categorías'
+                        categoria.incognitas || "", // Columna 'Incógnitas de evaluación'
+                        categoria.escenarios?.[0]?.contenido || "", // Columna '5 Excelente'
+                        categoria.escenarios?.[1]?.contenido || "", // Columna '4 Bueno'
+                        categoria.escenarios?.[2]?.contenido || "", // Columna '3 Aceptable'
+                        categoria.escenarios?.[3]?.contenido || "", // Columna '2 Satisfactorio'
+                        categoria.escenarios?.[4]?.contenido || "", // Columna '1 Insatisfactorio'
+                    ];
+                    tableRows.push(row);
+                });
+            });
+    
+            // Generar la tabla en el PDF con autoTable
+            autoTable(doc, {
+                head: [tableColumns],
+                body: tableRows,
+                startY: imgY + imgHeight + 20,
+                headStyles: {
+                    fillColor: [41, 128, 185], // Color de fondo azul
+                    textColor: [255, 255, 255], // Color de texto blanco
+                    fontSize: 12, // Tamaño de fuente
+                    fontStyle: 'bold', // Estilo de fuente
+                    halign: 'center', // Alineación horizontal
+                    valign: 'middle', // Alineación vertical
+                },
+                bodyStyles: {
+                    fillColor: [245, 245, 245], // Color de fondo gris claro
+                    textColor: [0, 0, 0], // Color de texto negro
+                    fontSize: 10, // Tamaño de fuente
+                    halign: 'left', // Alineación horizontal
+                    valign: 'middle', // Alineación vertical
+                },
+                alternateRowStyles: {
+                    fillColor: [255, 255, 255], // Color de fondo blanco para filas alternas
+                },
+                styles: {
+                    cellPadding: 4, // Relleno de celda
+                    lineWidth: 0.1, // Ancho de línea
+                    lineColor: [0, 0, 0], // Color de línea
+                },
+                theme: "grid",
+            });
+    
+            // Guardar el archivo PDF
+            doc.save("Rubrica_de_AutoUX.pdf");
+        };
+    };
 
-        // Definir las columnas de la tabla
+    const handleDownloadExcel = () => {
         const tableColumns = [
+            "Principio",
             "Categorías",
             "Incógnitas de evaluación",
-            "Excelente",
-            "Bueno",
-            "Aceptable",
-            "Satisfactorio",
-            "Insatisfactorio",
+            "5 Excelente",
+            "4 Bueno",
+            "3 Aceptable",
+            "2 Satisfactorio",
+            "1 Insatisfactorio",
         ];
 
-        // Formatear los datos del JSON para las filas de la tabla
         const tableRows: (string | number)[][] = [];
 
         data.selectedP.forEach((principio) => {
             principio.categorias.forEach((categoria) => {
                 const row = [
+                    principio.label, // Columna 'Principio'
                     categoria.contenido, // Columna 'Categorías'
                     categoria.incognitas || "", // Columna 'Incógnitas de evaluación'
                     categoria.escenarios?.[0]?.contenido || "", // Columna '5 Excelente'
@@ -210,29 +287,11 @@ function Resumen() {
             });
         });
 
-        // Generar la tabla en el PDF con autoTable
-        autoTable(doc, {
-            head: [tableColumns],
-            body: tableRows,
-            startY: 30,
-            headStyles: {
-                fillColor: [0, 0, 0],
-                textColor: [255, 255, 255],
-            },
-            styles: {
-                cellPadding: 2,
-                lineWidth: 0.5,
-                lineColor: [0, 0, 0],
-            },
-            theme: "grid",
-        });
+        const worksheet = XLSX.utils.aoa_to_sheet([tableColumns, ...tableRows]);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Rúbrica");
 
-        // Guardar el archivo PDF
-        doc.save("Rubrica_de_AutoUX.pdf");
-    };
-
-    const handleDownloadExcel = () => {
-        console.log("Downloading Excel...");
+        XLSX.writeFile(workbook, "Rubrica_de_AutoUX.xlsx");
     };
 
     const [data, setData] = useState({
