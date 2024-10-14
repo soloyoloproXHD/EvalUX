@@ -8,8 +8,9 @@ import { useTheme } from 'next-themes';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
+import { motion } from "framer-motion";
 
-export const Created = () => {
+const Created = () => {
     const { theme } = useTheme();
     const router = useRouter();
 
@@ -120,12 +121,21 @@ export const Created = () => {
                         />
                     </div>
                 </div>
-                <div className="max-w-full mx-auto p-4">
-                    <h2 className="text-xl font-bold mb-4">Seleccione los principios UX a evaluar</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 space-y-5 mt-16">
-                        {principles.map((principle) => ( // Mapeo de principios UX
-                            <Card key={principle.id} className="w-3/4" isHoverable={true}>
-                                <CardBody className="flex justify-between px-6 my-5">
+            </div>
+            <div className="max-w-full mx-auto p-4">
+                <h2 className="text-xl font-bold mb-4">Seleccione los principios UX a evaluar</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {principles.map((principle) => (
+                        <motion.div
+                            key={principle.id}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                        >
+                            <Card className="w-3/4 rounded-lg shadow-lg transition duration-300 glowingborder" isHoverable={true}>
+                                <CardBody className="flex justify-between px-6">
                                     <div className="flex justify-between">
                                         <p className="text-lg">{principle.contenido}</p>
                                         <Checkbox
@@ -139,12 +149,12 @@ export const Created = () => {
                                     </div>
                                 </CardBody>
                             </Card>
-                        ))}
-                    </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </>
     );
-}
+};
 
 export default Created;

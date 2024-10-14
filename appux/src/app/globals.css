@@ -92,6 +92,7 @@ body {
 
 .custom-adapt-button {
   border-color: var(--border-color, black);
+  border-color: var(--border-color, black);
   color: var(--text-color, black);
 }
 
@@ -131,6 +132,7 @@ body {
   border-color: var(--border-color-hover-dark, lightgray);
   color: var(--text-color-hover-dark, lightgray);
 }
+
 
 .borderInput{
   border: 10px solid var(--border-color, gray);

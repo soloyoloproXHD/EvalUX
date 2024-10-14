@@ -30,10 +30,15 @@ export const Nav = () => {
     useEffect(() => {
         setMounted(true);
     }, []);
-    const handleOPenModal = () => {
+
+    if (!mounted) {
+        return null;
+    }
+
+    const handleOpenModal = () => {
         setIsModalOpen(true);
     };
-    const handleOPenModalL = () => {
+    const handleOpenModalL = () => {
         setIsModalLOpen(true);
     };
     const handleCloseModal = () => {
@@ -42,9 +47,6 @@ export const Nav = () => {
     const handleCloseModalL = () => {
         setIsModalLOpen(false);
     };
-    if (!mounted) {
-        return null;
-    }
 
     const handleRedirect = () => {
         if (mounted) {
@@ -67,13 +69,12 @@ export const Nav = () => {
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     className="sm:hidden"
                 />
-                {/* Redirección en el logo usando redirect */}
                 <div
                     className="flex justify-start items-center gap-2 text-white"
-                // Redirección directa usando `redirect`
+                    onClick={handleRedirect}
                 >
-                    <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
-                    <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p>
+                    <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' />
+                    <p className='text-lg font-semibold mr-4'>EvalUX</p>
                 </div>
                 {user ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
@@ -109,10 +110,7 @@ export const Nav = () => {
             <NavbarMenu className={`w-full ${isMenuOpen ? "block" : "hidden"} sm:hidden`}>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={index}>
-                        <Link
-                            href="#"
-                            className="w-full"
-                        >
+                        <Link href="#" className="w-full">
                             {item}
                         </Link>
                     </NavbarMenuItem>
@@ -120,12 +118,9 @@ export const Nav = () => {
                 ))}
             </NavbarMenu>
 
-            {/* Modal de Registro */}
             <AppModalR show={isModalOpen} onClose={handleCloseModal} />
-            {/* Modal de Inicio de Sesión */}
             <AppModalL show={isModalLOpen} onClose={handleCloseModalL} />
         </Navbar>
-
     );
 };
 

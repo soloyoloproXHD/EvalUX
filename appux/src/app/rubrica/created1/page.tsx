@@ -1,15 +1,23 @@
 "use client"
-import React, { useEffect, useState } from 'react';
-import { Card, CardBody, Button } from "@nextui-org/react";
-import { X, Edit, Plus } from 'lucide-react';
-import Link from 'next/link';
+
+import React, {useEffect, useState } from 'react';
+import { Card, CardBody, Button, Input } from "@nextui-org/react";
+import { Edit, Plus, Check } from 'lucide-react';
 import { AdaptButton } from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
+
+interface SubPrinciple {
+    id: string;
+    name: string;
+}
 
 interface Principle {
     id: string;
     name: string;
-    subPrinciples: { id: string; name: string }[];
+    subPrinciples: SubPrinciple[];
 }
 
 const initialPrinciples: Principle[] = [
@@ -70,6 +78,9 @@ export default function UXPrinciplesEvaluator() {
     }, [])
     
     const [principles, setPrinciples] = useState<Principle[]>(initialPrinciples);
+    const [editingState, setEditingState] = useState<{ [key: string]: boolean }>({});
+    const [editedContent, setEditedContent] = useState<{ [key: string]: string }>({});
+    const router = useRouter();
 
     const handleRemove = (principleId: string, subPrincipleId: string) => {
         setPrinciples(principles.map(principle =>
@@ -80,24 +91,63 @@ export default function UXPrinciplesEvaluator() {
     };
 
     const handleAdd = (principleId: string) => {
-        // This is a placeholder. In a real app, you'd open a modal or form to input the new sub-principle.
-        const newSubPrinciple = { id: Date.now().toString(), name: "New Sub-Principle" };
+        const principle = principles.find(p => p.id === principleId);
+        if (!principle) return;
+
+        const newSubPrinciple = {
+            id: Date.now().toString(),
+            name: "Edite este nombre"
+        };
+
+        setPrinciples(principles.map(p =>
+            p.id === principleId
+                ? { ...p, subPrinciples: [...p.subPrinciples, newSubPrinciple] }
+                : p
+        ));
+    };
+
+    const handleEdit = (principleId: string, subPrincipleId: string) => {
+        const editKey = `${principleId}-${subPrincipleId}`;
+        setEditingState({ ...editingState, [editKey]: true });
+        const subPrinciple = principles
+            .find(p => p.id === principleId)
+            ?.subPrinciples.find(sp => sp.id === subPrincipleId);
+        if (subPrinciple) {
+            setEditedContent({ ...editedContent, [editKey]: subPrinciple.name });
+        }
+    };
+
+    const handleSave = (principleId: string, subPrincipleId: string) => {
+        const editKey = `${principleId}-${subPrincipleId}`;
+        setEditingState({ ...editingState, [editKey]: false });
         setPrinciples(principles.map(principle =>
             principle.id === principleId
-                ? { ...principle, subPrinciples: [...principle.subPrinciples, newSubPrinciple] }
+                ? {
+                    ...principle,
+                    subPrinciples: principle.subPrinciples.map(sp =>
+                        sp.id === subPrincipleId
+                            ? { ...sp, name: editedContent[editKey] || sp.name }
+                            : sp
+                    )
+                }
                 : principle
         ));
     };
 
-    console.log(data);
+    const handleFinal = () => {
+        router.push('/rubrica/createdfinal');
+    };
+    const handleAtras = () => {
+        router.push('/rubrica/created');
+    }
+
     return (
-        <div className="py-8 px-12">
+        <div className="py-8 px-8">
             <div className="flex justify-between items-center mb-8">
-                <p className="text-2xl font-bold  title ml-12">Creación de Rubrica</p>
+                <p className="text-2xl font-bold title ml-12">Creación de Rubrica</p>
                 <div className="flex gap-x-2 mr-20">
-                    <Link href={"/rubrica/createdfinal"}>
-                        <AdaptButton texto="Siguiente" icon={faCircleRight} />
-                    </Link>
+                        <AdaptButton texto="Atras" onClick={handleAtras}/>
+                        <AdaptButton texto="Siguiente" icon={faCircleRight}  onClick={handleFinal}/>
                 </div>
             </div>
             <div className='flex justify-center items-center m-4'>
@@ -105,7 +155,7 @@ export default function UXPrinciplesEvaluator() {
             </div>
 
             <div className='px-12 mr-8'>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
                     {principles.map((principle) => (
                         <Card key={principle.id} className="w-full">
                             <CardBody>
@@ -113,22 +163,49 @@ export default function UXPrinciplesEvaluator() {
                                 {principle.subPrinciples.map((subPrinciple) => (
                                     <Card key={subPrinciple.id} className="mb-2" isHoverable={true}>
                                         <CardBody className="flex justify-between p-3">
-                                            <div className='flex justify-between'>
-                                                <span>{subPrinciple.name}</span>
-                                                <Button
-                                                    isIconOnly
-                                                    size="sm"
-                                                    variant="light"
-                                                    className="button-danger" // Aplica la clase CSS
-                                                    onClick={() => handleRemove(principle.id, subPrinciple.id)}
-                                                >
-                                                    <X size={12} />
-                                                </Button>
-                                            </div>
-                                            <div className="flex justify-start">
-                                                <Button isIconOnly size="sm" variant="light">
-                                                    <Edit size={18} />
-                                                </Button>
+                                            <div className='flex justify-between w-full gap-x-8'>
+                                                {editingState[`${principle.id}-${subPrinciple.id}`] ? (
+                                                    <Input
+                                                        value={editedContent[`${principle.id}-${subPrinciple.id}`]}
+                                                        onChange={(e) => setEditedContent({
+                                                            ...editedContent,
+                                                            [`${principle.id}-${subPrinciple.id}`]: e.target.value
+                                                        })}
+                                                        className="max-w-[70%]"
+                                                    />
+                                                ) : (
+                                                    <span>{subPrinciple.name}</span>
+                                                )}
+                                                <div className="flex gap-x-5">
+                                                    {editingState[`${principle.id}-${subPrinciple.id}`] ? (
+                                                        <Button
+                                                            isIconOnly
+                                                            size="sm"
+                                                            variant="light"
+                                                            onClick={() => handleSave(principle.id, subPrinciple.id)}
+                                                        >
+                                                            <Check size={18} />
+                                                        </Button>
+                                                    ) : (
+                                                        <Button
+                                                            isIconOnly
+                                                            size="sm"
+                                                            variant="light"
+                                                            onClick={() => handleEdit(principle.id, subPrinciple.id)}
+                                                        >
+                                                            <Edit size={18} />
+                                                        </Button>
+                                                    )}
+                                                    <Button
+                                                        isIconOnly
+                                                        size="sm"
+                                                        variant="light"
+                                                        className="text-red-500"
+                                                        onClick={() => handleRemove(principle.id, subPrinciple.id)}
+                                                    >
+                                                        <FontAwesomeIcon icon={faRectangleXmark} />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </CardBody>
                                     </Card>
