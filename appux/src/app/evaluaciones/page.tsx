@@ -9,7 +9,7 @@ import {Accordion, AccordionItem} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 
-export const IndexEvaluacion = () => {
+export default function IndexEvaluacion () {
     const { theme } = useTheme();
     const router = useRouter();
     type Reporte = {
@@ -59,5 +59,3 @@ export const IndexEvaluacion = () => {
         </div>
     );
 }
-
-export default IndexEvaluacion;

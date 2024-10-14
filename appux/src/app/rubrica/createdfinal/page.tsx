@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
@@ -140,8 +140,9 @@ export default function UXEvaluationMatrix() {
         }
     }, []
     );
-    const userId = sessionStorage.getItem('userId');
+    
     const handleNext = () => {
+        const userId = sessionStorage.getItem('userId');
         const dataWithUserId = { ...data, userId };
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
 
