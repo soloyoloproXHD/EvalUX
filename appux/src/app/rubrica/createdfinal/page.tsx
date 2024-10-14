@@ -1,10 +1,14 @@
 'use client'
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion'; // Importamos motion de framer-motion
+
+// Importaciones de los componentes separados
+import CategoryMatrix from '../../../components/rubricas/CategoryMatrix';
+
 
 interface Escenario {
     puntaje: number;
@@ -24,13 +28,6 @@ interface SelectedP {
     categorias: Subcategory[];
 }
 
-const evaluationCriteria = [
-    { label: "Excelente", value: 5, color: "bg-success" },
-    { label: "Bueno", value: 4, color: "bg-success-300" },
-    { label: "Aceptable", value: 3, color: "bg-primary-100" },
-    { label: "Satisfactorio", value: 2, color: "bg-warning" },
-    { label: "Insatisfactorio", value: 1, color: "bg-danger" },
-];
 
 const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
     <Textarea
@@ -139,7 +136,8 @@ export default function UXEvaluationMatrix() {
         sessionStorage.setItem('principiosData', JSON.stringify(data));
         console.log(sessionStorage.getItem('principiosData'));
 
-        // router.push("/rubrica");
+        router.push("/rubrica/createdResumen");
+
     };
 
     const handleAtras = () => {
