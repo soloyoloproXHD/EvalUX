@@ -1,4 +1,5 @@
-import { conn } from "@/utils/db";
+import { sql } from "@vercel/postgres";
+
 import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
     }
 
     // Verificar si el usuario ya existe
-    const userExist = await conn?.query('SELECT * FROM usuario WHERE "correoE" = $1', [correoE]);
+    const userExist = await sql`SELECT * FROM usuario WHERE "correoE" = ${correoE}`;
     if (userExist?.rowCount ?? 0 > 0) {
       return new Response(JSON.stringify({ message: 'El correo ya está registrado' }), { status: 400 });
     }
@@ -22,10 +23,7 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(contrasena, 10);
 
     // Insertar el nuevo usuario en la base de datos
-    await conn?.query(
-      'INSERT INTO usuario (nombres, apellidos, "correoE", contrasena, fecha_registro) VALUES ($1, $2, $3, $4, NOW())',
-      [nombres, apellidos, correoE, hashedPassword]
-    );
+    await sql`INSERT INTO usuario (nombres, apellidos, "correoE", contrasena, fecha_registro) VALUES (${nombres}, ${apellidos}, ${correoE}, ${hashedPassword}, NOW())`;
 
     return new Response(JSON.stringify({ message: 'Usuario registrado exitosamente' }), { status: 201 });
   } catch (error) {
