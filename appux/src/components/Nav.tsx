@@ -93,8 +93,8 @@ export const Nav = () => {
             <NavbarContent justify="end">
                 {/* {!user ? ( */}
                 <>
-                    <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                    <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
+                    <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
+                    <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
                     <CustomIcon icon={faGithub} size='lg' />
                 </>
                 {/* ) : ( */}
