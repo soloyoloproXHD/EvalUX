@@ -10,6 +10,7 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalR from "./modalRegister";
+import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -21,6 +22,7 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
+  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -93,24 +95,45 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
-  const handleSubmit = (e: React.FormEvent) => { //manejador del formData
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Validar el formato del correo electrónico
-      if (!validateEmail(formData.correoE)) {
-        setErrors(prev => ({
-          ...prev,
-          correoE: "Por favor ingrese un correo válido"
-        }));
-        return;
-      }
-
-      console.log(formData) //Manejar aquí el envio de los datos al backend
-      setFormData(initialFormData); //Limpieza de los inputs si el formulario es valido
-      handleCloseModal(); //Cerrado del modal
-    } else {
-      console.log("Formulario Inválido");
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(error => {
+            console.error('Error en la respuesta:', error);
+            setErrors(prev => ({ ...prev, correoE: error.message }));
+            throw new Error('Error en el inicio de sesión');
+          });
+        }
+        return response.json();
+      })
+      .then(result => {
+        console.log('Login Success:', result);
+      
+        const { token } = result;
+        if (token) {
+          sessionStorage.setItem('token', token);  // Guardar token en localStorage
+          console.log('Token guardado en localStorage');
+        } else {
+          console.error('Token no recibido en la respuesta');
+        }
+      
+        handleCloseModal();  // Cerrar el modal de inicio de sesión
+        setFormData(initialFormData);  // Restablecer el formulario
+        router.push('/rubrica');  // Redi rigir después de guardar el token
+      })
+      .catch(error => {
+        console.error('Error en el proceso de inicio de sesión:', error);
+      });
     }
   };
 
@@ -177,7 +200,7 @@ export default function AppModalL({ show, onClose }: ModalProps) {
                   <Divider className="max-w-14" />
                 </div>
                 <div className="flex place-content-center items-center p-5">
-                  <AdaptButton icon={faUserPlus} texto="Crea tu cuenta de EvalUX" onClick={handleOPenModal}/>
+                  <AdaptButton icon={faUserPlus} texto="Crea tu cuenta de EvalUX" onClick={handleOPenModal} />
                 </div>
               </div>
             </ModalFooter>
