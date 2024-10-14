@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Textarea, Listbox, ListboxItem } from "@nextui-org/react";
 import axios from 'axios';
 
-export const EvaluarIn = () => {
+export default function EvaluarIn (){
     //const { theme } = useTheme();
     const router = useRouter();
 
@@ -145,5 +145,3 @@ export const EvaluarIn = () => {
         </>
     );
 }
-
-export default EvaluarIn;

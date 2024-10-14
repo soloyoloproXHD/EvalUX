@@ -10,7 +10,6 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalR from "./modalRegister";
-import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -22,7 +21,6 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
-  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -92,9 +90,9 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   }
 
   //Validación del Correo
-  const validateEmail = (value: string) =>
+  /*const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
-
+  */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -132,8 +130,8 @@ export default function AppModalL({ show, onClose }: ModalProps) {
       
         handleCloseModal();  // Cerrar el modal de inicio de sesión
         setFormData(initialFormData);  // Restablecer el formulario
-        router.push('/rubrica');  // Redi rigir después de guardar el token
-      })
+        window.location.href = '/rubrica'; 
+        })
       .catch(error => {
         console.error('Error en el proceso de inicio de sesión:', error);
       });

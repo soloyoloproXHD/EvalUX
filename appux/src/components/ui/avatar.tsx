@@ -1,6 +1,6 @@
-import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
+import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket, faPerson } from '@fortawesome/free-solid-svg-icons'
 
 interface AvatarProps {
   src: string;
@@ -12,12 +12,16 @@ const Avatar: React.FC<AvatarProps> = ({ src, alt }) => {
     <div className="flex items-center gap-4">
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
-        <NextAvatar src={src} alt={alt} />
+          <NextAvatar src={src} alt={alt} />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownItem key="logout" color="primary" className='flex justify-center items-center'>
+            <FontAwesomeIcon icon={faPerson} className='hover:bounce text-white mr-2' />
+            Perfil
+          </DropdownItem>
           <DropdownItem key="logout" color="danger" className='flex justify-center items-center'>
-          <FontAwesomeIcon icon={faRightFromBracket} className='hover:bounce text-white mr-2' />
-            Cerrar sesión
+            <FontAwesomeIcon icon={faRightFromBracket} className='hover:bounce text-white mr-2' />
+            Cerrar sesións
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
