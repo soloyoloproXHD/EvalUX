@@ -8,6 +8,7 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
+import { faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 interface SubPrinciple {
     id: string;
@@ -125,12 +126,16 @@ export default function UXPrinciplesEvaluator() {
     const handleFinal = () => {
         router.push('/rubrica/createdfinal');
     };
+    const handleAtras = () => {
+        router.push('/rubrica/created');
+    }
 
     return (
         <div className="py-8 px-8">
             <div className="flex justify-between items-center mb-8">
                 <p className="text-2xl font-bold title ml-12">Creación de Rubrica</p>
                 <div className="flex gap-x-2 mr-20">
+                        <AdaptButton texto="Atras" onClick={handleAtras}/>
                         <AdaptButton texto="Siguiente" icon={faCircleRight}  onClick={handleFinal}/>
                 </div>
             </div>

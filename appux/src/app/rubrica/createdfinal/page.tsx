@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion'; // Importamos motion de framer-motion
 
 interface Subcategory {
     name: string;
@@ -52,9 +53,9 @@ const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string)
     />
 );
 
-const CategoryMatrix: React.FC<{ 
-    category: Category; 
-    onUpdateCategory: (updatedCategory: Category) => void 
+const CategoryMatrix: React.FC<{
+    category: Category;
+    onUpdateCategory: (updatedCategory: Category) => void
 }> = ({ category, onUpdateCategory }) => {
     const handleCellChange = (subcategoryIndex: number, evaluationIndex: number, value: string) => {
         const updatedCategory = { ...category };
@@ -69,43 +70,49 @@ const CategoryMatrix: React.FC<{
     };
 
     return (
-        <Card className="w-full mb-4  text-white">
-            <CardHeader className="flex flex-col px-4 pt-4 pb-0">
-                <h2 className="text-lg font-bold justify-center items-center">{category.name}</h2>
-                <div className="flex w-full justify-between mt-2">
-                    <div className="w-1/6">Categorías</div>
-                    <div className="w-1/6">Incógnitas de evaluación</div>
-                    {evaluationCriteria.map((criteria) => (
-                        <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
-                            <span className="font-bold">{criteria.value}</span> {criteria.label}
-                        </div>
-                    ))}
-                </div>
-            </CardHeader>
-            <CardBody className="px-4 ">
-                {category.subcategories.map((subcategory, subcategoryIndex) => (
-                    <div key={subcategory.name} className="flex w-full mb-2">
-                        <div className="w-1/6 flex items-center">{subcategory.name}</div>
-                        <div className="w-1/6 pr-2">
-                            <Textarea
-                                className="w-full h-24 text-sm font-normal"
-                                placeholder="Ingrese incógnitas"
-                                value={subcategory.unknown}
-                                onChange={(e) => handleUnknownChange(subcategoryIndex, e.target.value)}
-                            />
-                        </div>
-                        {subcategory.evaluations.map((evaluation, evaluationIndex) => (
-                            <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
-                                <EvaluationCell
-                                    value={evaluation}
-                                    onChange={(value) => handleCellChange(subcategoryIndex, evaluationIndex, value)}
-                                />
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <Card className="w-full mb-4 text-white">
+                <CardHeader className="flex flex-col px-4 pt-4 pb-0">
+                    <h2 className="text-lg font-bold justify-center items-center">{category.name}</h2>
+                    <div className="flex w-full justify-between mt-2">
+                        <div className="w-1/6">Categorías</div>
+                        <div className="w-1/6">Incógnitas de evaluación</div>
+                        {evaluationCriteria.map((criteria) => (
+                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
+                                <span className="font-bold">{criteria.value}</span> {criteria.label}
                             </div>
                         ))}
                     </div>
-                ))}
-            </CardBody>
-        </Card>
+                </CardHeader>
+                <CardBody className="px-4">
+                    {category.subcategories.map((subcategory, subcategoryIndex) => (
+                        <div key={subcategory.name} className="flex w-full mb-2">
+                            <div className="w-1/6 flex items-center">{subcategory.name}</div>
+                            <div className="w-1/6 pr-2">
+                                <Textarea
+                                    className="w-full h-24 text-sm font-normal"
+                                    placeholder="Ingrese incógnitas"
+                                    value={subcategory.unknown}
+                                    onChange={(e) => handleUnknownChange(subcategoryIndex, e.target.value)}
+                                />
+                            </div>
+                            {subcategory.evaluations.map((evaluation, evaluationIndex) => (
+                                <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
+                                    <EvaluationCell
+                                        value={evaluation}
+                                        onChange={(value) => handleCellChange(subcategoryIndex, evaluationIndex, value)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </CardBody>
+            </Card>
+        </motion.div>
     );
 };
 
@@ -115,13 +122,16 @@ export default function UXEvaluationMatrix() {
 
     const handleNext = () => {
         router.push("/rubrica");
-    }
+    };
+    const handleAtras = () => {
+        router.push("/rubrica/created1");
+    };
 
     const handleUpdateCategory = (updatedCategory: Category) => {
-        setCategories(categories.map(category => 
+        setCategories(categories.map(category =>
             category.name === updatedCategory.name ? updatedCategory : category
         ));
-    }
+    };
 
     return (
         <div className="p-4 text-white min-h-screen">
@@ -129,13 +139,14 @@ export default function UXEvaluationMatrix() {
                 <div className="flex justify-between items-center mb-8">
                     <p className="text-2xl font-bold title">Creación de Rubrica</p>
                     <div className="flex gap-x-2 px-4">
-                        <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext}/>
+                        <AdaptButton texto="Atras" onClick={handleAtras} />
+                        <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext} />
                     </div>
                 </div>
                 {categories.map((category) => (
-                    <CategoryMatrix 
-                        key={category.name} 
-                        category={category} 
+                    <CategoryMatrix
+                        key={category.name}
+                        category={category}
                         onUpdateCategory={handleUpdateCategory}
                     />
                 ))}
