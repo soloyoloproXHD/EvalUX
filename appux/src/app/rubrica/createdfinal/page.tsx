@@ -151,7 +151,7 @@ export default function UXEvaluationMatrix() {
             dataWithUserId,
         })
             .then((response) => {
-                response.status
+                response.data();
             })
             .catch((error) => {
                 console.error("Error al obtener las rúbricas: ", error);

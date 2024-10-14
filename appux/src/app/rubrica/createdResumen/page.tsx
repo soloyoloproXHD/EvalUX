@@ -4,15 +4,12 @@ import { Button } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
 import { NotificationTypewriter } from "../../../components/ui/notificacionwrite";
 import { motion } from 'framer-motion';
-import { faDownload, faCircleRight, faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { jsPDF } from "jspdf";
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
-import AdaptButton from "@/components/AdaptButton";
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
-import axios from 'axios';
-
 interface Escenario {
     puntaje: number;
     contenido: string;
@@ -31,29 +28,6 @@ interface SelectedP {
     categorias: Subcategory[];
 }
 
-interface UnifiedCategory {
-    name: string;
-    subcategories: Subcategory[];
-}
-
-const initialCategories: UnifiedCategory[] = [
-    {
-        name: "Usabilidad",
-        subcategories: [
-            { id: "1", contenido: "Satisfacción del usuario", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "2", contenido: "Claridad de la interfaz", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "3", contenido: "Facilidad de aprendizaje", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-        ],
-    },
-    {
-        name: "Accesibilidad",
-        subcategories: [
-            { id: "4", contenido: "Perceptible", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "5", contenido: "Operable", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "6", contenido: "Comprensible", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-        ],
-    },
-];
 
 const evaluationCriteria = [
     { label: "Excelente", value: 5, color: "bg-success" },
@@ -143,25 +117,10 @@ const CategoryMatrix: React.FC<{
     );
 };
 
-const Header: React.FC<{ handleAtras: () => void; handleNext: () => void }> = ({ handleAtras, handleNext }) => (
-    <div className="flex justify-between items-center mb-8">
-        <p className="text-2xl font-bold">Creación de Rubrica</p>
-        <div className="flex gap-x-2 px-4">
-            <AdaptButton texto="Atras" onClick={handleAtras} />
-            <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext} />
-        </div>
-    </div>
-);
 
 function Resumen() {
     const router = useRouter();
-    const [categories, setCategories] = useState<UnifiedCategory[]>(initialCategories);
-
-    const handleUpdateCategory = (updatedCategory: UnifiedCategory) => {
-        setCategories(categories.map(category =>
-            category.name === updatedCategory.name ? updatedCategory : category
-        ));
-    };
+    
 
     const handleEvaluate = () => {
         console.log("Evaluating...");
@@ -307,17 +266,6 @@ function Resumen() {
             setData(parsedData);
         }
     }, []);
-
-    const handleNext = () => {
-        sessionStorage.setItem('principiosData', JSON.stringify(data));
-        console.log(sessionStorage.getItem('principiosData'));
-
-        router.push("/rubrica/createdResumen");
-    };
-
-    const handleAtras = () => {
-        router.push("/rubrica/created1");
-    };
 
     const handleUpdateSelectedP = (updatedSelectedP: SelectedP) => {
         setData(prevData => ({

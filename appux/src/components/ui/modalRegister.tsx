@@ -120,12 +120,12 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   }
 
   //Validación del Correo
-  const validateEmail = (value: string) =>
+  /*const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
-
+  */
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      const { ccontrasena, ...dataToSend } = formData;
+      const { ...dataToSend } = formData;
   
       if (validateForm()) {
           fetch('/api/register', {

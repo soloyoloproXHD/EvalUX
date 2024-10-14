@@ -7,7 +7,7 @@ import foto from '/public/img/avatar.png'; // Ruta absoluta desde la carpeta pub
 import { AdaptButton } from '../../components/AdaptButton';
 import AppInputOut from "../../components/ui/inputOuside";
 
-const page = () => {
+const Page = () => {
 
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
@@ -82,4 +82,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
