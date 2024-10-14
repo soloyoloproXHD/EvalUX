@@ -173,8 +173,6 @@ export default function UXEvaluationMatrix() {
         }));
     };
 
-    const notify = () => toast("Wow so easy !");
-
     return (
         <div className="p-4 text-white min-h-screen">
             <div className="py-8 px-12">
