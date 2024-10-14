@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useEffect } from "react";
 import { faCircleRight} from '@fortawesome/free-solid-svg-icons';
 import { AdaptButton } from "@/components/AdaptButton";
 import AppInputOut from "@/components/ui/inputOuside";
@@ -7,22 +7,33 @@ import { Card, CardBody, Checkbox } from "@nextui-org/react";
 import { useTheme } from 'next-themes';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from 'axios';
+import { motion } from "framer-motion";
 
-export const Created = () => {
+const Created = () => {
     const { theme } = useTheme();
     const router = useRouter();
 
-    const principles = [
-        { id: "usability", label: "Usabilidad" },
-        { id: "consistency", label: "Consistencia" },
-        { id: "accessibility", label: "Accesibilidad" },
-        { id: "userCentered", label: "Centrado en el usuario" },
-        { id: "simplicity", label: "Simplicidad" },
-    ];
+    const [principles, setPrinciples] = useState<{id: number, contenido: string}[]>([]);
+
 
     const [principiosData, setPrincipiosData] = useState({ //Información seleccionada para principios
         nombreR: '',
-        selectedP: [] as {id: string, label: string}[]
+        selectedP: [] as {id: number, label: string}[]
+    });
+
+    useEffect(() => {
+        axios.get('/api/getPrincipios')
+        .then((response) => {
+            setPrinciples(response.data.principios);
+        })
+        .catch((error) => {
+            console.error("Error al obtener los principios: ", error);
+        })
+    },[])
+
+    const [errors, setErrors] = useState({
+        nombreR: ''
     });
 
     //Manejo de la info del input
@@ -32,10 +43,31 @@ export const Created = () => {
             ...principiosData,
             [name]: value
         });
+
+        //Quita el error al comenzar a escribir
+        if (value.trim() !== "") {
+            setErrors({
+            ...errors,
+            [name]: ""
+            });
+        }
     };
 
+    const validateForm = () => { //validador del formulario
+        const newErrors = { ...errors };
+        let isValid = true;
+    
+        if (principiosData.nombreR.trim() === '') {
+          newErrors.nombreR = "El campo no puede estar vacío";
+          isValid = false;
+        }else if (principiosData.selectedP.length === 0){
+            isValid = false
+        }
+        setErrors(newErrors);
+        return isValid;
+    }
     //Manejo de principios seleccionados
-    const handlePrincipleChange = (principleId: string, principleLabel: string, isChecked: boolean) => {
+    const handlePrincipleChange = (principleId: number, principleLabel: string, isChecked: boolean) => {
         setPrincipiosData((prevState) => {
             const {selectedP} = prevState;
             if (isChecked) {
@@ -55,9 +87,12 @@ export const Created = () => {
     //Envio de infomación a la siguiente pagina
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        sessionStorage.setItem('principiosData', JSON.stringify(principiosData));
-        router.push("/rubrica/created1");
+        if (validateForm()){
+            sessionStorage.setItem('principiosData', JSON.stringify(principiosData));
+            router.push("/rubrica/created1");
+        } else {
+            console.log('Información faltante')
+        }
     };
     
     return (
@@ -80,35 +115,46 @@ export const Created = () => {
                             label="Nombre de la rubrica"
                             name="nombreR" 
                             value={principiosData.nombreR} 
-                            onChange={handleChange
-                        }/>
+                            onChange={handleChange}
+                            isInvalid={!!errors.nombreR}
+                            errorMessage={errors.nombreR}
+                        />
                     </div>
                 </div>
-                <div className="max-w-full mx-auto p-4">
-                    <h2 className="text-xl font-bold mb-4">Seleccione los principios UX a evaluar</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 space-y-5 mt-16">
-                        {principles.map((principle) => ( // Mapeo de principios UX
-                            <Card key={principle.id} className="w-3/4" isHoverable={true}>
-                                <CardBody className="flex justify-between px-6 my-5">
+            </div>
+            <div className="max-w-full mx-auto p-4">
+                <h2 className="text-xl font-bold mb-4">Seleccione los principios UX a evaluar</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {principles.map((principle) => (
+                        <motion.div
+                            key={principle.id}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                        >
+                            <Card className="w-3/4 rounded-lg shadow-lg transition duration-300 glowingborder" isHoverable={true}>
+                                <CardBody className="flex justify-between px-6">
                                     <div className="flex justify-between">
-                                        <p className="text-lg">{principle.label}</p>
+                                        <p className="text-lg">{principle.contenido}</p>
                                         <Checkbox
                                             isSelected={principiosData.selectedP.some(p => p.id === principle.id)}
-                                            onChange={(e) => handlePrincipleChange(principle.id, principle.label, e.target.checked)}
+                                            onChange={(e) => handlePrincipleChange(principle.id, principle.contenido, e.target.checked)}
                                             color={theme === 'dark' ? 'primary' : 'success'}
-                                            aria-label={`Select ${principle.label}`}
+                                            aria-label={`Select ${principle.contenido}`}
                                             className="ml-2"
                                             size="lg"
                                         />
                                     </div>
                                 </CardBody>
                             </Card>
-                        ))}
-                    </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </>
     );
-}
+};
 
 export default Created;
