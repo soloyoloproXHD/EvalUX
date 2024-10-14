@@ -7,6 +7,9 @@ import { useTheme } from 'next-themes';
 import { Help } from "../../components/ui/help";
 import { Image } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
+
 
 const IndexRubrica = () => {
     const { theme } = useTheme();
@@ -18,12 +21,6 @@ const IndexRubrica = () => {
     const handleCreated = () => {
         router.push("/rubrica/created");
     }
-
-    // const rubricas: Rubrica[] | null = [
-    //     { title: 'Rubrica enfocada a lo visual' },
-    //     { title: 'Rubrica con peso en la Accesibilidad' },
-    //     { title: 'Rubrica con requerimientos' },
-    // ];
 
     const rubricas: Rubrica[] = [];
     return (
@@ -54,7 +51,7 @@ const IndexRubrica = () => {
             ) : (
                 <div className="flex justify-center items-center flex-col p-16">
                     <p className="text-xl">No hay rúbricas creadas</p>
-                    <Image src={theme === 'dark' ? '/svg/lupa.svg' : '/svg/ligth_lupa.svg'} alt="No hay rúbricas" className="mt-10" />
+                    <FontAwesomeIcon icon={faBan} className="mt-10 h-40 custom-icon"/>
                 </div>
             )}
         </div>
