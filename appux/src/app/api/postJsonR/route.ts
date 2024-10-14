@@ -8,8 +8,12 @@ export async function POST(request: Request) {
         // Extraer el cuerpo de la solicitud
         const result  = await request.json();
 
-        const nombre = result.nombreR
-        const id = result.userId;
+
+        const nombre = result.dataWithUserId.nombreR
+
+        console.log(nombre);
+
+        const id = result.dataWithUserId.userId;
         const salt = "R";
         const valorRandom = crypto.randomBytes(3).toString("hex").slice(0,5 - salt.length);
 

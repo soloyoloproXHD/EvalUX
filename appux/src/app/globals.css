@@ -3,6 +3,7 @@
 @tailwind utilities;
 /* @import "transition-style"; */
 @import 'animate.css';
+@import 'react-toastify/dist/ReactToastify.css';
 
 body {
   font-family: Lato, Helvetica, sans-serif;

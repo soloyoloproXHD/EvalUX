@@ -5,6 +5,8 @@ import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion'; // Importamos motion de framer-motion
+import axios from 'axios';
+
 
 interface Escenario {
     puntaje: number;
@@ -120,14 +122,15 @@ const Header: React.FC<{ handleAtras: () => void; handleNext: () => void }> = ({
     </div>
 );
 
+
+
+
 export default function UXEvaluationMatrix() {
     const router = useRouter();
     const [data, setData] = useState({
         nombreR: "",
         selectedP: [] as SelectedP[]
     });
-    
-    
 
     useEffect(() => {
         const savedData = sessionStorage.getItem('categoriasData');
@@ -137,13 +140,23 @@ export default function UXEvaluationMatrix() {
         }
     }, []
     );
-
     const userId = sessionStorage.getItem('userId');
     const handleNext = () => {
-        const dataWithUserId = { ...data, userId }; 
+        const dataWithUserId = { ...data, userId };
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
-        console.log(sessionStorage.getItem('principiosData'));
-    
+
+        console.log("si",dataWithUserId);
+
+        axios.post('/api/postJsonR', {
+            dataWithUserId,
+        })
+            .then((response) => {
+                response.status
+            })
+            .catch((error) => {
+                console.error("Error al obtener las rúbricas: ", error);
+            });
+
         router.push("/rubrica/createdResumen");
     };
 
@@ -159,6 +172,8 @@ export default function UXEvaluationMatrix() {
             )
         }));
     };
+
+    const notify = () => toast("Wow so easy !");
 
     return (
         <div className="p-4 text-white min-h-screen">
