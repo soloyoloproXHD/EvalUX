@@ -14,8 +14,8 @@ interface Escenario {
 interface Subcategory {
     id: string;
     contenido: string;
-    incognitas: string;
-    escenarios: Escenario[];
+    incognitas?: string;
+    escenarios?: Escenario[];
 }
 
 interface SelectedP {
@@ -47,7 +47,13 @@ const CategoryMatrix: React.FC<{
 }> = ({ selectedP, onUpdateSelectedP }) => {
     const handleCellChange = (categoriaIndex: number, evaluationIndex: number, value: string) => {
         const updatedSelectedP = { ...selectedP };
-        updatedSelectedP.categorias[categoriaIndex].escenarios[evaluationIndex].contenido = value;
+        if (!updatedSelectedP.categorias[categoriaIndex].escenarios) {
+            updatedSelectedP.categorias[categoriaIndex].escenarios = Array(5).fill({ puntaje: 0, contenido: "" });
+        }
+        updatedSelectedP.categorias[categoriaIndex].escenarios[evaluationIndex] = {
+            puntaje: evaluationCriteria[evaluationIndex].value,
+            contenido: value
+        };
         onUpdateSelectedP(updatedSelectedP);
     };
 
@@ -70,7 +76,7 @@ const CategoryMatrix: React.FC<{
                         <div className="w-1/6">Categorías</div>
                         <div className="w-1/6">Incógnitas de evaluación</div>
                         {evaluationCriteria.map((criteria) => (
-                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2  ${criteria.color}`}>
+                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
                                 <span className="font-bold">{criteria.value}</span> {criteria.label}
                             </div>
                         ))}
@@ -84,14 +90,14 @@ const CategoryMatrix: React.FC<{
                                 <Textarea
                                     className="w-full h-24 text-sm font-normal"
                                     placeholder="Ingrese incógnitas"
-                                    value={categoria.incognitas}
+                                    value={categoria.incognitas || ""}
                                     onChange={(e) => handleUnknownChange(categoriaIndex, e.target.value)}
                                 />
                             </div>
                             {evaluationCriteria.map((criteria, evaluationIndex) => (
                                 <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
                                     <EvaluationCell
-                                        value={categoria.escenarios[evaluationIndex]?.contenido || ""}
+                                        value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
                                         onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
                                     />
                                 </div>
@@ -122,59 +128,17 @@ export default function UXEvaluationMatrix() {
     });
 
     useEffect(() => {
-        // Inicialización de principiosData
-        const principiosData = {
-            nombreR: "Hola",
-            selectedP: [
-                {
-                    id: 1,
-                    label: "Usabilidad",
-                    categorias: [
-                        { id: "1", contenido: "Diavlo", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-                        { id: "2", contenido: "Arcangel", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
-                    ]
-                },
-                {
-                    id: 2,
-                    label: "Accesibilidad",
-                    categorias: [
-                        { id: "3", contenido: "Jesu", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-                        { id: "4", contenido: "Juan", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
-                    ]
-                },
-                {
-                    id: 3,
-                    label: "Aprendizaje",
-                    categorias: [
-                        { id: "5", contenido: "Maria", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-                        { id: "6", contenido: "Jose", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
-                    ]
-                },
-                {
-                    id: 4,
-                    label: "Eficiencia",
-                    categorias: [
-                        { id: "7", contenido: "Maria", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-                        { id: "8", contenido: "Jose", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) }
-                    ]
-                }
-            ]
-        };
-        sessionStorage.setItem('principiosData', JSON.stringify(principiosData));
-
-        // Obtención de principiosData
-        const savedData = sessionStorage.getItem('principiosData');
+        const savedData = sessionStorage.getItem('categoriasData');
         if (savedData) {
             const parsedData = JSON.parse(savedData);
             setData(parsedData);
-            console.log(parsedData);
         }
     }, []);
 
     const handleNext = () => {
         sessionStorage.setItem('principiosData', JSON.stringify(data));
         console.log(sessionStorage.getItem('principiosData'));
-        
+
         // router.push("/rubrica");
     };
 
