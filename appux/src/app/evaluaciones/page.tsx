@@ -17,9 +17,9 @@ export const IndexEvaluacion = () => {
     };
 
     const evaluaciones: Reporte[] | null = [
-        { title: 'X' },
-        { title: 'Instagram' },
-        { title: 'Minbox' },
+        // { title: 'X' },
+        // { title: 'Instagram' },
+        // { title: 'Minbox' },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {

@@ -7,6 +7,7 @@ import CategoryMatrix from '../../../components/rubricas/CategoryMatrix';
 import { motion } from 'framer-motion';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import html2pdf from 'html2pdf.js';
 
 interface Subcategory {
     name: string;
@@ -17,6 +18,18 @@ interface Subcategory {
 interface Category {
     name: string;
     subcategories: Subcategory[];
+}
+
+async function downloadPDF() {
+    const element = document.getElementById("rubric")!;
+    const opt = {
+        margin: 0,
+        filename: 'rubrica.pdf',
+        html2canvas: { scale: 10 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+ 
+    html2pdf().from(element).set(opt).save();
 }
 
 
@@ -58,7 +71,7 @@ function Resumen() {
     };
 
     const handleDownloadPDF = () => {
-        console.log("Downloading PDF...");
+        downloadPDF();
     };
 
     const handleDownloadExcel = () => {
@@ -71,7 +84,7 @@ function Resumen() {
                 <p className="text-2xl title">Creación de Rúbrica</p>
             </div>
             <div className="flex gap-8">
-                <div className="w-2/3 p-4 rounded-lg">
+                <div className="w-2/3 p-4 rounded-lg" id="rubric">
                     <p className="text-xl font-semibold mb-4">Vista Previa de Rúbrica</p>
                     <div className="max-h-[600px] overflow-y-auto">
                         {categories.map((category) => (

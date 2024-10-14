@@ -88,6 +88,7 @@ body {
   .dark p {
     @apply text-white;
   }
+  img { display: initial;}
 }
 
 .custom-adapt-button {
@@ -230,3 +231,4 @@ button:hover {
 .dark .text-shadow {
   text-shadow: rgba(255, 255, 255, 0.5) -3px 3px 24px;
 }
+
