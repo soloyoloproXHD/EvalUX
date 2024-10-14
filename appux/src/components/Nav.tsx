@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket, faUserPlus, faTableList, faClipboardList } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,9 @@ import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import Avatar from '../components/ui/avatar';
 import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
+
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
@@ -23,6 +26,23 @@ export const Nav = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalLOpen, setIsModalLOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Nuevo estado para autenticación
+    const router = useRouter();
+
+    useEffect(() => {
+        setMounted(true);
+        const token = sessionStorage.getItem('token');
+        console.log('Token', token);
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('token'); // Elimina el token al cerrar sesión
+        setIsAuthenticated(false); // Cambia el estado a no autenticado
+        router.push('/'); // Redirige al inicio
+    };
 
     // Simulación de usuario (null para no autenticado)
     const user = { name: 'Usuario', photoURL: '/img/avatar.png' };
@@ -67,15 +87,11 @@ export const Nav = () => {
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     className="sm:hidden"
                 />
-                {/* Redirección en el logo usando redirect */}
-                <div
-                    className="flex justify-start items-center gap-2 text-white"
-                // Redirección directa usando `redirect`
-                >
+                <div className="flex justify-start items-center gap-2 text-white">
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
                     <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p>
                 </div>
-                {user ? (
+                {isAuthenticated ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
                         <NavbarItem>
                             <FontAwesomeIcon icon={faTableList} className='me-1' />
@@ -90,18 +106,29 @@ export const Nav = () => {
             </NavbarContent>
 
             <NavbarContent justify="end">
-                {/* {!user ? ( */}
-                <>
-                    <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
-                    <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
-                    <CustomIcon icon={faGithub} size='lg' />
-                </>
-                {/* ) : ( */}
-                <>
-                    {/* <p>{user?.displayName || 'Usuario'}</p> */}
-                    <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" />
-                </>
-                {/* )} */}
+                {!isAuthenticated ?
+                    <>
+                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOPenModal} />
+                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOPenModalL} />
+                        <CustomIcon icon={faGithub} size='lg' />
+                    </>
+                    :
+                    <>
+                        <Dropdown placement="bottom-end">
+                            <DropdownTrigger>
+                                <NextAvatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar image" />
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Profile Actions" variant="flat">
+                                <DropdownItem key="logout" color="danger" className='flex justify-center items-center' onClick={handleLogout}>
+                                    <FontAwesomeIcon icon={faArrowRightToBracket} className='hover:bounce text-white mr-2' />
+                                    Cerrar sesión
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        {/* <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" /> */}
+                        {/* <button >Cerrar Sesión</button> */}
+                    </>
+                }
 
                 <ThemeSwitcher />
             </NavbarContent>

@@ -17,7 +17,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, alt }) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
           <DropdownItem key="logout" color="danger" className='flex justify-center items-center'>
-          <FontAwesomeIcon icon={faRightFromBracket} className='hover:bounce text-red-600 mr-2' />
+          <FontAwesomeIcon icon={faRightFromBracket} className='hover:bounce text-white mr-2' />
             Cerrar sesión
           </DropdownItem>
         </DropdownMenu>
