@@ -6,6 +6,7 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion'; // Importamos motion de framer-motion
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 interface Escenario {
@@ -141,9 +142,20 @@ export default function UXEvaluationMatrix() {
     }, []
     );
     const userId = sessionStorage.getItem('userId');
+    const notify = () => toast.success('Rubrica creada exitosamente!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     const handleNext = () => {
         const dataWithUserId = { ...data, userId };
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
+        notify();
 
         console.log("si",dataWithUserId);
 

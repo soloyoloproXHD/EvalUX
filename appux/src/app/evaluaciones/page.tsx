@@ -1,30 +1,46 @@
 'use client'
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AdaptButton from "@/components/AdaptButton";
 import { faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from 'next-themes';
 import { Help } from "../../components/ui/help";
 import { Image } from "@nextui-org/react";
-import {Accordion, AccordionItem} from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-
 
 export const IndexEvaluacion = () => {
     const { theme } = useTheme();
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
+    const [evaluaciones, setEvaluaciones] = useState<Reporte[] | null>(null);
+
     type Reporte = {
         title: string;
     };
 
-    const evaluaciones: Reporte[] | null = [
-        { title: 'X' },
-        { title: 'Instagram' },
-        { title: 'Minbox' },
-    ];
+    useEffect(() => {
+        // Simular la carga de datos
+        setTimeout(() => {
+            setEvaluaciones([
+                { title: 'X' },
+                { title: 'Instagram' },
+                { title: 'Minbox' },
+            ]);
+            setIsLoading(false);
+        }, 2000); // Simular un retraso de 2 segundos
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         router.push("/evaluaciones/evaluarIn");
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-xl">Cargando...</p>
+            </div>
+        );
     }
 
     return (
@@ -39,17 +55,17 @@ export const IndexEvaluacion = () => {
             </div>
 
             {/* Mostrar evaluaciones si es que hay alguna*/}
-            {evaluaciones.length > 0 ? (
-                    <Accordion variant="splitted">
-                        {evaluaciones.map((evaluacion, index) => (
-                            <AccordionItem key={index} title={evaluacion.title}>
-                                <li className="p-2 flex justify-between items-center">
-                                    <p>{evaluacion.title}</p>
-                                    <AdaptButton texto="Ver más" />
-                                </li>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
+            {evaluaciones && evaluaciones.length > 0 ? (
+                <Accordion variant="splitted">
+                    {evaluaciones.map((evaluacion, index) => (
+                        <AccordionItem key={index} title={evaluacion.title}>
+                            <li className="p-2 flex justify-between items-center">
+                                <p>{evaluacion.title}</p>
+                                <AdaptButton texto="Ver más" />
+                            </li>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
             ) : (
                 <div className="flex justify-center items-center flex-col p-16">
                     <p className="text-xl">No hay evaluaciónes realizadas</p>

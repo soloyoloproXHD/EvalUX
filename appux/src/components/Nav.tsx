@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightToBracket, faUserPlus, faTableList, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightToBracket, faUserPlus, faTableList, faClipboardList, faPerson } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { AdaptButton } from '../components/AdaptButton';
@@ -76,6 +76,10 @@ export const Nav = () => {
         }
     };
 
+    const handlePerfil = () => {
+       router.push('/perfil');
+    }
+
     const menuItems = [
         "Rubricas",
         "Evaluaciones",
@@ -123,6 +127,10 @@ export const Nav = () => {
                                 <NextAvatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar image" />
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Profile Actions" variant="flat">
+                                <DropdownItem key="perfil" color="primary" className='flex justify-center items-center' onClick={handlePerfil}>
+                                    <FontAwesomeIcon icon={faPerson} className='hover:bounce text-white mr-2' />
+                                    Perfil
+                                </DropdownItem>
                                 <DropdownItem key="logout" color="danger" className='flex justify-center items-center' onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faArrowRightToBracket} className='hover:bounce text-white mr-2' />
                                     Cerrar sesión
