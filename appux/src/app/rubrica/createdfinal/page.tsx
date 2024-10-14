@@ -1,14 +1,10 @@
 'use client'
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-
-// Importaciones de los componentes separados
-import CategoryMatrix from '../../../components/rubricas/CategoryMatrix';
-
+import { motion } from 'framer-motion'; // Importamos motion de framer-motion
 
 interface Escenario {
     puntaje: number;
@@ -28,6 +24,13 @@ interface SelectedP {
     categorias: Subcategory[];
 }
 
+const evaluationCriteria = [
+    { label: "Excelente", value: 5, color: "bg-success" },
+    { label: "Bueno", value: 4, color: "bg-success-300" },
+    { label: "Aceptable", value: 3, color: "bg-primary-100" },
+    { label: "Satisfactorio", value: 2, color: "bg-warning" },
+    { label: "Insatisfactorio", value: 1, color: "bg-danger" },
+];
 
 const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
     <Textarea
@@ -123,6 +126,8 @@ export default function UXEvaluationMatrix() {
         nombreR: "",
         selectedP: [] as SelectedP[]
     });
+    
+    
 
     useEffect(() => {
         const savedData = sessionStorage.getItem('categoriasData');
@@ -130,14 +135,16 @@ export default function UXEvaluationMatrix() {
             const parsedData = JSON.parse(savedData);
             setData(parsedData);
         }
-    }, []);
+    }, []
+    );
 
+    const userId = sessionStorage.getItem('userId');
     const handleNext = () => {
-        sessionStorage.setItem('principiosData', JSON.stringify(data));
+        const dataWithUserId = { ...data, userId }; 
+        sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
         console.log(sessionStorage.getItem('principiosData'));
-
+    
         router.push("/rubrica/createdResumen");
-
     };
 
     const handleAtras = () => {

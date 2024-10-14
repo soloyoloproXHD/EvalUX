@@ -124,31 +124,48 @@ export default function AppModalR({ show, onClose }: ModalProps) {
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { ccontrasena, ...dataToSend } = formData;
+      e.preventDefault();
+      const { ccontrasena, ...dataToSend } = formData;
+  
+      if (validateForm()) {
+          fetch('/api/register', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(dataToSend),
+          })
+          .then(response => {
+              if (!response.ok) {
+                  return response.json().then(error => {
+                      console.error('Error en la respuesta:', error);
+                      setErrors(prev => ({ ...prev, correoE: error.message }));
+                      throw new Error('Error en el registro');
+                  });
+              }
+              return response.json();
+          })
+          .then(result => {
+              console.log('Success:', result.message);
 
-    if (validateForm()) {
-      try {
-        const response = await fetch('/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dataToSend),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          console.log('Success:', result.message);
-          handleCloseModalL()
-          router.push('/rubrica');
-        } else {
-          console.error('Error:', result.message);
-          setErrors(prev => ({ ...prev, correoE: result.message }));
-        }
-      } catch (error) {
-        console.error('Fetch Error:', error);
+              const { userId } = result;
+              const { token } = result;
+              if (token) {
+                  sessionStorage.setItem('token', token);  // Guardar token en sessionStorage
+                  sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
+                  console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
+              } else {
+                  console.error('Token no recibido en la respuesta');
+              }
+  
+              handleCloseModalL();  // Cerrar el modal de registro
+              setFormData(initialFormData);  // Restablecer el formulario
+              router.push('/rubrica');  // Redirigir después de guardar el token
+          })
+          .catch(error => {
+              console.error('Error en el proceso de registro:', error);
+          });
       }
-    }
   };
 
 

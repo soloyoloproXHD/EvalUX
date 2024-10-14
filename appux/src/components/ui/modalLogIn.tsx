@@ -120,9 +120,12 @@ export default function AppModalL({ show, onClose }: ModalProps) {
         console.log('Login Success:', result);
       
         const { token } = result;
+        const { userId } = result;
+
         if (token) {
           sessionStorage.setItem('token', token);  // Guardar token en localStorage
-          console.log('Token guardado en localStorage');
+          sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
+          console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
         } else {
           console.error('Token no recibido en la respuesta');
         }
