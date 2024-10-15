@@ -31,8 +31,8 @@ export async function POST(request: Request) {
     );
 
     return new Response(JSON.stringify({ message: 'Usuario registrado exitosamente' }), { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Server Error:', error);
-    return new Response(JSON.stringify({ message: 'Error en el servidor: ' + error.message }), { status: 500 });
+    return new Response(JSON.stringify({ message: 'Error en el servidor: ' + error }), { status: 500 });
   }
 }
