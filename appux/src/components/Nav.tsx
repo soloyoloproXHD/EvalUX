@@ -99,7 +99,7 @@ export const Nav = () => {
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
                     {!isAuthenticated ?
                         <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p> :
-                        null
+                        <div className='w-5'></div>
                     }
                 </div>
                 {isAuthenticated ? (
@@ -134,7 +134,7 @@ export const Nav = () => {
                                     <FontAwesomeIcon icon={faPerson} className='hover:bounce text-white mr-2' />
                                     Perfil
                                 </DropdownItem>
-                                <DropdownItem key="logout" color="danger" className='flex justify-center items-center' onClick={handleLogout}>
+                                <DropdownItem key="logout" color="primary" className='flex justify-center items-center' onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faArrowRightToBracket} className='hover:bounce text-white mr-2' />
                                     Cerrar sesión
                                 </DropdownItem>
