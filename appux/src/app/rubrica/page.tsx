@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@nextui-org/react";
 
 const IndexRubrica = () => {
     const router = useRouter();
@@ -96,7 +96,7 @@ const IndexRubrica = () => {
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}
                 size="2xl">
                 <ModalContent>
-                    {(onClose) => (
+                    {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">Selecciona una opción</ModalHeader>
                             <ModalBody>
