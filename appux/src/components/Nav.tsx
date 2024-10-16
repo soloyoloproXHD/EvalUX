@@ -16,12 +16,15 @@ import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
+import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
+    const userlocal = sessionStorage.getItem('user');
+    const imgPerfil = userlocal ? JSON.parse(userlocal).img : null;
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalLOpen, setIsModalLOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,11 +51,6 @@ export const Nav = () => {
 
     // const user = null;
 
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
     if (!mounted) {
         return null;
     }
@@ -77,7 +75,7 @@ export const Nav = () => {
     };
 
     const handlePerfil = () => {
-       router.push('/perfil');
+        router.push('/perfil');
     }
 
     const menuItems = [
@@ -124,7 +122,7 @@ export const Nav = () => {
                     <>
                         <Dropdown placement="bottom-end">
                             <DropdownTrigger>
-                                <NextAvatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar image" />
+                                <NextAvatar src={imgPerfil || "/img/avatar.png"} alt="Avatar image" />
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Profile Actions" variant="flat">
                                 <DropdownItem key="perfil" color="primary" className='flex justify-center items-center' onClick={handlePerfil}>

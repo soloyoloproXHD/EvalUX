@@ -150,17 +150,19 @@ export default function AppModalR({ show, onClose }: ModalProps) {
 
               const { userId } = result;
               const { token } = result;
+              const { user } = result;
               if (token) {
                   sessionStorage.setItem('token', token);  // Guardar token en sessionStorage
                   sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
+                  sessionStorage.setItem('user', JSON.stringify(user));  // Guardar los datos completos del usuario en sessionStorage
                   console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
               } else {
                   console.error('Token no recibido en la respuesta');
               }
   
               handleCloseModalL();  // Cerrar el modal de registro
+              window.location.href = '/rubrica';    // Redirigir después de guardar el token
               setFormData(initialFormData);  // Restablecer el formulario
-              router.push('/rubrica');  // Redirigir después de guardar el token
           })
           .catch(error => {
               console.error('Error en el proceso de registro:', error);
