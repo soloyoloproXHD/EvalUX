@@ -33,8 +33,10 @@ export const Nav = () => {
 
     useEffect(() => {
         setMounted(true);
-        const token = sessionStorage.getItem('token');
-        console.log('Token', token);
+        let token = null;
+        if(typeof window !== 'undefined'){
+         token = sessionStorage.getItem('token');
+        }
         if (token) {
             setIsAuthenticated(true);
         }
@@ -45,9 +47,6 @@ export const Nav = () => {
         setIsAuthenticated(false); // Cambia el estado a no autenticado
         router.push('/'); // Redirige al inicio
     };
-
-    // Simulación de usuario (null para no autenticado)
-    const user = { name: 'Usuario', photoURL: '/img/avatar.png' };
 
     // const user = null;
 

@@ -10,7 +10,6 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalL from "./modalLogIn";
-import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -22,7 +21,6 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const [isModalLOpen, setIsModalLOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
-  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
