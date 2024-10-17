@@ -290,3 +290,28 @@ INSERT INTO incognita (pregunta, categoria_id) VALUES ('¿El sistema o producto 
 INSERT INTO incognita (pregunta, categoria_id) VALUES ('¿El diseño muestra una comprensión profunda de los contextos y emociones del usuario, anticipando sus necesidades antes de que las expresen?', 21);
 INSERT INTO incognita (pregunta, categoria_id) VALUES ('¿El software implementa medidas de seguridad actualizadas y efectivas?¿Se protege la información del usuario? ¿El sistema protege los datos del usuario y ofrece garantías de privacidad, cumpliendo con estándares de seguridad?', 22);
 INSERT INTO incognita (pregunta, categoria_id) VALUES ('¿Se ha realizado investigación de usuarios y se utilizan pruebas de usabilidad para mejorar continuamente el diseño?', 23);
+
+
+-- Creacion de rubrica default
+
+-- Paso 1: Insertar el usuario
+INSERT INTO usuario (nombres, apellidos, "correoE", contrasena, img, fecha_registro)
+VALUES ('John', 'Doe', 'john.doe@example.com', 'hashed_password', 'default.png', CURRENT_DATE);
+
+-- Paso 2: Insertar la rúbrica "default" relacionada con el usuario
+INSERT INTO rubrica (nombre, ruta_rubrica, usuario_id)
+VALUES ('default', '/ruta/a/la/rubrica/default', 
+        (SELECT id FROM usuario WHERE "correoE" = 'john.doe@example.com'));
+
+-- Paso 3: Obtener el ID de la rúbrica recién creada
+SELECT currval(pg_get_serial_sequence('rubrica','id')) AS rubrica_id;
+
+-- Paso 4: Relacionar los principios con la rúbrica "default" utilizando el rubrica_id obtenido
+-- Supongamos que el ID de la rúbrica es el valor obtenido en el paso 3.
+INSERT INTO princ_rub (principio_id, rubrica_id)
+VALUES
+(1, (SELECT currval(pg_get_serial_sequence('rubrica','id')))), -- Usabilidad
+(2, (SELECT currval(pg_get_serial_sequence('rubrica','id')))), -- Accesibilidad
+(3, (SELECT currval(pg_get_serial_sequence('rubrica','id')))), -- Simplicidad
+(4, (SELECT currval(pg_get_serial_sequence('rubrica','id')))), -- Consistencia
+(5, (SELECT currval(pg_get_serial_sequence('rubrica','id')))); -- Centrado en el Usuario

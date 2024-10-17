@@ -4,6 +4,8 @@ import { Card, CardBody, CardHeader, Button } from "@nextui-org/react";
 import Link from 'next/link';
 import AdaptButton from "@/components/AdaptButton";
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 interface Subcategory {
     name: string;
@@ -14,6 +16,7 @@ interface Category {
     name: string;
     subcategories: Subcategory[];
 }
+
 
 const evaluationCriteria = [
     { label: "Excelente", value: 5, color: "bg-success" },
@@ -53,11 +56,29 @@ const EvaluationCell: React.FC<{ value: string | null; onClick: () => void }> = 
     </Button>
 );
 
+async function getCategories() {
+    return new Promise<Category[]>((resolve) => {
+        setTimeout(() => {
+            resolve(categories);
+        }, 1000);
+    });
+}
+
+
+
 const CategoryMatrix: React.FC<{ category: Category }> = ({ category }) => {
     const handleCellClick = (subcategoryIndex: number, evaluationIndex: number) => {
         // Here you would implement the logic to update the evaluation
         console.log(`Clicked: ${category.name} - ${category.subcategories[subcategoryIndex].name} - Evaluation ${evaluationIndex + 1}`);
     };
+
+    useEffect(() => {
+        getCategories().then((categories) => {
+            const userId = sessionStorage.getItem('userId');
+            const response =  axios.post('/api/getRubrica', { userId });    
+                    
+        });
+    }, []);
 
     return (
         <Card className="w-full mb-4">

@@ -1,0 +1,16 @@
+Sql para añadir reportes(Evaluaciones).
+INSERT INTO public.reporte (
+    id, nombre, descripcion, v_usabilidad, v_accesibilidad, v_simplicidad, 
+    v_consistencia, v_centrado_en_el_usuario, v_final, usuario_id, rubrica_id, fecha_registro
+) VALUES
+(1, 'Reporte de Evaluación 1', 'Evaluación inicial del prototipo A.', 8, 7, 9, 8, 7, 78, 1, 1, '2024-10-01'),
+(2, 'Reporte de Evaluación 2', 'Evaluación de la versión beta del sistema.', 7, 8, 8, 7, 8, 76, 1, 2, '2024-10-02'),
+(3, 'Reporte de Evaluación 3', 'Revisión de la accesibilidad del módulo de usuarios.', 9, 9, 8, 9, 8, 86, 1, 3, '2024-10-03'),
+(4, 'Reporte de Evaluación 4', 'Evaluación de la consistencia de la interfaz.', 8, 6, 7, 8, 7, 74, 1, 4, '2024-10-04'),
+(5, 'Reporte de Evaluación 5', 'Análisis de usabilidad del nuevo diseño.', 7, 8, 7, 6, 8, 72, 1, 5, '2024-10-05'),
+(6, 'Reporte de Evaluación 6', 'Prueba de simplicidad en la navegación.', 6, 7, 8, 8, 7, 72, 1, 1, '2024-10-06'),
+(7, 'Reporte de Evaluación 7', 'Evaluación centrada en el usuario para el sistema de gestión.', 8, 9, 9, 8, 9, 86, 1, 2, '2024-10-07'),
+(8, 'Reporte de Evaluación 8', 'Revisión de accesibilidad en dispositivos móviles.', 7, 8, 7, 9, 7, 76, 1, 3, '2024-10-08'),
+(9, 'Reporte de Evaluación 9', 'Análisis de consistencia en el flujo de trabajo.', 8, 7, 8, 9, 8, 80, 1, 4, '2024-10-09'),
+(10, 'Reporte de Evaluación 10', 'Evaluación final del proyecto.', 9, 8, 8, 9, 8, 84, 1, 5, '2024-10-10');
+----------------------------------------------------------------------------------------------------------------------------
