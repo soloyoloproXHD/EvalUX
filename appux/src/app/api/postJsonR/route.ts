@@ -23,6 +23,7 @@ export async function POST(request: Request) {
         (await client)?.query('BEGIN');
         (await client)?.query(`INSERT INTO rubrica (nombre, ruta_rubrica, usuario_id) VALUES ('${nombre}','${filePath}',${id})`);
         (await client)?.query('COMMIT');
+        
 
         // Crear y escribir el archivo JSON
         fs.writeFileSync(filePath, JSON.stringify(result, null, 2), 'utf8');
