@@ -4,8 +4,9 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import AdaptButton from '../../../components/AdaptButton'; // Import the AdaptButton component
-import { faArrowLeft, faArrowRight, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faPenToSquare, faTrash, faPlus, faArrowUp, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Tooltip } from '@nextui-org/react';
 
 interface Escenario {
     puntaje: number;
@@ -26,11 +27,11 @@ interface SelectedP {
 }
 
 const evaluationCriteria = [
-    { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
-    { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
-    { label: "Aceptable", value: 3, color: "#FFEB3B" }, // Yellow
-    { label: "Satisfactorio", value: 2, color: "#FFC107" }, // Amber
     { label: "Insatisfactorio", value: 1, color: "#F44336" }, // Red
+    { label: "Satisfactorio", value: 2, color: "#FFC107" }, // Amber
+    { label: "Aceptable", value: 3, color: "#FFEB3B" }, // Yellow
+    { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
+    { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
 ];
 
 const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
@@ -38,14 +39,16 @@ const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string)
         placeholder="Ingrese evaluación"
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
-        style={{ width: '100%', height: '100px', borderRadius: '8px', padding: '8px' }}
+        className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
     />
 );
 
 const CategoryMatrix: React.FC<{
     selectedP: SelectedP;
-    onUpdateSelectedP: (updatedSelectedP: SelectedP) => void
-}> = ({ selectedP, onUpdateSelectedP }) => {
+    onUpdateSelectedP: (updatedSelectedP: SelectedP) => void;
+    onAddCategory: () => void;
+    onDeletePrinciple: () => void;
+}> = ({ selectedP, onUpdateSelectedP, onAddCategory, onDeletePrinciple }) => {
     const handleCellChange = (categoriaIndex: number, evaluationIndex: number, value: string) => {
         const updatedSelectedP = { ...selectedP };
         if (!updatedSelectedP.categorias[categoriaIndex].escenarios) {
@@ -82,92 +85,115 @@ const CategoryMatrix: React.FC<{
     };
 
     return (
-        <div style={{ width: '100%', marginBottom: '20px' }}>
-            <input
-                type="text"
-                value={selectedP.label}
-                onChange={(e) => handleLabelChange(e.target.value)}
-                style={{ textAlign: 'center', marginBottom: '20px', fontSize: '24px', width: '100%' }}
-            />
-            <table border={1} cellPadding={5} cellSpacing={0} style={{ width: '100%', textAlign: 'left', tableLayout: 'fixed' }}>
+        <div className="w-full mb-5 px-5">
+            <div className="mt-5 w-1/4 mx-auto flex flex-col p-3">
+                <div className="flex justify-between items-center gap-3">
+                    <Tooltip placement="left" content="Borrar principio" key="left">
+                        <div>
+                            <AdaptButton icon={faTrash} onPress={onDeletePrinciple} showSpinner={false} />
+
+                        </div>
+                    </Tooltip>
+                    <div className='flex justify-center items-center'>
+                        <input
+                            type="text"
+                            value={selectedP.label}
+                            onChange={(e) => handleLabelChange(e.target.value)}
+                            className="rounded-tl-lg rounded-bl-lg border border-r-0 border-gray-300 text-center font-semibold w-4/5 text-lg h-10 outline-none"
+                        />
+                        <Tooltip
+                            key="right"
+                            placement="right"
+                            content="Haga click en el texto para cambiar el nombre del principio"
+                            color="secondary"
+                        >
+                            <div className="border p-5 border-gray-300 rounded-tr-lg rounded-br-lg h-10 flex justify-center items-center bg-gray-300 bg-opacity-20">
+                                <FontAwesomeIcon icon={faPenToSquare} />
+                            </div>
+                        </Tooltip>
+                    </div>
+                </div>
+            </div>
+            <table className="w-full text-left" style={{ borderSpacing: "10px" }}>
                 <thead>
                     <tr>
-                        <th className="rounded-lg p-2 text-center">Categorías</th>
-                        <th className="rounded-lg p-2 text-center">Incógnitas de evaluación</th>
+                        <th className="p-2 text-center">Categorías</th>
+                        <th className="p-2 text-center">Incógnitas de evaluación</th>
                         {evaluationCriteria.map((criteria) => (
                             <th
                                 key={criteria.value}
-                                className="rounded-lg p-2 text-center"
+                                className="p-2 text-center"
                                 style={{ backgroundColor: criteria.color }}
                             >
                                 {criteria.label}
                             </th>
                         ))}
-                        <th className="rounded-lg p-2 text-center">Acciones</th>
+                        <th className="p-3 text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {selectedP.categorias.map((categoria, categoriaIndex) => (
                         <tr key={categoria.id}>
-                            <td style={{ borderRadius: '8px', padding: '8px' }}>
-                                <input
-                                    type="text"
+                            <td className=" px-2">
+                                <textarea
                                     value={categoria.contenido}
                                     onChange={(e) => handleCategoryChange(categoriaIndex, e.target.value)}
-                                    style={{ width: '100%', borderRadius: '8px', padding: '8px' }}
+                                    className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                                    placeholder="Ingrese la categoría"
                                 />
                             </td>
-                            <td style={{ borderRadius: '8px', padding: '8px' }}>
+                            <td className=" p-2">
                                 <textarea
-                                    placeholder="Ingrese incógnitas"
+                                    placeholder="Ingrese las incógnitas"
                                     value={categoria.incognitas || ""}
                                     onChange={(e) => handleUnknownChange(categoriaIndex, e.target.value)}
-                                    style={{ width: '100%', height: '100px', borderRadius: '8px', padding: '8px' }}
+                                    className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
                                 />
                             </td>
                             {evaluationCriteria.map((criteria, evaluationIndex) => (
-                                <td key={evaluationIndex} style={{ borderRadius: '8px', padding: '8px' }}>
-                                    <div style={{ margin: '5px' }}>
-                                        <EvaluationCell
-                                            value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
-                                            onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
-                                        />
-                                    </div>
+                                <td key={evaluationIndex} className="">
+                                    <EvaluationCell
+                                        value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
+                                        onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
+                                    />
                                 </td>
                             ))}
-                            <td style={{ borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
-                                <button onClick={() => handleDeleteCategory(categoriaIndex)}>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
+                            <td className=" p-2 text-center">
+                                <AdaptButton icon={faTrash} onPress={() => handleDeleteCategory(categoriaIndex)} showSpinner={false} />
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div className="flex justify-center mt-5">
+                <AdaptButton texto="Agregar categoría" icon={faPlus} onPress={onAddCategory} size='md' showSpinner={false} />
+            </div>
         </div>
     );
 };
 
-const Header: React.FC<{ handleAtras: () => void; handleNext: () => void }> = ({ handleAtras, handleNext }) => (
-    <div className="text-center mb-5">
-        <div className="flex justify-between gap-2.5 me-5 ms-10">
-            <div>
-                <h2 className='text-2xl font-semibold'>Creación de Rubrica</h2>
-            </div>
-            <div className='flex justify-center items-center gap-2.5'>
-                <AdaptButton texto="Atras" icon={faArrowLeft} onPress={handleAtras} />
-                <AdaptButton texto="Finalizar" icon={faArrowRight} onPress={handleNext} />
-            </div>
-        </div>
-    </div>
-);
-
 export default function UXEvaluationMatrix() {
     const router = useRouter();
+    const [isVisible, setIsVisible] = useState(false);
     const [data, setData] = useState({
         nombreR: "",
         selectedP: [] as SelectedP[]
     });
+
+    const toggleVisibility = () => {
+        if (window.scrollY > 300) {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', toggleVisibility);
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+        };
+    }, []);
 
     useEffect(() => {
         const savedData = sessionStorage.getItem('rubricaDefault');
@@ -194,15 +220,15 @@ export default function UXEvaluationMatrix() {
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
         notify();
 
-        // axios.post('/api/postJsonR', {
-        //     dataWithUserId,
-        // })
-        //     .then((response) => {
-        //         response.data();
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error al obtener las rúbricas: ", error);
-        //     });
+        axios.post('/api/postJsonR', {
+            dataWithUserId,
+        })
+            .then((response) => {
+                response.data();
+            })
+            .catch((error) => {
+                console.error("Error al obtener las rúbricas: ", error);
+            });
 
         router.push("/rubrica/createdResumen");
     };
@@ -227,22 +253,89 @@ export default function UXEvaluationMatrix() {
         }));
     };
 
+    const handleAddCategory = (selectedPId: number) => {
+        const newCategory: Subcategory = {
+            id: `${Date.now()}`,
+            contenido: "",
+            incognitas: "",
+            escenarios: Array(5).fill({ puntaje: 0, contenido: "" })
+        };
+
+        setData(prevData => ({
+            ...prevData,
+            selectedP: prevData.selectedP.map(p =>
+                p.id === selectedPId ? { ...p, categorias: [...p.categorias, newCategory] } : p
+            )
+        }));
+    };
+
+    const handleDeletePrinciple = (id: number) => {
+        setData(prevData => ({
+            ...prevData,
+            selectedP: prevData.selectedP.filter(p => p.id !== id)
+        }));
+    };
+
+    const handleAddPrinciple = () => {
+        const newPrinciple: SelectedP = {
+            id: Date.now(),
+            label: "Nuevo Principio",
+            categorias: []
+        };
+        setData(prevData => ({
+            ...prevData,
+            selectedP: [...prevData.selectedP, newPrinciple]
+        }));
+    };
+
     return (
         <div>
-            <input
-                type="text"
-                value={data.nombreR}
-                onChange={(e) => handleNombreRChange(e.target.value)}
-                style={{ textAlign: 'center', marginBottom: '20px', fontSize: '24px', width: '100%' }}
-            />
-            <Header handleAtras={handleAtras} handleNext={handleNext} />
+
+            <div className='mt-5 w-full mx-auto flex p-3 gap-3 justify-between items-center '>
+                <div className='flex flex-col justify-center gap-3 px-8 items-center '>
+                    <div className='flex justify-center items-center gap-3'>
+                        <h2 className='text-2xl font-semibold'>Creación de Rubrica</h2>
+                        <Tooltip placement='right' content="Puedes manipular toda la rubrica a tu conveniencia">
+                            <FontAwesomeIcon icon={faCircleQuestion}></FontAwesomeIcon>
+                        </Tooltip>
+                    </div>
+                    <div className='flex justify-start items-center gap-2 ms-5 mt-5'>
+                        <p className='text-lg font-semibold'>Nombre:</p>
+                        <input
+                            type="text"
+                            value={data.nombreR}
+                            onChange={(e) => handleNombreRChange(e.target.value)}
+                            className='border-b-1 border-gray-300 bg-transparent px-5 pb-1 w-full decoration-transparent outline-none'
+                        />
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                </div>
+                <div className='flex justify-center items-center gap-2.5 me-5'>
+
+                    <AdaptButton texto="Finalizar" icon={faArrowRight} onPress={handleNext} />
+                </div>
+            </div>
             {data.selectedP.map((selectedP) => (
                 <CategoryMatrix
                     key={selectedP.id}
                     selectedP={selectedP}
                     onUpdateSelectedP={handleUpdateSelectedP}
+                    onAddCategory={() => handleAddCategory(selectedP.id)}
+                    onDeletePrinciple={() => handleDeletePrinciple(selectedP.id)}
                 />
             ))}
+            <div className='flex justify-center items-center my-3'>
+                <AdaptButton texto="Agregar Principio" icon={faPlus} onPress={handleAddPrinciple} size='md' />
+            </div>
+            {isVisible && (
+                <div
+                    className='animate__animated animate__fadeInRight fixed bottom-0 right-0 me-7 mb-7 px-5 py-3 border border-gray-400 rounded-xl bg-gray-300 bg-opacity-10 hover:bg-opacity-20
+                    transition duration-300 hover:scale-105 z-50'
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                    <FontAwesomeIcon icon={faArrowUp} />
+                </div>
+            )}
         </div>
     );
 }
