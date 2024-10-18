@@ -16,7 +16,7 @@ import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
+import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 
 
 export const Nav = () => {
@@ -77,7 +77,7 @@ export const Nav = () => {
     };
 
     const handlePerfil = () => {
-       router.push('/perfil');
+        router.push('/perfil');
     }
 
     const menuItems = [
@@ -97,7 +97,10 @@ export const Nav = () => {
                 />
                 <div className="flex justify-start items-center gap-2 text-white">
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
-                    <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p>
+                    {!isAuthenticated ?
+                        <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p> :
+                        <div className='w-5'></div>
+                    }
                 </div>
                 {isAuthenticated ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
@@ -131,7 +134,7 @@ export const Nav = () => {
                                     <FontAwesomeIcon icon={faPerson} className='hover:bounce text-white mr-2' />
                                     Perfil
                                 </DropdownItem>
-                                <DropdownItem key="logout" color="danger" className='flex justify-center items-center' onClick={handleLogout}>
+                                <DropdownItem key="logout" color="primary" className='flex justify-center items-center' onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faArrowRightToBracket} className='hover:bounce text-white mr-2' />
                                     Cerrar sesión
                                 </DropdownItem>
