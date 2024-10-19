@@ -129,9 +129,9 @@ function Resumen() {
     const handleDownloadPDF = () => {
         const doc = new jsPDF({ orientation: "landscape" });
         doc.setFontSize(18);
-
+    
         const pageWidth = doc.internal.pageSize.getWidth();
-
+    
         // Agregar imagen y texto en el lado izquierdo
         const img = new Image();
         img.src = '/img/Logo.png';
@@ -144,11 +144,12 @@ function Resumen() {
             doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" }); // Reducir la separación
             doc.text(data.nombreR, pageWidth / 2, imgY + imgHeight + 10, { align: "center" });
             doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
-
-
-            // Definir las columnas de la tabla
+    
+            // Iniciar la posición Y donde empezará el contenido dinámico
+            let currentY = imgY + imgHeight + 20;
+    
+            // Definir las columnas de la tabla (sin la columna de 'Principio')
             const tableColumns = [
-                "Principio",
                 "Categorías",
                 "Incógnitas de evaluación",
                 "Excelente (5)",
@@ -157,14 +158,20 @@ function Resumen() {
                 "Satisfactorio (2)",
                 "Insatisfactorio (1)",
             ];
-
+    
             // Formatear los datos del JSON para las filas de la tabla
-            const tableRows: (string | number)[][] = [];
-
             data.selectedP.forEach((principio) => {
+                // Insertar el nombre del principio como un encabezado centrado
+                doc.setFontSize(14); // Aumentar el tamaño de la fuente para el encabezado
+                doc.text(principio.label, pageWidth / 2, currentY, { align: "center" });
+                doc.setFontSize(10); // Volver al tamaño de fuente normal
+    
+                currentY += 5; // Ajustar la posición Y para la tabla
+    
+                // Crear filas para la tabla de cada principio
+                const tableRows: (string | number)[][] = [];
                 principio.categorias.forEach((categoria) => {
                     const row = [
-                        principio.label, // Columna 'Principio'
                         categoria.contenido, // Columna 'Categorías'
                         categoria.incognitas || "", // Columna 'Incógnitas de evaluación'
                         categoria.escenarios?.[0]?.contenido || "", // Columna '5 Excelente'
@@ -175,44 +182,50 @@ function Resumen() {
                     ];
                     tableRows.push(row);
                 });
+    
+                // Generar la tabla para las categorías e incógnitas del principio actual
+                autoTable(doc, {
+                    head: [tableColumns],
+                    body: tableRows,
+                    startY: currentY, // Iniciar en la posición actual
+                    headStyles: {
+                        fillColor: [41, 128, 185], // Color de fondo azul
+                        textColor: [255, 255, 255], // Color de texto blanco
+                        fontSize: 12, // Tamaño de fuente
+                        fontStyle: 'bold', // Estilo de fuente
+                        halign: 'center', // Alineación horizontal
+                        valign: 'middle', // Alineación vertical
+                    },
+                    bodyStyles: {
+                        fillColor: [245, 245, 245], // Color de fondo gris claro
+                        textColor: [0, 0, 0], // Color de texto negro
+                        fontSize: 10, // Tamaño de fuente
+                        halign: 'left', // Alineación horizontal
+                        valign: 'middle', // Alineación vertical
+                    },
+                    alternateRowStyles: {
+                        fillColor: [255, 255, 255], // Color de fondo blanco para filas alternas
+                    },
+                    styles: {
+                        cellPadding: 4, // Relleno de celda
+                        lineWidth: 0.1, // Ancho de línea
+                        lineColor: [0, 0, 0], // Color de línea
+                    },
+                    theme: "grid",
+                    // Actualizar la posición Y después de la tabla
+                    didDrawPage: (data) => {
+                        if (data.cursor) {
+                            currentY = data.cursor.y + 10; // Ajustar la posición Y después de la tabla
+                        }
+                    },
+                });
             });
-
-            // Generar la tabla en el PDF con autoTable
-            autoTable(doc, {
-                head: [tableColumns],
-                body: tableRows,
-                startY: imgY + imgHeight + 20,
-                headStyles: {
-                    fillColor: [41, 128, 185], // Color de fondo azul
-                    textColor: [255, 255, 255], // Color de texto blanco
-                    fontSize: 12, // Tamaño de fuente
-                    fontStyle: 'bold', // Estilo de fuente
-                    halign: 'center', // Alineación horizontal
-                    valign: 'middle', // Alineación vertical
-                },
-                bodyStyles: {
-                    fillColor: [245, 245, 245], // Color de fondo gris claro
-                    textColor: [0, 0, 0], // Color de texto negro
-                    fontSize: 10, // Tamaño de fuente
-                    halign: 'left', // Alineación horizontal
-                    valign: 'middle', // Alineación vertical
-                },
-                alternateRowStyles: {
-                    fillColor: [255, 255, 255], // Color de fondo blanco para filas alternas
-                },
-                styles: {
-                    cellPadding: 4, // Relleno de celda
-                    lineWidth: 0.1, // Ancho de línea
-                    lineColor: [0, 0, 0], // Color de línea
-                },
-                theme: "grid",
-            });
-
+    
             // Guardar el archivo PDF
             doc.save("Rubrica_de_AutoUX.pdf");
         };
     };
-
+    
     const handleDownloadExcel = () => {
         const tableColumns = [
             "Principio",
