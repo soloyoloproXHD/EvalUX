@@ -1,0 +1,18 @@
+{
+  "dataWithUserId": {
+    "nombreR": "Nueva Otraa",
+    "selectedP": [
+      {
+        "id": 1,
+        "label": "Usabilidad",
+        "categorias": [
+          {
+            "id": 1,
+            "contenido": "Edite esta categoría"
+          }
+        ]
+      }
+    ],
+    "userId": "1"
+  }
+}
