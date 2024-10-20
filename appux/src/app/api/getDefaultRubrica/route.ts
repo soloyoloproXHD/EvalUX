@@ -18,7 +18,7 @@ interface SelectedP {
   categorias: Subcategory[];
 }
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
     // Obtener la rúbrica con el nombre "default"
     const rubricaResult = await conn?.query(
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
              WHERE i.categoria_id = $1`,
             [categoria.id]
           );
-          const incognitas = incognitasResult?.rows.map((row: any) => row.pregunta).join(', ');
+          const incognitas = incognitasResult?.rows.map((row) => row.pregunta).join(', ');
 
           categoriasFormatted.push({
             id: categoria.id,

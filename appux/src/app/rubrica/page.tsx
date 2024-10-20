@@ -7,8 +7,9 @@ import { Help } from "../../components/ui/help";
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { motion } from "framer-motion";
 import axios from "axios";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@nextui-org/react";
 
 const IndexRubrica = () => {
     const router = useRouter();
@@ -58,9 +59,28 @@ const IndexRubrica = () => {
     const handleDefault = () => {
         router.push("/rubrica/createdDefault");
     }
+    const container = {
+        hidden: { opacity: 1, scale: 2 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          transition: {
+            delayChildren: 0.5,
+            staggerChildren: 0.2
+          }
+        }
+      };
+
+    const item = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+          y: 0,
+          opacity: 1
+        }
+    };
 
     return (
-        <div className="text-white py-8 px-12">
+        <div className=" py-8 px-12">
             {/* Encabezado con el título y los botones */}
             <div className="flex justify-between items-center mb-5">
                 <p className="text-2xl font-bold">Rúbricas</p>
@@ -70,33 +90,12 @@ const IndexRubrica = () => {
                 </div>
             </div>
 
-            {/* Mostrar contenido según si hay rúbricas o no */}
-            {rubricas.length > 0 ? (
-                <ul>
-                    {rubricas.map((rubrica, index) => (
-                        <Card key={index} className="my-4" isHoverable={true} allowTextSelectionOnPress={true}>
-                            <CardBody>
-                                <li className="p-2 flex justify-between items-center">
-                                    <p>{rubrica.nombre}</p> {/* Mostrar el nombre de la rúbrica */}
-                                    <AdaptButton texto="Ver más..." />
-                                </li>
-                            </CardBody>
-                        </Card>
-                    ))}
-                </ul>
-            ) : (
-                <div className="flex justify-center items-center flex-col p-16">
-                    <p className="text-xl">No hay rúbricas creadas</p>
-                    <FontAwesomeIcon icon={faBan} className="mt-10 h-40 custom-icon" />
-                </div>
-            )}
-
             {/* Modal de selección */}
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}
                 size="2xl">
                 <ModalContent>
-                    {(onClose) => (
+                    {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">Selecciona una opción</ModalHeader>
                             <ModalBody>
@@ -124,6 +123,34 @@ const IndexRubrica = () => {
                 </ModalContent>
             </Modal>
 
+            
+            <div className="grid place-items-center">
+                {/* Mostrar contenido según si hay rúbricas o no */}
+                {rubricas.length > 0 ? (
+                    <motion.ul
+                        className="container"
+                        variants={container}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        {rubricas.map((rubrica, index) => (
+                            <Card key={index} className="my-4" isHoverable={true} allowTextSelectionOnPress={true}>
+                                <CardBody>
+                                    <motion.li key={index} className="item p-2 flex justify-between items-center" variants={item}>
+                                        <p>{rubrica.nombre}</p> {/* Mostrar el nombre de la rúbrica */}
+                                        <AdaptButton texto="Ver más..." />
+                                    </motion.li>
+                                </CardBody>
+                            </Card>
+                        ))}
+                    </motion.ul>
+                ) : (
+                    <div className="flex justify-center items-center flex-col p-16">
+                        <p className="text-xl">No hay rúbricas creadas</p>
+                        <FontAwesomeIcon icon={faBan} className="mt-10 h-40 custom-icon"/>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

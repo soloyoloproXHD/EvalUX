@@ -1,12 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import AdaptButton from '../../../components/AdaptButton'; // Import the AdaptButton component
 import { faArrowRight, faPenToSquare, faTrash, faPlus, faArrowUp, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tooltip } from '@nextui-org/react';
+import axios from 'axios';
 
 interface Escenario {
     puntaje: number;
@@ -233,9 +233,9 @@ export default function UXEvaluationMatrix() {
         router.push("/rubrica/createdResumen");
     };
 
-    const handleAtras = () => {
+    /*const handleAtras = () => {
         router.push("/rubrica/created1");
-    };
+    };*/
 
     const handleUpdateSelectedP = (updatedSelectedP: SelectedP) => {
         setData(prevData => ({

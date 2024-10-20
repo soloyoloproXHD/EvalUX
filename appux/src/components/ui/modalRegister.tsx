@@ -10,7 +10,6 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalL from "./modalLogIn";
-import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -22,7 +21,6 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const [isModalLOpen, setIsModalLOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
-  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -150,17 +148,19 @@ export default function AppModalR({ show, onClose }: ModalProps) {
 
               const { userId } = result;
               const { token } = result;
+              const { user } = result;
               if (token) {
                   sessionStorage.setItem('token', token);  // Guardar token en sessionStorage
                   sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
+                  sessionStorage.setItem('user', JSON.stringify(user));  // Guardar los datos completos del usuario en sessionStorage
                   console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
               } else {
                   console.error('Token no recibido en la respuesta');
               }
   
               handleCloseModalL();  // Cerrar el modal de registro
+              window.location.href = '/rubrica';    // Redirigir después de guardar el token
               setFormData(initialFormData);  // Restablecer el formulario
-              router.push('/rubrica');  // Redirigir después de guardar el token
           })
           .catch(error => {
               console.error('Error en el proceso de registro:', error);
