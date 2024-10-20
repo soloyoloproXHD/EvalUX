@@ -1,15 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Button } from "@nextui-org/react";
+import { Button, ScrollShadow } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
 import { NotificationTypewriter } from "../../../components/ui/notificacionwrite";
 import { motion } from 'framer-motion';
 import { faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { jsPDF } from "jspdf";
-import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import AdaptButton from '../../../components/AdaptButton'; // Import the AdaptButton component
 
 interface Escenario {
     puntaje: number;
@@ -29,95 +28,71 @@ interface SelectedP {
     categorias: Subcategory[];
 }
 
-
 const evaluationCriteria = [
-    { label: "Excelente", value: 5, color: "bg-success" },
-    { label: "Bueno", value: 4, color: "bg-success-300" },
-    { label: "Aceptable", value: 3, color: "bg-primary-100" },
-    { label: "Satisfactorio", value: 2, color: "bg-warning" },
-    { label: "Insatisfactorio", value: 1, color: "bg-danger" },
+    { label: "Insatisfactorio", value: 1, color: "#F44336" }, // Red
+    { label: "Satisfactorio", value: 2, color: "#FFC107" }, // Amber
+    { label: "Aceptable", value: 3, color: "#FFEB3B" }, // Yellow
+    { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
+    { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
 ];
 
-const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
-    <Textarea
-        className="w-full h-24 text-sm font-normal"
-        placeholder="Ingrese evaluación"
-        disabled
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-    />
-);
-
-const CategoryMatrix: React.FC<{
-    selectedP: SelectedP;
-    onUpdateSelectedP: (updatedSelectedP: SelectedP) => void
-}> = ({ selectedP, onUpdateSelectedP }) => {
-    const handleCellChange = (categoriaIndex: number, evaluationIndex: number, value: string) => {
-        const updatedSelectedP = { ...selectedP };
-        if (!updatedSelectedP.categorias[categoriaIndex].escenarios) {
-            updatedSelectedP.categorias[categoriaIndex].escenarios = Array(5).fill({ puntaje: 0, contenido: "" });
-        }
-        updatedSelectedP.categorias[categoriaIndex].escenarios[evaluationIndex] = {
-            puntaje: evaluationCriteria[evaluationIndex].value,
-            contenido: value
-        };
-        onUpdateSelectedP(updatedSelectedP);
-    };
-
-    const handleUnknownChange = (categoriaIndex: number, value: string) => {
-        const updatedSelectedP = { ...selectedP };
-        updatedSelectedP.categorias[categoriaIndex].incognitas = value;
-        onUpdateSelectedP(updatedSelectedP);
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <Card className="w-full mb-4 ">
-                <CardHeader className="flex flex-col px-4 pt-4 pb-0">
-                    <h2 className="text-lg font-bold justify-center items-center">{selectedP.label}</h2>
-                    <div className="flex w-full justify-between mt-2">
-                        <div className="w-1/6">Categorías</div>
-                        <div className="w-1/6">Incógnitas de evaluación</div>
-                        {evaluationCriteria.map((criteria) => (
-                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
-                                <span className="font-bold">{criteria.value}</span> {criteria.label}
-                            </div>
-                        ))}
-                    </div>
-                </CardHeader>
-                <CardBody className="px-4">
-                    {selectedP.categorias.map((categoria, categoriaIndex) => (
-                        <div key={categoria.id} className="flex w-full mb-2">
-                            <div className="w-1/6 flex items-center">{categoria.contenido}</div>
-                            <div className="w-1/6 pr-2">
-                                <Textarea
-                                    className="w-full h-24 text-sm font-normal"
-                                    placeholder="Ingrese incógnitas"
-                                    disabled
-                                    value={categoria.incognitas || ""}
-                                    onChange={(e) => handleUnknownChange(categoriaIndex, e.target.value)}
-                                />
-                            </div>
-                            {evaluationCriteria.map((criteria, evaluationIndex) => (
-                                <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
-                                    <EvaluationCell
-                                        value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
-                                        onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
-                                    />
-                                </div>
-                            ))}
-                        </div>
+const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
+    <div className="w-full mb-5 px-5">
+        <div className="mt-5 w-1/3 mx-auto flex flex-col p-3">
+            <div className="flex">
+                <div className="text-center w-4/5 text-xl h-12 flex items-center justify-center">
+                    {selectedP.label}
+                </div>
+            </div>
+        </div>
+        <table className="w-full text-left ">
+            <thead>
+                <tr>
+                    <th className=" p-2 text-center">Categorías</th>
+                    <th className=" p-2 text-center">Incógnitas de evaluación</th>
+                    {evaluationCriteria.map((criteria) => (
+                        <th
+                            key={criteria.value}
+                            className=" p-2 text-center"
+                            style={{ backgroundColor: criteria.color }}
+                        >
+                            {criteria.label}
+                        </th>
                     ))}
-                </CardBody>
-            </Card>
-        </motion.div>
-    );
-};
-
+                </tr>
+            </thead>
+            <tbody>
+                {selectedP.categorias.map((categoria) => (
+                    <tr key={categoria.id}>
+                        <td className=" px-2">
+                            <textarea
+                                value={categoria.contenido}
+                                disabled
+                                className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                            />
+                        </td>
+                        <td className=" p-2">
+                            <textarea
+                                value={categoria.incognitas || ""}
+                                disabled
+                                className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                            />
+                        </td>
+                        {evaluationCriteria.map((criteria, evaluationIndex) => (
+                            <td key={evaluationIndex} className="">
+                                <textarea
+                                    value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
+                                    disabled
+                                    className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                                />
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+);
 
 function Resumen() {
     const router = useRouter();
@@ -129,9 +104,9 @@ function Resumen() {
     const handleDownloadPDF = () => {
         const doc = new jsPDF({ orientation: "landscape" });
         doc.setFontSize(18);
-
+    
         const pageWidth = doc.internal.pageSize.getWidth();
-
+    
         // Agregar imagen y texto en el lado izquierdo
         const img = new Image();
         img.src = '/img/Logo.png';
@@ -144,11 +119,12 @@ function Resumen() {
             doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" }); // Reducir la separación
             doc.text(data.nombreR, pageWidth / 2, imgY + imgHeight + 10, { align: "center" });
             doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
-
-
-            // Definir las columnas de la tabla
+    
+            // Iniciar la posición Y donde empezará el contenido dinámico
+            let currentY = imgY + imgHeight + 20;
+    
+            // Definir las columnas de la tabla (sin la columna de 'Principio')
             const tableColumns = [
-                "Principio",
                 "Categorías",
                 "Incógnitas de evaluación",
                 "Excelente (5)",
@@ -157,14 +133,20 @@ function Resumen() {
                 "Satisfactorio (2)",
                 "Insatisfactorio (1)",
             ];
-
+    
             // Formatear los datos del JSON para las filas de la tabla
-            const tableRows: (string | number)[][] = [];
-
             data.selectedP.forEach((principio) => {
+                // Insertar el nombre del principio como un encabezado centrado
+                doc.setFontSize(14); // Aumentar el tamaño de la fuente para el encabezado
+                doc.text(principio.label, pageWidth / 2, currentY, { align: "center" });
+                doc.setFontSize(10); // Volver al tamaño de fuente normal
+    
+                currentY += 5; // Ajustar la posición Y para la tabla
+    
+                // Crear filas para la tabla de cada principio
+                const tableRows: (string | number)[][] = [];
                 principio.categorias.forEach((categoria) => {
                     const row = [
-                        principio.label, // Columna 'Principio'
                         categoria.contenido, // Columna 'Categorías'
                         categoria.incognitas || "", // Columna 'Incógnitas de evaluación'
                         categoria.escenarios?.[0]?.contenido || "", // Columna '5 Excelente'
@@ -175,44 +157,50 @@ function Resumen() {
                     ];
                     tableRows.push(row);
                 });
+    
+                // Generar la tabla para las categorías e incógnitas del principio actual
+                autoTable(doc, {
+                    head: [tableColumns],
+                    body: tableRows,
+                    startY: currentY, // Iniciar en la posición actual
+                    headStyles: {
+                        fillColor: [41, 128, 185], // Color de fondo azul
+                        textColor: [255, 255, 255], // Color de texto blanco
+                        fontSize: 12, // Tamaño de fuente
+                        fontStyle: 'bold', // Estilo de fuente
+                        halign: 'center', // Alineación horizontal
+                        valign: 'middle', // Alineación vertical
+                    },
+                    bodyStyles: {
+                        fillColor: [245, 245, 245], // Color de fondo gris claro
+                        textColor: [0, 0, 0], // Color de texto negro
+                        fontSize: 10, // Tamaño de fuente
+                        halign: 'left', // Alineación horizontal
+                        valign: 'middle', // Alineación vertical
+                    },
+                    alternateRowStyles: {
+                        fillColor: [255, 255, 255], // Color de fondo blanco para filas alternas
+                    },
+                    styles: {
+                        cellPadding: 4, // Relleno de celda
+                        lineWidth: 0.1, // Ancho de línea
+                        lineColor: [0, 0, 0], // Color de línea
+                    },
+                    theme: "grid",
+                    // Actualizar la posición Y después de la tabla
+                    didDrawPage: (data) => {
+                        if (data.cursor) {
+                            currentY = data.cursor.y + 10; // Ajustar la posición Y después de la tabla
+                        }
+                    },
+                });
             });
-
-            // Generar la tabla en el PDF con autoTable
-            autoTable(doc, {
-                head: [tableColumns],
-                body: tableRows,
-                startY: imgY + imgHeight + 20,
-                headStyles: {
-                    fillColor: [41, 128, 185], // Color de fondo azul
-                    textColor: [255, 255, 255], // Color de texto blanco
-                    fontSize: 12, // Tamaño de fuente
-                    fontStyle: 'bold', // Estilo de fuente
-                    halign: 'center', // Alineación horizontal
-                    valign: 'middle', // Alineación vertical
-                },
-                bodyStyles: {
-                    fillColor: [245, 245, 245], // Color de fondo gris claro
-                    textColor: [0, 0, 0], // Color de texto negro
-                    fontSize: 10, // Tamaño de fuente
-                    halign: 'left', // Alineación horizontal
-                    valign: 'middle', // Alineación vertical
-                },
-                alternateRowStyles: {
-                    fillColor: [255, 255, 255], // Color de fondo blanco para filas alternas
-                },
-                styles: {
-                    cellPadding: 4, // Relleno de celda
-                    lineWidth: 0.1, // Ancho de línea
-                    lineColor: [0, 0, 0], // Color de línea
-                },
-                theme: "grid",
-            });
-
+    
             // Guardar el archivo PDF
             doc.save("Rubrica_de_AutoUX.pdf");
         };
     };
-
+    
     const handleDownloadExcel = () => {
         const tableColumns = [
             "Principio",
@@ -263,34 +251,30 @@ function Resumen() {
         }
     }, []);
 
-    const handleUpdateSelectedP = (updatedSelectedP: SelectedP) => {
-        setData(prevData => ({
-            ...prevData,
-            selectedP: prevData.selectedP.map(p =>
-                p.id === updatedSelectedP.id ? updatedSelectedP : p
-            )
-        }));
-    };
-
     return (
         <div className="py-8 px-12 min-h-screen">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-4">
                 <p className="text-2xl">Creación de Rúbrica</p>
             </div>
             <div className="flex gap-8">
-                <div className="w-2/3 p-4 rounded-lg">
+
+                <div className="w-3/4 p-4 rounded-lg">
                     <p className="text-xl font-semibold mb-4">Vista Previa de Rúbrica</p>
-                    <div className="max-h-[600px] overflow-y-auto">
+
+                    <ScrollShadow className="max-h-[600px]">
                         {data.selectedP.map((selectedP) => (
                             <CategoryMatrix
                                 key={selectedP.id}
                                 selectedP={selectedP}
-                                onUpdateSelectedP={handleUpdateSelectedP}
                             />
                         ))}
-                    </div>
+                    </ScrollShadow>
+
+                    {/* <div className="max-h-[600px] overflow-y-auto">
+
+                    </div> */}
                 </div>
-                <div className="w-1/3 p-10">
+                <div className="w-1/4 h-[70%] bg-gray-300 bg-opacity-5 transition duration-300 rounded-lg my-auto p-5 border shadow-md hover:shadow-lg flex justify-center items-center flex-col">
                     <p className="text-xl font-semibold mb-4"><NotificationTypewriter /></p>
                     <motion.div
                         whileHover={{ scale: 1.05 }}
@@ -322,20 +306,25 @@ function Resumen() {
                         <motion.div
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                        >
-                            <Button color="danger" className="bg-red-800" onClick={handleDownloadPDF}>
+                        >   
+
+                            <AdaptButton icon={faFilePdf} texto='PDF' onPress={handleDownloadPDF} size='md'/>
+                            {/* <Button color="danger" className="bg-red-800" onClick={handleDownloadPDF}>
                                 <FontAwesomeIcon icon={faFilePdf} />
                                 PDF
-                            </Button>
+                            </Button> */}
                         </motion.div>
                         <motion.div
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                         >
-                            <Button color="success" onClick={handleDownloadExcel}>
+
+                            <AdaptButton icon={faFileExcel} texto='Excel' onPress={handleDownloadExcel} size='md'/>
+
+                            {/* <Button color="success" onClick={handleDownloadExcel}>
                                 <FontAwesomeIcon icon={faFileExcel} />
                                 Excel
-                            </Button>
+                            </Button> */}
                         </motion.div>
                     </div>
                 </div>

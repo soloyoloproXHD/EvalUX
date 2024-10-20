@@ -34,10 +34,18 @@ export async function POST(request: Request) {
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '24h' }
     );
-    
-    const userId = user.id;
 
-    return new Response(JSON.stringify({ message: 'Inicio de sesión exitoso', token, userId}), { status: 200 });
+    // Eliminar la contraseña de los datos del usuario para no devolverla
+    delete user.contrasena;
+
+    // Devolver el token y los datos del usuario
+    return new Response(JSON.stringify({ 
+      message: 'Inicio de sesión exitoso', 
+      token, 
+      user,
+      userId: user.id
+    }), { status: 200 });
+    
   } catch (error) {
     console.error('Server Error:', error);
     return new Response(JSON.stringify({ message: 'Error en el servidor' }), { status: 500 });

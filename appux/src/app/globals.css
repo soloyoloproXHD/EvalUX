@@ -170,9 +170,12 @@ body {
   color: var(--title-color-hover-dark, #2D6086);
 }
 
-button:hover {
-  background-color: var(--button-bg, #2D6086);
-
+.buttoneval:hover {
+  background-color: var(--button-bg, #d4e4ff87 );
+  transition:  background-color 0.3s ease;
+}
+.dark .buttoneval:hover {
+  background-color: var(--button-bg, #17202f98 );
 }
 
 /* Estilos generales para el botón de peligro */
@@ -231,3 +234,5 @@ button:hover {
 .dark .text-shadow {
   text-shadow: rgba(255, 255, 255, 0.5) -3px 3px 24px;
 }
+
+/* codigo de input search */

@@ -155,14 +155,14 @@ export default function UXEvaluationMatrix() {
         const userId = sessionStorage.getItem('userId');
         const dataWithUserId = { ...data, userId };
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
-        notify();
-
+        
         console.log("si",dataWithUserId);
 
         axios.post('/api/postJsonR', {
             dataWithUserId,
         })
-            .then((response) => {
+        .then((response) => {
+                notify();
                 response.data();
             })
             .catch((error) => {

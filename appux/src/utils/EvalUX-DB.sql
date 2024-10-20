@@ -11,7 +11,7 @@ CREATE TABLE "usuario" (
 CREATE TABLE "rubrica" (
   "id" serial PRIMARY KEY,
   "nombre" varchar(30),
-  "ruta_rubrica" varchar(100),
+  "j_rubrica" text,
   "usuario_id" int
 );
 
@@ -49,12 +49,7 @@ CREATE TABLE "reporte" (
   "id" serial PRIMARY KEY,
   "nombre" varchar(200),
   "descripcion" varchar(500),
-  "v_usabilidad" int,
-  "v_accesibilidad" int,
-  "v_simplicidad" int,
-  "v_consistencia" int,
-  "v_centrado_en_el_usuario" int,
-  "v_final" int,
+  "j_reporte" text,
   "usuario_id" int,
   "rubrica_id" int,
   "fecha_registro" date

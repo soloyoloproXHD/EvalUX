@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 interface AdaptButtonProps {
-  texto: string;
+  texto?: string;
   icon?: IconProp;
   onPress?: () => void;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  size?: "sm" | "md" | "lg";
+  showSpinner?: boolean;
 }
 
-export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onPress, onClick }) => {
+export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onPress, onClick, size = "sm", showSpinner = true }) => {
   const [loading, setLoading] = useState(false);
 
   const handlePress = () => {
@@ -22,7 +24,7 @@ export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onPress, 
       onPress();
     }
     // Simulate async action
-    setTimeout(() => setLoading(false), 2000); // Remove this line in real use case
+    setTimeout(() => setLoading(false), 2000);
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,8 +39,8 @@ export const AdaptButton: React.FC<AdaptButtonProps> = ({ texto, icon, onPress, 
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <Button className='custom-adapt-button' variant="bordered" size="sm" onPress={handlePress} onClick={handleClick}>
-        {loading ? (
+      <Button className='custom-adapt-button' variant="bordered" size={size} onPress={handlePress} onClick={handleClick}>
+        {loading && showSpinner ? (
           <FontAwesomeIcon icon={faSpinner} spin />
         ) : (
           <>
