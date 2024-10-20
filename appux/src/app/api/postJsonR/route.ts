@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<Response> {
 
         // 1. Insertar la rúbrica
         const rubricaResult = await client?.query<{ id: number }>(
-            `INSERT INTO rubrica (nombre, ruta_rubrica, usuario_id) VALUES ($1, $2, $3) RETURNING id`,
+            `INSERT INTO rubrica (nombre, j_rubrica, usuario_id) VALUES ($1, $2, $3) RETURNING id`,
             [nombreR, result.dataWithUserId, parseInt(userId, 10)]
         );
 
