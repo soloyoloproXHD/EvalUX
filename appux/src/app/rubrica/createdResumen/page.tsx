@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { NotificationTypewriter } from "../../../components/ui/notificacionwrite";
 import { motion } from 'framer-motion';
 import { faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
