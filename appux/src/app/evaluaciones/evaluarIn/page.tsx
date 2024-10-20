@@ -22,9 +22,10 @@ const EvaluarIn: React.FC = () => {
     const [rubricas, setRubricas] = useState<Rubrica[]>([]);
     const [originalRubricas, setOriginalRubricas] = useState<Rubrica[]>([]);
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
-    const [rubricaData, setRubricaData] = useState({ nombreR: '', selectedRubrica: { id: 0, nombre: "" } });
-    const [errors, setErrors] = useState({ nombreR: '', selectedRubrica: '' });
+    const [rubricaData, setRubricaData] = useState({ titulo: '', selectedRubrica: { id: 0, nombre: "" } });
+    const [errors, setErrors] = useState({ titulo: '', selectedRubrica: '' });
     const [loading, setLoading] = useState(true); // Estado de carga
+    const [textArea, setTextArea] = useState<string>('');
 
     useEffect(() => {
         fetchRubricas();
@@ -60,18 +61,24 @@ const EvaluarIn: React.FC = () => {
         isError ? toast.error(message, config) : toast.success(message, config);
     };
 
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTextArea(e.target.value);
+    };
+
     const validateForm = () => {
         const newErrors = {
-            nombreR: rubricaData.nombreR.trim() ? '' : 'El campo no puede estar vacío',
+            titulo: rubricaData.titulo.trim() ? '' : 'El campo no puede estar vacío',
             selectedRubrica: rubricaData.selectedRubrica.id !== 0 ? '' : 'Debe seleccionar una rúbrica'
         };
         setErrors(newErrors);
-        return !newErrors.nombreR && !newErrors.selectedRubrica;
+        return !newErrors.titulo && !newErrors.selectedRubrica;
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
+            sessionStorage.setItem('tituloEv', rubricaData.titulo);
+            sessionStorage.setItem('descripcion', textArea);
             sessionStorage.setItem('rubricaData', JSON.stringify(rubricaData));
             router.push("/evaluaciones/evaluarMid");
         } else {
@@ -113,13 +120,17 @@ const EvaluarIn: React.FC = () => {
                     <AppInputOut
                         type="text"
                         label="Título"
-                        name="nombreR"
-                        value={rubricaData.nombreR}
+                        name="titulo"
+                        value={rubricaData.titulo}
                         onChange={handleInputChange}
-                        isInvalid={!!errors.nombreR}
-                        errorMessage={errors.nombreR}
+                        isInvalid={!!errors.titulo}
+                        errorMessage={errors.titulo}
                     />
-                    <Textarea className="max-w-md mt-5" variant="flat" label="Descripción" labelPlacement="outside" />
+                    <Textarea className="max-w-md mt-5"
+                     variant="flat"
+                     label="Descripción"
+                     onChange={(e) => handleTextAreaChange(e as unknown as React.ChangeEvent<HTMLTextAreaElement>)}
+                     labelPlacement="outside" />
                 </div>
                 <div className="flex justify-start items-center w-full h-auto ml-16">
                     <Image

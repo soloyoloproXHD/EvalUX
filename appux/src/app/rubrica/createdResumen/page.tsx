@@ -103,7 +103,7 @@ const CategoryMatrix: React.FC<{
                                 />
                             </div>
                             {evaluationCriteria.map((criteria, evaluationIndex) => (
-                                <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
+                                <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden h-auto">
                                     <EvaluationCell
                                         value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
                                         onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}

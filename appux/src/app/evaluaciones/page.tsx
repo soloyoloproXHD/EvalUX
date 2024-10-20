@@ -7,6 +7,7 @@ import { Help } from '@/components/ui/help';
 import { Image } from '@nextui-org/react';
 import { Accordion, AccordionItem } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import Loanding from '../loading';
 
 type Reporte = {
     id: number;
@@ -53,6 +54,12 @@ export default function IndexEvaluacion() {
         router.push('/evaluaciones/evaluarIn');
     };
 
+    const handleVermas = (id: number) => (e: FormEvent) => {
+        e.preventDefault();
+        sessionStorage.setItem('reporteId', id.toString());
+        router.push('/evaluaciones/reporte');
+    }
+
     const renderEvaluaciones = () => {
         if (evaluaciones && evaluaciones.length > 0) {
             return (
@@ -75,7 +82,7 @@ export default function IndexEvaluacion() {
                                     </div>
                                     <div className="gap-x-3 flex mr-32">
                                         <AdaptButton texto="Descargar PDF" icon={faDownLong} />
-                                        <AdaptButton texto="Ver más" icon={faEye} />
+                                        <AdaptButton texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
                                     </div>
                                 </div>
                             </AccordionItem>
@@ -99,9 +106,9 @@ export default function IndexEvaluacion() {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-xl">Cargando...</p>
-            </div>
+            <>
+                <Loanding />
+            </>
         );
     }
 

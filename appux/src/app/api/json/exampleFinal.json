@@ -1,0 +1,356 @@
+[
+    {
+        "name": "Usabilidad",
+        "evaluacionFinal": 4.666666666666667,
+        "subcategories": [
+            {
+                "name": "Esto es para usabilidad",
+                "incognitas": "a",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "aa"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "a"
+                    }
+                ],
+                "evaluacionIndividual": 5
+            },
+            {
+                "name": "Esto tambien es para usabilidad",
+                "incognitas": "a",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "a"
+                    }
+                ],
+                "evaluacionIndividual": 4
+            },
+            {
+                "name": "Otra pregunta",
+                "incognitas": "a",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "a"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "a"
+                    }
+                ],
+                "evaluacionIndividual": 5
+            }
+        ]
+    },
+    {
+        "name": "Simplicidad",
+        "evaluacionFinal": 3.6666666666666665,
+        "subcategories": [
+            {
+                "name": "Simplicidad this is",
+                "incognitas": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    }
+                ],
+                "evaluacionIndividual": 4
+            },
+            {
+                "name": "Aqui va otro de simplicidad",
+                "incognitas": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    }
+                ],
+                "evaluacionIndividual": 4
+            },
+            {
+                "name": "Comida simplicidad",
+                "incognitas": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+                    }
+                ],
+                "evaluacionIndividual": 3
+            }
+        ]
+    },
+    {
+        "name": "Centrado en el Usuario",
+        "evaluacionFinal": 3.5,
+        "subcategories": [
+            {
+                "name": "Comida con usuario",
+                "incognitas": "d",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "d"
+                    }
+                ],
+                "evaluacionIndividual": 4
+            },
+            {
+                "name": "Editamos esta categoria para el usuario",
+                "incognitas": "d",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "d"
+                    }
+                ],
+                "evaluacionIndividual": 3
+            }
+        ]
+    },
+    {
+        "name": "Accesibilidad",
+        "evaluacionFinal": 3,
+        "subcategories": [
+            {
+                "name": "Accesibilidad",
+                "incognitas": "d",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "d"
+                    }
+                ],
+                "evaluacionIndividual": 2
+            },
+            {
+                "name": "Accesibilidad 2",
+                "incognitas": "d",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "d"
+                    }
+                ],
+                "evaluacionIndividual": 4
+            }
+        ]
+    },
+    {
+        "name": "Concistencia",
+        "evaluacionFinal": 5,
+        "subcategories": [
+            {
+                "name": "Consistencia con",
+                "incognitas": "d",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "d"
+                    }
+                ],
+                "evaluacionIndividual": 5
+            },
+            {
+                "name": "Otra categoria de consistencia",
+                "incognitas": "d",
+                "evaluations": [
+                    {
+                        "puntaje": 5,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 4,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 3,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 2,
+                        "contenido": "d"
+                    },
+                    {
+                        "puntaje": 1,
+                        "contenido": "d"
+                    }
+                ],
+                "evaluacionIndividual": 5
+            }
+        ]
+    }
+]

@@ -18,37 +18,35 @@ import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 
-
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
-    const userlocal = sessionStorage.getItem('user');
-    const imgPerfil = userlocal ? JSON.parse(userlocal).img : null;
-
+    const [imgPerfil, setImgPerfil] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalLOpen, setIsModalLOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Nuevo estado para autenticación
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
-        let token = null;
-        if(typeof window !== 'undefined'){
-         token = sessionStorage.getItem('token');
-        }
-        if (token) {
-            setIsAuthenticated(true);
+        if (typeof window !== 'undefined') {
+            const token = sessionStorage.getItem('token');
+            const userlocal = sessionStorage.getItem('user');
+            if (userlocal) {
+                setImgPerfil(JSON.parse(userlocal).img);
+            }
+            if (token) {
+                setIsAuthenticated(true);
+            }
         }
     }, []);
 
     const handleLogout = () => {
-        sessionStorage.removeItem('token'); // Elimina el token al cerrar sesión
-        setIsAuthenticated(false); // Cambia el estado a no autenticado
-        router.push('/'); // Redirige al inicio
+        sessionStorage.removeItem('token');
+        setIsAuthenticated(false);
+        router.push('/');
     };
-
-    // const user = null;
 
     if (!mounted) {
         return null;
@@ -137,8 +135,6 @@ export const Nav = () => {
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        {/* <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" /> */}
-                        {/* <button >Cerrar Sesión</button> */}
                     </>
                 }
 
@@ -152,7 +148,6 @@ export const Nav = () => {
                             {item}
                         </Link>
                     </NavbarMenuItem>
-
                 ))}
             </NavbarMenu>
 
