@@ -6,6 +6,7 @@ import AdaptButton from '../../../components/AdaptButton'; // Import the AdaptBu
 import { faArrowRight, faPenToSquare, faTrash, faPlus, faArrowUp, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tooltip } from '@nextui-org/react';
+import axios from 'axios';
 
 interface Escenario {
     puntaje: number;
@@ -232,9 +233,9 @@ export default function UXEvaluationMatrix() {
         router.push("/rubrica/createdResumen");
     };
 
-    const handleAtras = () => {
+    /*const handleAtras = () => {
         router.push("/rubrica/created1");
-    };
+    };*/
 
     const handleUpdateSelectedP = (updatedSelectedP: SelectedP) => {
         setData(prevData => ({

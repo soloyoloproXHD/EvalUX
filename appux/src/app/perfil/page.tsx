@@ -44,7 +44,7 @@ const Page: React.FC = () => {
             theme: "dark",
         };
 
-        isError ? toast.error(message, config) : toast.success(message, config);
+        return isError ? toast.error(message, config) : toast.success(message, config);
     };
 
     const loadProfile = async () => {

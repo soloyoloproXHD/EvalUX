@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
-import { Card, CardBody, CardHeader, user } from '@nextui-org/react';
+import { Card, CardBody, CardHeader} from '@nextui-org/react';
 import AdaptButton from '@/components/AdaptButton';
 import { faCircleQuestion, faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -129,16 +129,16 @@ const UXEvaluationMatrix: React.FC = () => {
     const router = useRouter();
     const [rubrica, setRubrica] = useState<Rubrica | null>(null);
     const [categories, setCategories] = useState<{
-        evaluacionFinal: any; name: string; subcategories: any[]
+        evaluacionFinal: number | null; name: string; subcategories: {
+        name: string;
+        incognitas: string;
+        evaluations: Escenario[];
+        evaluacionIndividual: number;
+    }[];
     }[]>([]);
     const [selectedEvaluations, setSelectedEvaluations] = useState<{ [subcategory: string]: number }>({});
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
     const fetchRubrica = useCallback(async () => {
-        setLoading(true);
-        setError(null);
         try {
             const rubricaData = sessionStorage.getItem('rubricaData');
             if (!rubricaData) throw new Error('No se encontró el ID del usuario');
@@ -158,9 +158,7 @@ const UXEvaluationMatrix: React.FC = () => {
             setRubrica(fetchedRubrica);
             setCategories(transformCategories(fetchedRubrica));
         } catch (error) {
-            setError((error as any)?.message || 'Error desconocido');
-        } finally {
-            setLoading(false);
+            console.log(error);
         }
     }, []);
 
@@ -204,11 +202,11 @@ const UXEvaluationMatrix: React.FC = () => {
 
     const handleFinish = async () => {
         let totalGeneralEvaluacion = 0;
-        let categoryCount = categories.length;
+        const categoryCount = categories.length;
 
         categories.forEach((category) => {
             let totalEvaluacion = 0;
-            let subcategoryCount = category.subcategories.length;
+            const subcategoryCount = category.subcategories.length;
 
             category.subcategories.forEach((subcategory) => {
                 totalEvaluacion += subcategory.evaluacionIndividual;
@@ -237,7 +235,7 @@ const UXEvaluationMatrix: React.FC = () => {
                     contenido: subcategory.name,
                     incognitas: subcategory.incognitas,
                     evaluacionIndividual: subcategory.evaluacionIndividual,
-                    escenarios: subcategory.evaluations.map((evaluation: { puntaje: any; contenido: any; }) => ({
+                    escenarios: subcategory.evaluations.map((evaluation: { puntaje: number; contenido: string; }) => ({
                         puntaje: evaluation.puntaje,
                         contenido: evaluation.contenido,
                     })),

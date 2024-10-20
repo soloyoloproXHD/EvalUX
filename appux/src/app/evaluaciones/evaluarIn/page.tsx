@@ -21,7 +21,6 @@ const EvaluarIn: React.FC = () => {
     const router = useRouter();
     const [rubricas, setRubricas] = useState<Rubrica[]>([]);
     const [originalRubricas, setOriginalRubricas] = useState<Rubrica[]>([]);
-    const [selectedKey, setSelectedKey] = useState<string | null>(null);
     const [rubricaData, setRubricaData] = useState({ titulo: '', selectedRubrica: { id: 0, nombre: "" } });
     const [errors, setErrors] = useState({ titulo: '', selectedRubrica: '' });
     const [loading, setLoading] = useState(true); // Estado de carga
@@ -58,7 +57,7 @@ const EvaluarIn: React.FC = () => {
 
     const notify = (message: string, isError = false) => {
         const config = { autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, theme: "dark" };
-        isError ? toast.error(message, config) : toast.success(message, config);
+        return isError ? toast.error(message, config) : toast.success(message, config);
     };
 
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -156,7 +155,6 @@ const EvaluarIn: React.FC = () => {
                         variant="flat"
                         disallowEmptySelection
                         selectionMode="single"
-                        selectedKeys={selectedKey ? [selectedKey] : undefined}
                         onSelectionChange={(key) => handleRubricaSelection(key ? Array.from(key).join('') : null)}
                     >
                         {rubricas.map((rubrica) => (
