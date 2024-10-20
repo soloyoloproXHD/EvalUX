@@ -90,27 +90,6 @@ const IndexRubrica = () => {
                 </div>
             </div>
 
-            {/* Mostrar contenido según si hay rúbricas o no */}
-            {rubricas.length > 0 ? (
-                <ul>
-                    {rubricas.map((rubrica, index) => (
-                        <Card key={index} className="my-4" isHoverable={true} allowTextSelectionOnPress={true}>
-                            <CardBody>
-                                <li className="p-2 flex justify-between items-center">
-                                    <p>{rubrica.nombre}</p> {/* Mostrar el nombre de la rúbrica */}
-                                    <AdaptButton texto="Ver más..." />
-                                </li>
-                            </CardBody>
-                        </Card>
-                    ))}
-                </ul>
-            ) : (
-                <div className="flex justify-center items-center flex-col p-16">
-                    <p className="text-xl">No hay rúbricas creadas</p>
-                    <FontAwesomeIcon icon={faBan} className="mt-10 h-40 custom-icon" />
-                </div>
-            )}
-
             {/* Modal de selección */}
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}
