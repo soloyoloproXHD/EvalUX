@@ -144,6 +144,7 @@ const UXEvaluationMatrix: React.FC = () => {
             if (!rubricaData) throw new Error('No se encontró el ID del usuario');
 
             const { selectedRubrica } = JSON.parse(rubricaData);
+            console.log("La rubrica aqui es:" + selectedRubrica.id);
             const { data, status } = await axios.get('/api/getRubrica', { params: { id: selectedRubrica.id } });
             if (status !== 200) throw new Error('No se pudo obtener la rúbrica.');
 

@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 
     } catch (error) {
         console.error("Error al obtener la rúbrica:", error);
-        return new Response("Error del Servidor", { status: 500 });
+        return new Response("Error del Servidor" + error, { status: 500 });
     } finally {
         // Close the connection
         client?.release();
