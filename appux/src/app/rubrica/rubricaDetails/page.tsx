@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ScrollShadow } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
-import { NotificationTypewriter } from "../../../components/ui/notificacionwrite";
 import { motion } from 'framer-motion';
 import { faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { jsPDF } from "jspdf";
@@ -127,11 +126,11 @@ function Detalles() {
             const tableColumns = [
                 "Categorías",
                 "Incógnitas de evaluación",
-                "Excelente (5)",
-                "Bueno (4)",
-                "Aceptable (3)",
-                "Satisfactorio (2)",
                 "Insatisfactorio (1)",
+                "Satisfactorio (2)",
+                "Aceptable (3)",
+                "Bueno (4)",
+                "Excelente (5)",
             ];
     
             // Formatear los datos del JSON para las filas de la tabla

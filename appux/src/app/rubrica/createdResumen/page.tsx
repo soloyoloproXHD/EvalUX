@@ -127,11 +127,11 @@ function Resumen() {
             const tableColumns = [
                 "Categorías",
                 "Incógnitas de evaluación",
-                "Excelente (5)",
-                "Bueno (4)",
-                "Aceptable (3)",
-                "Satisfactorio (2)",
                 "Insatisfactorio (1)",
+                "Satisfactorio (2)",
+                "Aceptable (3)",
+                "Bueno (4)",
+                "Excelente (5)",
             ];
 
             // Formatear los datos del JSON para las filas de la tabla

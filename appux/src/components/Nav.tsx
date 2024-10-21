@@ -99,13 +99,17 @@ export const Nav = () => {
                 </div>
                 {isAuthenticated ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
-                        <NavbarItem>
-                            <FontAwesomeIcon icon={faTableList} className='me-1' />
-                            <Link href="/rubrica">Rubricas</Link>
+                        <NavbarItem className='hover:bg-blue-700 rounded-md p-1 transition-colors ease-in-out duration-300'>
+                            <Link href="/rubrica" className='hover:text-white transition-colors ease-in-out duration-300'>
+                                <FontAwesomeIcon icon={faTableList} className='me-1' />
+                                Rubricas
+                            </Link>
                         </NavbarItem>
-                        <NavbarItem>
-                            <FontAwesomeIcon icon={faClipboardList} className='me-1' />
-                            <Link href="/evaluaciones">Evaluaciones</Link>
+                        <NavbarItem className='hover:bg-blue-700 rounded-md p-1 transition-colors ease-in-out duration-300'>
+                            <Link href="/evaluaciones" className='hover:text-white transition-colors ease-in-out duration-300'>
+                                <FontAwesomeIcon icon={faClipboardList} className='me-1' />
+                                Evaluaciones
+                            </Link>
                         </NavbarItem>
                     </NavbarContent>
                 ) : null}
