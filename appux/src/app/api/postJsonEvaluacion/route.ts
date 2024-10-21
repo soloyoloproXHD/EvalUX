@@ -1,5 +1,4 @@
 import { conn } from "@/utils/db";
-import fs from "fs";
 
 export async function POST(request: Request): Promise<Response> {
   const client = await conn?.connect();
