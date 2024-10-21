@@ -1,5 +1,6 @@
 import { conn } from "../../../utils/db";
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export async function POST(request: Request) {
   try {
@@ -25,12 +26,27 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(contrasena, 10);
 
     // Insertar el nuevo usuario en la base de datos
-    await conn.query(
-      'INSERT INTO usuario (nombres, apellidos, "correoE", contrasena, fecha_registro) VALUES ($1, $2, $3, $4, NOW())',
+    const result = await conn.query(
+      'INSERT INTO usuario (nombres, apellidos, "correoE", contrasena, fecha_registro) VALUES ($1, $2, $3, $4, NOW()) RETURNING id',
       [nombres, apellidos, correoE, hashedPassword]
     );
 
-    return new Response(JSON.stringify({ message: 'Usuario registrado exitosamente' }), { status: 201 });
+    const userId = result.rows[0].id;
+
+    // Crear y devolver token JWT
+    const token = jwt.sign(
+      { userId },
+      process.env.JWT_SECRET || 'secret',
+      { expiresIn: '24h' }
+    );
+
+    console.log('Usuario registrado exitosamente:', { token });
+
+    return new Response(JSON.stringify({ 
+      message: 'Usuario registrado exitosamente', 
+      token,
+      userId 
+    }), { status: 201 });
   } catch (error) {
     console.error('Server Error:', error);
     return new Response(JSON.stringify({ message: 'Error en el servidor: ' + error }), { status: 500 });
