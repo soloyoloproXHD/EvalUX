@@ -79,6 +79,23 @@ const IndexRubrica = () => {
         }
     };
 
+    const rubricaDetails = async (rubricaId: string) => {
+        try {
+            // Hacer una solicitud GET a la ruta correspondiente
+            const response = await axios.get(`/api/getRubrica?id=${rubricaId}`);
+            
+            // Guardar el resultado en una variable
+            const rubricaData = response.data;           
+    
+            sessionStorage.setItem('principiosData', JSON.stringify(rubricaData));
+
+            // Redirigir a la página de detalles de la rúbrica
+            router.push(`/rubrica/rubricaDetails`);
+        } catch (error) {
+            console.error("Error al obtener la rúbrica:", error);
+        }
+    };
+
     return (
         <div className=" py-8 px-12">
             {/* Encabezado con el título y los botones */}
@@ -138,7 +155,7 @@ const IndexRubrica = () => {
                                 <CardBody>
                                     <motion.li key={index} className="item p-2 flex justify-between items-center" variants={item}>
                                         <p>{rubrica.nombre}</p> {/* Mostrar el nombre de la rúbrica */}
-                                        <AdaptButton texto="Ver más..." />
+                                        <AdaptButton texto="Ver más" onPress={() => rubricaDetails(rubrica.id.toString())} />
                                     </motion.li>
                                 </CardBody>
                             </Card>
