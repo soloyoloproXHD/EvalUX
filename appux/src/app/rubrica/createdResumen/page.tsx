@@ -29,9 +29,9 @@ interface SelectedP {
 }
 
 const evaluationCriteria = [
-    { label: "Insatisfactorio", value: 1, color: "#F44336" }, // Red
-    { label: "Satisfactorio", value: 2, color: "#FFC107" }, // Amber
-    { label: "Aceptable", value: 3, color: "#FFEB3B" }, // Yellow
+    { label: "Insatisfactorio", value: 1, color: "#881414" }, // Red
+    { label: "Satisfactorio", value: 2, color: "#bd3c11" }, // Amber
+    { label: "Aceptable", value: 3, color: "#f26b1d" }, // Yellow
     { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
     { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
 ];
@@ -45,15 +45,15 @@ const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
                 </div>
             </div>
         </div>
-        <table className="w-full text-left ">
+        <table className="w-full text-left border border-separate border-spacing-2 rounded-2xl p-4 tablenombrequeyoquieraponer">
             <thead>
-                <tr>
+                <tr className="aqui">
                     <th className=" p-2 text-center">Categorías</th>
                     <th className=" p-2 text-center">Incógnitas de evaluación</th>
                     {evaluationCriteria.map((criteria) => (
                         <th
                             key={criteria.value}
-                            className=" p-2 text-center"
+                            className=" p-2 text-center rounded-xl"
                             style={{ backgroundColor: criteria.color }}
                         >
                             {criteria.label}
@@ -64,14 +64,14 @@ const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
             <tbody>
                 {selectedP.categorias.map((categoria) => (
                     <tr key={categoria.id}>
-                        <td className=" px-2">
+                        <td className="px-2 rounded-lg">
                             <textarea
                                 value={categoria.contenido}
                                 disabled
                                 className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
                             />
                         </td>
-                        <td className=" p-2">
+                        <td className=" p-2 rounded-lg">
                             <textarea
                                 value={categoria.incognitas || ""}
                                 disabled
@@ -79,7 +79,7 @@ const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
                             />
                         </td>
                         {evaluationCriteria.map((criteria, evaluationIndex) => (
-                            <td key={evaluationIndex} className="">
+                            <td key={evaluationIndex} className="border rounded-lg">
                                 <textarea
                                     value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
                                     disabled
