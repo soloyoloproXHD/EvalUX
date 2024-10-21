@@ -92,7 +92,7 @@ export const Nav = () => {
                 />
                 <div className="flex justify-start items-center gap-2 text-white">
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
-                    {isAuthenticated ?
+                    {!isAuthenticated || isAuthenticated ?
                         <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p> :
                         <div className='w-5'></div>
                     }
