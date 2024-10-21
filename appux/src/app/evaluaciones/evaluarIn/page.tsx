@@ -21,7 +21,7 @@ const EvaluarIn: React.FC = () => {
     const router = useRouter();
     const [rubricas, setRubricas] = useState<Rubrica[]>([]);
     const [originalRubricas, setOriginalRubricas] = useState<Rubrica[]>([]);
-    const [selectedKey, setSelectedKey] = useState<string | null>(null);
+    // const [selectedKey] = useState<string | null>(null);
     const [rubricaData, setRubricaData] = useState({ titulo: '', selectedRubrica: { id: 0, nombre: "" } });
     const [errors, setErrors] = useState({ titulo: '', selectedRubrica: '' });
     const [loading, setLoading] = useState(true); // Estado de carga
@@ -156,7 +156,7 @@ const EvaluarIn: React.FC = () => {
                         variant="flat"
                         disallowEmptySelection
                         selectionMode="single"
-                        selectedKeys={selectedKey ? [selectedKey] : undefined}
+                        // selectedKeys={selectedKey ? [selectedKey] : undefined}
                         onSelectionChange={(key) => handleRubricaSelection(key ? Array.from(key).join('') : null)}
                     >
                         {rubricas.map((rubrica) => (

@@ -7,8 +7,8 @@ export async function POST(request: Request): Promise<Response> {
         let requestBody;
         try {
             requestBody = await request.json();
-        } catch (jsonError) {
-            return new Response("Solicitud JSON inválida", { status: 400 });
+        } catch (error) {
+            return new Response("Solicitud JSON inválida" + error, { status: 400 });
         }
 
         const { reporteId } = requestBody;

@@ -2,21 +2,9 @@ import { conn } from "@/utils/db";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import { error } from "console";
 
 // Definición de tipos para los datos recibidos
-interface Categoria {
-    id: number;
-    contenido: string;
-}
 
-interface Principio {
-    id: number;
-    label: string;
-    categorias: Categoria[];
-    evaluacionFinal: number | null;
-    rubricaId: number;
-}
 
 
 export async function POST(request: Request): Promise<Response> {
