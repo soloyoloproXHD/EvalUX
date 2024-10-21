@@ -1,0 +1,362 @@
+{
+  "dataWithUserId": {
+    "nombreR": "Horientada al usuario",
+    "selectedP": [
+      {
+        "id": 1,
+        "label": "Usabilidad",
+        "categorias": [
+          {
+            "id": 1,
+            "contenido": "Esto es para usabilidad",
+            "incognitas": "a",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "aa"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "a"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "contenido": "Esto tambien es para usabilidad",
+            "incognitas": "a",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "a"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "contenido": "Otra pregunta",
+            "incognitas": "a",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "a"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "label": "Simplicidad",
+        "categorias": [
+          {
+            "id": 1,
+            "contenido": "Simplicidad this is",
+            "incognitas": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "contenido": "Aqui va otro de simplicidad",
+            "incognitas": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "contenido": "Comida simplicidad",
+            "incognitas": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "Texto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricasTexto informativo hacerca de las rubricas"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "label": "Centrado en el Usuario",
+        "categorias": [
+          {
+            "id": 1,
+            "contenido": "Comida con usuario",
+            "incognitas": "d",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "d"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "contenido": "Editamos esta categoria para el usuario",
+            "incognitas": "d",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "d"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "label": "Accesibilidad",
+        "categorias": [
+          {
+            "id": 1,
+            "contenido": "Accesibilidad",
+            "incognitas": "d",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "d"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "contenido": "Accesibilidad 2",
+            "incognitas": "d",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "d"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "label": "Concistencia",
+        "categorias": [
+          {
+            "id": 1,
+            "contenido": "Consistencia con",
+            "incognitas": "d",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "d"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "contenido": "Otra categoria de consistencia",
+            "incognitas": "d",
+            "escenarios": [
+              {
+                "puntaje": 5,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 4,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 3,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 2,
+                "contenido": "d"
+              },
+              {
+                "puntaje": 1,
+                "contenido": "d"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "userId": "1"
+  }
+}

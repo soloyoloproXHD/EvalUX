@@ -1,9 +1,10 @@
 'use client'
 import React, { useEffect } from "react";
-import { faCircleRight} from '@fortawesome/free-solid-svg-icons';
+import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { AdaptButton } from "@/components/AdaptButton";
 import AppInputOut from "@/components/ui/inputOuside";
-import { Card, CardBody, Checkbox } from "@nextui-org/react";
+import Image from 'next/image';
+import { Card, CardBody, CardHeader, Checkbox} from "@nextui-org/react";
 import { useTheme } from 'next-themes';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,8 +17,7 @@ const Created = () => {
 
     const [principles, setPrinciples] = useState<{id: number, contenido: string}[]>([]);
 
-
-    const [principiosData, setPrincipiosData] = useState({ //Información seleccionada para principios
+    const [principiosData, setPrincipiosData] = useState({ 
         nombreR: '',
         selectedP: [] as {id: number, label: string}[]
     });
@@ -29,14 +29,13 @@ const Created = () => {
         })
         .catch((error) => {
             console.error("Error al obtener los principios: ", error);
-        })
-    },[])
+        });
+    },[]);
 
     const [errors, setErrors] = useState({
         nombreR: ''
     });
 
-    //Manejo de la info del input
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setPrincipiosData({
@@ -44,16 +43,15 @@ const Created = () => {
             [name]: value
         });
 
-        //Quita el error al comenzar a escribir
         if (value.trim() !== "") {
             setErrors({
-            ...errors,
-            [name]: ""
+                ...errors,
+                [name]: ""
             });
         }
     };
 
-    const validateForm = () => { //validador del formulario
+    const validateForm = () => {
         const newErrors = { ...errors };
         let isValid = true;
     
@@ -61,21 +59,21 @@ const Created = () => {
           newErrors.nombreR = "El campo no puede estar vacío";
           isValid = false;
         }else if (principiosData.selectedP.length === 0){
-            isValid = false
+            isValid = false;
         }
         setErrors(newErrors);
         return isValid;
-    }
-    //Manejo de principios seleccionados
+    };
+
     const handlePrincipleChange = (principleId: number, principleLabel: string, isChecked: boolean) => {
         setPrincipiosData((prevState) => {
-            const {selectedP} = prevState;
+            const { selectedP } = prevState;
             if (isChecked) {
                 return {
                     ...prevState,
                     selectedP: [...selectedP, {id: principleId, label: principleLabel}]
                 };
-            }else {
+            } else {
                 return {
                     ...prevState,
                     selectedP: selectedP.filter(p => p.id !== principleId)
@@ -84,14 +82,18 @@ const Created = () => {
         });
     };
 
-    //Envio de infomación a la siguiente pagina
+    const handleCardClick = (principleId: number, principleLabel: string) => {
+        const isSelected = principiosData.selectedP.some(p => p.id === principleId);
+        handlePrincipleChange(principleId, principleLabel, !isSelected);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateForm()){
+        if (validateForm()) {
             sessionStorage.setItem('principiosData', JSON.stringify(principiosData));
             router.push("/rubrica/created1");
         } else {
-            console.log('Información faltante')
+            console.log('Información faltante');
         }
     };
     
@@ -99,17 +101,10 @@ const Created = () => {
         <>
             <div className="py-8 px-12">
                 <div className="flex justify-between items-center mb-8">
-                    <p className="text-2xl font-bold  title">Creación de Rubrica</p>
-                    <div className="flex gap-x-2 px-4">
-                        <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleSubmit}/>
-                    </div>
+                    <p className="text-2xl font-bold title">Creación de Rubrica</p>
                 </div>
-                <div className="flex flex-col justify-start px-6 mb-6">
-                    <div className="flex font-bold justify-start items-center">
-                        <p className="mb-1 text-xl"> Ingrese un nombre para su rubrica</p>
-                        {/* <FontAwesomeIcon icon={faPencil} className="ml-2 mb-4" /> */}
-                    </div>
-                    <div className="max-w-md">
+                <div className="sm:flex gap-5 justify-start px-6 mb-6 w-2/4">
+                        <p className="flex font-bold text-xl place-items-center"> Ingrese un nombre para su rubrica: </p>
                         <AppInputOut 
                             type="text" 
                             label="Nombre de la rubrica"
@@ -119,12 +114,11 @@ const Created = () => {
                             isInvalid={!!errors.nombreR}
                             errorMessage={errors.nombreR}
                         />
-                    </div>
                 </div>
             </div>
             <div className="max-w-full mx-auto p-4">
-                <h2 className="text-xl font-bold mb-4">Seleccione los principios UX a evaluar</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <h2 className="text-xl font-bold mb-4 ml-14">Seleccione los principios UX a evaluar: </h2>
+                <div className="grid grid-cols-5 gap-5 ml-10 mr-10">
                     {principles.map((principle) => (
                         <motion.div
                             key={principle.id}
@@ -134,10 +128,23 @@ const Created = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                         >
-                            <Card className="w-3/4 rounded-lg shadow-lg transition duration-300 glowingborder" isHoverable={true}>
-                                <CardBody className="flex justify-between px-6">
-                                    <div className="flex justify-between">
-                                        <p className="text-lg">{principle.contenido}</p>
+                            <Card
+                                className={`w-full rounded-lg shadow-lg transition duration-300 glowingborder ${principiosData.selectedP.some(p => p.id === principle.id) ? "border-2 border-blue-500" : ""}`}
+                                isHoverable={true}
+                                isPressable
+                                onPress={() => handleCardClick(principle.id, principle.contenido)}
+                            >
+                                <CardHeader className="flex justify-center">
+                                    <p className="text-lg">{principle.contenido}</p>
+                                </CardHeader>
+                                <CardBody className="flex justify-between px-6 place-items-center">
+                                    <Image
+                                        src={`/img/P-${principle.id}.png`}
+                                        alt={`Principio ${principle.contenido}`}
+                                        width={213}
+                                        height={213}
+                                    />
+                                    <div className="flex justify-between mt-5">
                                         <Checkbox
                                             isSelected={principiosData.selectedP.some(p => p.id === principle.id)}
                                             onChange={(e) => handlePrincipleChange(principle.id, principle.contenido, e.target.checked)}
@@ -152,6 +159,9 @@ const Created = () => {
                         </motion.div>
                     ))}
                 </div>
+            </div>
+            <div className="flex gap-x-2 px-4 place-content-end mr-32 mt-10">
+                <AdaptButton size="lg" texto="Siguiente" icon={faCircleRight} onClick={handleSubmit} />
             </div>
         </>
     );

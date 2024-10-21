@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Nav } from '../components/Nav';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
 
 
 const geistSans = localFont({
@@ -27,14 +27,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <head></head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <Nav />
-          {children}
           <ToastContainer />
+          {children}
         </Providers>
       </body>
     </html>

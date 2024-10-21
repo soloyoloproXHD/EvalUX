@@ -1,0 +1,23 @@
+.stars-rating {
+    display: inline-flex;
+    font-size: 30px;
+}
+
+.star {
+    cursor: pointer;
+    color: #666;
+}
+
+.star.filled {
+    color: #ffa723;
+}
+
+.star.half-filled {
+    background: linear-gradient(90deg, #ffa723 50%, #666 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.star.empty {
+    color: #666;
+}

@@ -1,0 +1,100 @@
+{
+  "nombreR": "solo usabiliadad",
+  "evaluacionGeneral": 4.666666666666667,
+  "nombreE": "A la Segunda creo",
+  "descripcion": "ida comoomdomomdomoida comoomdomomdomoida comoomdomomdomoida comoomdomomdomoida comoomdomomdomoida comoomdomomdomoida comoomdomomdomoida comoomdomomdomo",
+  "selectedP": [
+    {
+      "id": 1,
+      "label": "Usabilidad",
+      "evaluacionFinal": 4.666666666666667,
+      "categorias": [
+        {
+          "id": "Comida comoomdomomdomomdom",
+          "contenido": "Comida comoomdomomdomomdom",
+          "incognitas": "ida comoomdomomdomoida comoomdomomdomo",
+          "evaluacionIndividual": 5,
+          "escenarios": [
+            {
+              "puntaje": 5,
+              "contenido": "simon"
+            },
+            {
+              "puntaje": 4,
+              "contenido": "bueno"
+            },
+            {
+              "puntaje": 3,
+              "contenido": "mas o menos"
+            },
+            {
+              "puntaje": 2,
+              "contenido": "satis"
+            },
+            {
+              "puntaje": 1,
+              "contenido": "sas"
+            }
+          ]
+        },
+        {
+          "id": "adasdasdasdasd",
+          "contenido": "adasdasdasdasd",
+          "incognitas": "ida comoomdomomdomo",
+          "evaluacionIndividual": 5,
+          "escenarios": [
+            {
+              "puntaje": 5,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 4,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 3,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 2,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 1,
+              "contenido": "ida comoomdomomdomo"
+            }
+          ]
+        },
+        {
+          "id": "asdasdamcomdcsidas",
+          "contenido": "asdasdamcomdcsidas",
+          "incognitas": "ida comoomdomomdomo",
+          "evaluacionIndividual": 4,
+          "escenarios": [
+            {
+              "puntaje": 5,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 4,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 3,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 2,
+              "contenido": "ida comoomdomomdomo"
+            },
+            {
+              "puntaje": 1,
+              "contenido": "ida comoomdomomdomo"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "userId": "1"
+}

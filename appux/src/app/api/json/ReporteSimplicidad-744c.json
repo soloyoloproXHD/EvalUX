@@ -1,0 +1,44 @@
+{
+  "nombreR": "Simplicidad",
+  "evaluacionGeneral": 5,
+  "nombreE": "A la primera",
+  "descripcion": "¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?",
+  "selectedP": [
+    {
+      "id": 1,
+      "label": "Simplicidad",
+      "evaluacionFinal": 5,
+      "categorias": [
+        {
+          "id": "¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?",
+          "contenido": "¿La aplicación esta hecha para diferentes sistemas tanto operativos o navegadores web?",
+          "incognitas": "¿Se supone que si esta hecha para todo tipo?",
+          "evaluacionIndividual": 5,
+          "escenarios": [
+            {
+              "puntaje": 5,
+              "contenido": "Simon"
+            },
+            {
+              "puntaje": 4,
+              "contenido": "algo"
+            },
+            {
+              "puntaje": 3,
+              "contenido": "como que si"
+            },
+            {
+              "puntaje": 2,
+              "contenido": "no creo "
+            },
+            {
+              "puntaje": 1,
+              "contenido": "nhell papito"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "userId": "1"
+}
