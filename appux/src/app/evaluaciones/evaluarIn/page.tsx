@@ -22,6 +22,7 @@ const EvaluarIn: React.FC = () => {
     const [rubricas, setRubricas] = useState<Rubrica[]>([]);
     const [originalRubricas, setOriginalRubricas] = useState<Rubrica[]>([]);
     const [rubricaData, setRubricaData] = useState({ titulo: '', selectedRubrica: { id: 0, nombre: "" } });
+    const [selectedRubrica, setSelectedRubrica] = useState<string | null>(null);
     const [errors, setErrors] = useState({ titulo: '', selectedRubrica: '' });
     const [loading, setLoading] = useState(true); // Estado de carga
     const [textArea, setTextArea] = useState<string>('');
@@ -30,17 +31,24 @@ const EvaluarIn: React.FC = () => {
         fetchRubricas();
     }, []);
 
+    useEffect(() => {
+        const storedRubricaId = sessionStorage.getItem('idRubrica');
+        if (storedRubricaId && rubricas.length > 0) {
+            handleRubricaSelection(storedRubricaId);
+        }
+    }, [rubricas]);
+
     const fetchRubricas = async () => {
-        setLoading(true); // Comienza la carga
+        setLoading(true);
         try {
             const userId = sessionStorage.getItem('userId');
             const response = await axios.post('/api/getRubricas', { userId });
             setRubricas(response.data);
             setOriginalRubricas(response.data);
         } catch (error) {
-            console.error("Error al obtener las rúbricas: ", error);
+            console.error("Error al obtener las rúbricas:", error);
         } finally {
-            setLoading(false); // Termina la carga
+            setLoading(false);
         }
     };
 
@@ -97,8 +105,11 @@ const EvaluarIn: React.FC = () => {
     };
 
     const handleRubricaSelection = (selectedKey: string | null) => {
+        console.log(selectedKey);
         const selectedItem = rubricas.find(rubrica => rubrica.id.toString() === selectedKey);
+        console.log(selectedItem);
         if (selectedItem) {
+            setSelectedRubrica(selectedKey);
             setRubricaData(prevData => ({ ...prevData, selectedRubrica: selectedItem }));
             setErrors(prevErrors => ({ ...prevErrors, selectedRubrica: '' }));
         }
@@ -126,10 +137,10 @@ const EvaluarIn: React.FC = () => {
                         errorMessage={errors.titulo}
                     />
                     <Textarea className="max-w-md mt-5"
-                     variant="flat"
-                     label="Descripción"
-                     onChange={(e) => handleTextAreaChange(e as unknown as React.ChangeEvent<HTMLTextAreaElement>)}
-                     labelPlacement="outside" />
+                        variant="flat"
+                        label="Descripción"
+                        onChange={(e) => handleTextAreaChange(e as unknown as React.ChangeEvent<HTMLTextAreaElement>)}
+                        labelPlacement="outside" />
                 </div>
                 <div className="flex justify-start items-center w-full h-auto ml-16">
                     <Image
@@ -155,6 +166,7 @@ const EvaluarIn: React.FC = () => {
                         variant="flat"
                         disallowEmptySelection
                         selectionMode="single"
+                        selectedKeys={selectedRubrica ? [selectedRubrica] : []}
                         onSelectionChange={(key) => handleRubricaSelection(key ? Array.from(key).join('') : null)}
                     >
                         {rubricas.map((rubrica) => (

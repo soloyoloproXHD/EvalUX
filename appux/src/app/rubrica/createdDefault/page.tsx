@@ -27,9 +27,9 @@ interface SelectedP {
 }
 
 const evaluationCriteria = [
-    { label: "Insatisfactorio", value: 1, color: "#F44336" }, // Red
-    { label: "Satisfactorio", value: 2, color: "#FFC107" }, // Amber
-    { label: "Aceptable", value: 3, color: "#FFEB3B" }, // Yellow
+    { label: "Insatisfactorio", value: 1, color: "#881414" }, // Red
+    { label: "Satisfactorio", value: 2, color: "#bd3c11" }, // Amber
+    { label: "Aceptable", value: 3, color: "#f26b1d" }, // Yellow
     { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
     { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
 ];
@@ -114,15 +114,15 @@ const CategoryMatrix: React.FC<{
                     </div>
                 </div>
             </div>
-            <table className="w-full text-left" style={{ borderSpacing: "10px" }}>
+            <table className="w-full text-left border border-separate border-spacing-2 rounded-2xl p-4 tablenombrequeyoquieraponer " style={{ borderSpacing: "10px" }}>
                 <thead>
-                    <tr>
+                    <tr className="aqui" >
                         <th className="p-2 text-center">Categorías</th>
                         <th className="p-2 text-center">Incógnitas de evaluación</th>
                         {evaluationCriteria.map((criteria) => (
                             <th
                                 key={criteria.value}
-                                className="p-2 text-center"
+                                className="p-2 text-center rounded-xl"
                                 style={{ backgroundColor: criteria.color }}
                             >
                                 {criteria.label}
@@ -134,7 +134,7 @@ const CategoryMatrix: React.FC<{
                 <tbody>
                     {selectedP.categorias.map((categoria, categoriaIndex) => (
                         <tr key={categoria.id}>
-                            <td className=" px-2">
+                            <td className="px-2 rounded-lg">
                                 <textarea
                                     value={categoria.contenido}
                                     onChange={(e) => handleCategoryChange(categoriaIndex, e.target.value)}
@@ -142,7 +142,7 @@ const CategoryMatrix: React.FC<{
                                     placeholder="Ingrese la categoría"
                                 />
                             </td>
-                            <td className=" p-2">
+                            <td className="p-2 rounded-lg">
                                 <textarea
                                     placeholder="Ingrese las incógnitas"
                                     value={categoria.incognitas || ""}
@@ -151,14 +151,14 @@ const CategoryMatrix: React.FC<{
                                 />
                             </td>
                             {evaluationCriteria.map((criteria, evaluationIndex) => (
-                                <td key={evaluationIndex} className="">
+                                <td key={evaluationIndex} className="border rounded-lg">
                                     <EvaluationCell
                                         value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
                                         onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
                                     />
                                 </td>
                             ))}
-                            <td className=" p-2 text-center">
+                            <td className="p-2 text-center rounded-lg">
                                 <AdaptButton icon={faTrash} onPress={() => handleDeleteCategory(categoriaIndex)} showSpinner={false} />
                             </td>
                         </tr>
@@ -224,7 +224,9 @@ export default function UXEvaluationMatrix() {
             dataWithUserId,
         })
             .then((response) => {
-                response.data();
+                const responseData = response.data;
+                sessionStorage.setItem('idRubrica', responseData.id);
+                console.log("Rubrica creada exitosamente: ", responseData.id);
             })
             .catch((error) => {
                 console.error("Error al obtener las rúbricas: ", error);
