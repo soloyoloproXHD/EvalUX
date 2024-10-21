@@ -45,15 +45,15 @@ const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
                 </div>
             </div>
         </div>
-        <table className="w-full text-left ">
+        <table className="w-full text-left border border-separate border-spacing-2 rounded-2xl p-4 tablenombrequeyoquieraponer">
             <thead>
-                <tr>
+                <tr className="aqui">
                     <th className=" p-2 text-center">Categorías</th>
                     <th className=" p-2 text-center">Incógnitas de evaluación</th>
                     {evaluationCriteria.map((criteria) => (
                         <th
                             key={criteria.value}
-                            className=" p-2 text-center"
+                            className=" p-2 text-center rounded-xl"
                             style={{ backgroundColor: criteria.color }}
                         >
                             {criteria.label}
@@ -64,7 +64,7 @@ const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
             <tbody>
                 {selectedP.categorias.map((categoria) => (
                     <tr key={categoria.id}>
-                        <td className=" px-2">
+                        <td className="px-2 rounded-lg">
                             <textarea
                                 value={categoria.contenido}
                                 disabled
@@ -104,9 +104,9 @@ function Detalles() {
     const handleDownloadPDF = () => {
         const doc = new jsPDF({ orientation: "landscape" });
         doc.setFontSize(18);
-    
+
         const pageWidth = doc.internal.pageSize.getWidth();
-    
+
         // Agregar imagen y texto en el lado izquierdo
         const img = new Image();
         img.src = '/img/Logo.png';
@@ -119,10 +119,10 @@ function Detalles() {
             doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" }); // Reducir la separación
             doc.text(data.nombreR, pageWidth / 2, imgY + imgHeight + 10, { align: "center" });
             doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
-    
+
             // Iniciar la posición Y donde empezará el contenido dinámico
             let currentY = imgY + imgHeight + 20;
-    
+
             // Definir las columnas de la tabla (sin la columna de 'Principio')
             const tableColumns = [
                 "Categorías",
@@ -133,16 +133,16 @@ function Detalles() {
                 "Satisfactorio (2)",
                 "Insatisfactorio (1)",
             ];
-    
+
             // Formatear los datos del JSON para las filas de la tabla
             data.selectedP.forEach((principio) => {
                 // Insertar el nombre del principio como un encabezado centrado
                 doc.setFontSize(14); // Aumentar el tamaño de la fuente para el encabezado
                 doc.text(principio.label, pageWidth / 2, currentY, { align: "center" });
                 doc.setFontSize(10); // Volver al tamaño de fuente normal
-    
+
                 currentY += 5; // Ajustar la posición Y para la tabla
-    
+
                 // Crear filas para la tabla de cada principio
                 const tableRows: (string | number)[][] = [];
                 principio.categorias.forEach((categoria) => {
@@ -157,7 +157,7 @@ function Detalles() {
                     ];
                     tableRows.push(row);
                 });
-    
+
                 // Generar la tabla para las categorías e incógnitas del principio actual
                 autoTable(doc, {
                     head: [tableColumns],
@@ -195,12 +195,12 @@ function Detalles() {
                     },
                 });
             });
-    
+
             // Guardar el archivo PDF
             doc.save("Rubrica_de_AutoUX.pdf");
         };
     };
-    
+
     const handleDownloadExcel = () => {
         const tableColumns = [
             "Principio",
@@ -306,9 +306,9 @@ function Detalles() {
                         <motion.div
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                        >   
+                        >
 
-                            <AdaptButton icon={faFilePdf} texto='PDF' onPress={handleDownloadPDF} size='md'/>
+                            <AdaptButton icon={faFilePdf} texto='PDF' onPress={handleDownloadPDF} size='md' />
                             {/* <Button color="danger" className="bg-red-800" onClick={handleDownloadPDF}>
                                 <FontAwesomeIcon icon={faFilePdf} />
                                 PDF
@@ -319,7 +319,7 @@ function Detalles() {
                             whileTap={{ scale: 0.9 }}
                         >
 
-                            <AdaptButton icon={faFileExcel} texto='Excel' onPress={handleDownloadExcel} size='md'/>
+                            <AdaptButton icon={faFileExcel} texto='Excel' onPress={handleDownloadExcel} size='md' />
 
                             {/* <Button color="success" onClick={handleDownloadExcel}>
                                 <FontAwesomeIcon icon={faFileExcel} />
