@@ -122,7 +122,7 @@ const CategoryMatrix: React.FC<{
                         {evaluationCriteria.map((criteria) => (
                             <th
                                 key={criteria.value}
-                                className="p-2 text-center  rounded-xl"
+                                className="p-2 text-center rounded-xl"
                                 style={{ backgroundColor: criteria.color }}
                             >
                                 {criteria.label}
