@@ -16,7 +16,7 @@ import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
+import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from '@nextui-org/react';
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
@@ -92,7 +92,7 @@ export const Nav = () => {
                 />
                 <div className="flex justify-start items-center gap-2 text-white">
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
-                    {!isAuthenticated ?
+                    {isAuthenticated ?
                         <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p> :
                         <div className='w-5'></div>
                     }
@@ -114,8 +114,8 @@ export const Nav = () => {
             <NavbarContent justify="end">
                 {!isAuthenticated ?
                     <>
-                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
-                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
+                        <AdaptButton size='md' texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
+                        <AdaptButton size='md' texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
                         <CustomIcon icon={faGithub} size='lg' />
                     </>
                     :
@@ -137,7 +137,6 @@ export const Nav = () => {
                         </Dropdown>
                     </>
                 }
-
                 <ThemeSwitcher />
             </NavbarContent>
 

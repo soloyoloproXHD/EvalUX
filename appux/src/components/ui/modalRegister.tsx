@@ -145,17 +145,22 @@ export default function AppModalR({ show, onClose }: ModalProps) {
           })
           .then(result => {
               console.log('Success:', result.message);
+  
+              const { token, userId, user } = result;  // Obtenemos userId y los datos completos del usuario
 
-              const { userId } = result;
-              const { token } = result;
-              const { user } = result;
               if (token) {
                   sessionStorage.setItem('token', token);  // Guardar token en sessionStorage
                   sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
-                  sessionStorage.setItem('user', JSON.stringify(user));  // Guardar los datos completos del usuario en sessionStorage
-                  console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
+                  console.log('Token y userId guardados en sessionStorage', sessionStorage.getItem('userId'));
               } else {
                   console.error('Token no recibido en la respuesta');
+              }
+  
+              if (user) {
+                  sessionStorage.setItem('user', JSON.stringify(user));  // Guardar los datos completos del usuario en sessionStorage
+                  console.log('Datos del usuario guardados en sessionStorage', sessionStorage.getItem('user'));
+              } else {
+                  console.error('Datos del usuario no recibidos en la respuesta');
               }
   
               handleCloseModalL();  // Cerrar el modal de registro

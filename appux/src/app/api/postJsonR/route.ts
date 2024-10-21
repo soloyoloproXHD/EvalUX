@@ -35,6 +35,7 @@ export async function POST(request: Request): Promise<Response> {
       [nombreR, result.dataWithUserId, parseInt(userId, 10)]
     );
 
+
     const rubricaId = rubricaResult?.rows[0]?.id;
     if (!rubricaId) {
       throw new Error("No se pudo insertar la rúbrica.");
@@ -48,6 +49,7 @@ export async function POST(request: Request): Promise<Response> {
                  VALUES ($1, $2) 
                  ON CONFLICT (id) DO NOTHING 
                  RETURNING id`,
+
         [principio.id, principio.label]
       );
 
