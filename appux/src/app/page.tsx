@@ -20,14 +20,14 @@ export default function Home() {
               <p className='text-[#2D6086] header'>evaluación UX moderna</p>
             </div>
             <p className='text-lg font-medium'>
-              UXEval es una plataforma integral para la evaluación
+              UXEval es una plataforma integral para la creación de rubricas y la evaluación
               de experiencia de usuario. Permite a los profesionales
               y equipos de UX realizar evaluaciones detalladas, generar
               informes y mejorar la calidad de sus productos digitales.
             </p>
             <div className='flex justify-start items-center w-full mt-5'>
               <Button color="default" className='font-semibold hover:scale-105 transition duration-300'>
-                Iniciar Evaluación {'>'}
+                Comenzar {'>'}
               </Button>
             </div>
           </div>
