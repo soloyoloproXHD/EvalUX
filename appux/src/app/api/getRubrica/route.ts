@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
         // Query the database to get the ruta_rubrica JSON path
         const rubricaResult = await client?.query(
-            `SELECT ruta_rubrica 
+            `SELECT j_rubrica 
              FROM rubrica 
              WHERE id = $1`, 
             [rubricaId]
@@ -26,14 +26,14 @@ export async function GET(request: Request) {
             return new Response("Rúbrica no encontrada", { status: 404 });
         }
 
-        const rutaRubrica = rubricaResult.rows[0].ruta_rubrica;
+        const rutaRubrica = rubricaResult.rows[0].j_rubrica;
 
         // Read the JSON file from the path obtained
-        const jsonFilePath = path.resolve(rutaRubrica);
-        const jsonData = await fs.readFile(jsonFilePath, "utf-8");
+        // const jsonFilePath = path.resolve(rutaRubrica);
+        // const jsonData = await fs.readFile(jsonFilePath, "utf-8");
 
         // Return the JSON content as the response
-        return new Response(jsonData, {
+        return new Response(rutaRubrica, {
             status: 200,
             headers: {
                 "Content-Type": "application/json",
