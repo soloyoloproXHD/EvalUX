@@ -150,25 +150,26 @@ export default function UXEvaluationMatrix() {
         draggable: true,
         progress: undefined,
         theme: "dark",
-        });
+    });
     const handleNext = () => {
         const userId = sessionStorage.getItem('userId');
         const dataWithUserId = { ...data, userId };
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
-        
-        console.log("si",dataWithUserId);
+
+        console.log("si", dataWithUserId);
 
         axios.post('/api/postJsonR', {
             dataWithUserId,
         })
-        .then((response) => {
+            .then((response) => {
+                sessionStorage.setItem('idRubrica', response.data().id);
+                console.log("Rubrica creada exitosamente: ", response.data().id);
                 notify();
                 response.data();
             })
             .catch((error) => {
                 console.error("Error al obtener las rúbricas: ", error);
             });
-
         router.push("/rubrica/createdResumen");
     };
 

@@ -144,7 +144,6 @@ const Page: React.FC = () => {
                 <form>
                     <div className='flex flex-col justify-center items-center gap-3'>
                         <div className="mt-6">
-                            {profile.img && (
                                 <Image
                                     src={profile.img || foto.src}
                                     alt='Perfil'
@@ -152,7 +151,6 @@ const Page: React.FC = () => {
                                     height={160}
                                     className='h-40 w-40 rounded-full object-cover shadow-lg'
                                 />
-                            )}
                         </div>
                         {isEditing && (
                             <>

@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
-import { Card, CardBody, CardHeader} from '@nextui-org/react';
+import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import AdaptButton from '@/components/AdaptButton';
 import { faCircleQuestion, faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -42,11 +42,11 @@ interface EvaluationCriteria {
 }
 
 const evaluationCriteria: EvaluationCriteria[] = [
-    { label: 'Excelente', value: 5, color: 'bg-green-700' },
-    { label: 'Bueno', value: 4, color: 'bg-green-600' },
-    { label: 'Aceptable', value: 3, color: 'bg-yellow-600 ' },
-    { label: 'Satisfactorio', value: 2, color: 'bg-orange-600 ' },
     { label: 'Insatisfactorio', value: 1, color: 'bg-red-600' },
+    { label: 'Satisfactorio', value: 2, color: 'bg-orange-600 ' },
+    { label: 'Aceptable', value: 3, color: 'bg-yellow-600 ' },
+    { label: 'Bueno', value: 4, color: 'bg-green-600' },
+    { label: 'Excelente', value: 5, color: 'bg-green-700' },
 ];
 
 const EvaluationCell: React.FC<{
@@ -130,11 +130,11 @@ const UXEvaluationMatrix: React.FC = () => {
     const [rubrica, setRubrica] = useState<Rubrica | null>(null);
     const [categories, setCategories] = useState<{
         evaluacionFinal: number | null; name: string; subcategories: {
-        name: string;
-        incognitas: string;
-        evaluations: Escenario[];
-        evaluacionIndividual: number;
-    }[];
+            name: string;
+            incognitas: string;
+            evaluations: Escenario[];
+            evaluacionIndividual: number;
+        }[];
     }[]>([]);
     const [selectedEvaluations, setSelectedEvaluations] = useState<{ [subcategory: string]: number }>({});
 
@@ -148,7 +148,7 @@ const UXEvaluationMatrix: React.FC = () => {
             const { data, status } = await axios.get('/api/getRubrica', { params: { id: selectedRubrica.id } });
             if (status !== 200) throw new Error('No se pudo obtener la rúbrica.');
 
-            const fetchedRubrica = data.dataWithUserId;
+            const fetchedRubrica = data;
             fetchedRubrica.selectedP.forEach((principio: Principio) => {
                 principio.categorias.forEach((categoria: Categoria) => {
                     categoria.evaluacionIndividual = null;
@@ -248,7 +248,7 @@ const UXEvaluationMatrix: React.FC = () => {
         sessionStorage.setItem('evaluaciónFinal', JSON.stringify(transformedData));
         try {
             const { data, status } = await axios.post('/api/postJsonEvaluacion', transformedData);
-            
+
             if (status === 200) {
                 const reporteId = data.reporteId;
                 console.log(`Reporte ID recibido: ${reporteId}`);
@@ -270,19 +270,19 @@ const UXEvaluationMatrix: React.FC = () => {
             if (category.name === categoryName) {
                 category.subcategories.forEach((subcategory) => {
                     if (subcategory.name === subcategoryName) {
-                        if (evalIdx == 0) {
+                        if (evalIdx == 4) {
                             subcategory.evaluacionIndividual = 5;
                         }
-                        if (evalIdx == 1) {
+                        if (evalIdx == 3) {
                             subcategory.evaluacionIndividual = 4;
                         }
                         if (evalIdx == 2) {
                             subcategory.evaluacionIndividual = 3;
                         }
-                        if (evalIdx == 3) {
+                        if (evalIdx == 1) {
                             subcategory.evaluacionIndividual = 2;
                         }
-                        if (evalIdx == 4) {
+                        if (evalIdx == 0) {
                             subcategory.evaluacionIndividual = 1;
                         }
                     }

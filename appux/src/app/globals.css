@@ -236,3 +236,10 @@ body {
 }
 
 /* codigo de input search */
+
+.dark .tablenombrequeyoquieraponer{
+  background-color:  #27272a6b;
+}
+.tablenombrequeyoquieraponer{
+  background-color:  #ffffff;
+}
