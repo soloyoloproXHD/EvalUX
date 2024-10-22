@@ -166,11 +166,11 @@ export default function UXEvaluationMatrix() {
                 console.log("Rubrica creada exitosamente: ", response.data().id);
                 notify();
                 response.data();
+                router.push("/rubrica/createdResumen");
             })
             .catch((error) => {
                 console.error("Error al obtener las rúbricas: ", error);
             });
-        router.push("/rubrica/createdResumen");
     };
 
     const handleAtras = () => {

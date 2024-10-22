@@ -53,8 +53,8 @@ const IndexRubrica = () => {
             .catch((error) => {
                 console.error("Error al obtener la rúbrica por defecto: ", error);
             });
-    }, []); 
-    
+    }, []);
+
 
     const handleDefault = () => {
         router.push("/rubrica/createdDefault");
@@ -62,20 +62,20 @@ const IndexRubrica = () => {
     const container = {
         hidden: { opacity: 1, scale: 2 },
         visible: {
-          opacity: 1,
-          scale: 1,
-          transition: {
-            delayChildren: 0.5,
-            staggerChildren: 0.2
-          }
+            opacity: 1,
+            scale: 1,
+            transition: {
+                delayChildren: 0.5,
+                staggerChildren: 0.2
+            }
         }
-      };
+    };
 
     const item = {
         hidden: { y: 20, opacity: 0 },
         visible: {
-          y: 0,
-          opacity: 1
+            y: 0,
+            opacity: 1
         }
     };
 
@@ -83,11 +83,12 @@ const IndexRubrica = () => {
         try {
             // Hacer una solicitud GET a la ruta correspondiente
             const response = await axios.get(`/api/getRubrica?id=${rubricaId}`);
-            
+
             // Guardar el resultado en una variable
-            const rubricaData = response.data;           
-    
+            const rubricaData = response.data;
+
             sessionStorage.setItem('principiosData', JSON.stringify(rubricaData));
+            sessionStorage.setItem('idRubrica', rubricaId);
 
             // Redirigir a la página de detalles de la rúbrica
             router.push(`/rubrica/rubricaDetails`);
@@ -140,7 +141,7 @@ const IndexRubrica = () => {
                 </ModalContent>
             </Modal>
 
-            
+
             <div className="grid place-items-center">
                 {/* Mostrar contenido según si hay rúbricas o no */}
                 {rubricas.length > 0 ? (
@@ -164,7 +165,7 @@ const IndexRubrica = () => {
                 ) : (
                     <div className="flex justify-center items-center flex-col p-16">
                         <p className="text-xl">No hay rúbricas creadas</p>
-                        <FontAwesomeIcon icon={faBan} className="mt-10 h-40 custom-icon"/>
+                        <FontAwesomeIcon icon={faBan} className="mt-10 h-40 custom-icon" />
                     </div>
                 )}
             </div>

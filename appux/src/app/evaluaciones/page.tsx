@@ -24,6 +24,7 @@ export default function IndexEvaluacion() {
 
     useEffect(() => {
         fetchEvaluaciones();
+        sessionStorage.removeItem('idRubrica');
     }, []);
 
     const fetchEvaluaciones = async () => {
