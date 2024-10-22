@@ -92,28 +92,28 @@ export default function IndexEvaluacion() {
                     >
                         <Accordion variant="splitted">
                             {evaluaciones.map((evaluacion) => (
-                                
-                                    <AccordionItem
-                                        key={evaluacion.id}
-                                        title={evaluacion.nombre}
-                                        className="py-2 buttoneval mb-4"
-                                        subtitle={
-                                            <motion.li key={evaluacion.id} className="item p-2 flex justify-between items-center" variants={item}>
+
+                                <AccordionItem
+                                    key={evaluacion.id}
+                                    title={evaluacion.nombre}
+                                    className="py-2 buttoneval mb-4"
+                                    subtitle={
+                                        <motion.li key={evaluacion.id} className="item p-2 flex justify-between items-center" variants={item}>
                                             <span >
                                                 click para desplegar
                                             </span>
-                                            </motion.li>
-                                        }
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <div className="w-1/2 flex">
-                                                <p className="ml-4">{evaluacion.descripcion}</p>
-                                            </div>
-                                            <div className="gap-x-3 flex mr-32">
-                                                <AdaptButton size='md' texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
-                                            </div>
+                                        </motion.li>
+                                    }
+                                >
+                                    <div className="flex justify-between items-center">
+                                        <div className="w-1/2 flex">
+                                            <p className="ml-4">{evaluacion.descripcion}</p>
                                         </div>
-                                    </AccordionItem>
+                                        <div className="gap-x-3 flex mr-32">
+                                            <AdaptButton size='md' texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
+                                        </div>
+                                    </div>
+                                </AccordionItem>
                             ))}
                         </Accordion>
                     </motion.ul>

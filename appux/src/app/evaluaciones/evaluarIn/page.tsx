@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import ButtonSearch from "../../../components/ui/buttonSearch";
+import { motion } from "framer-motion";
 
 type Rubrica = {
     id: number;
@@ -115,6 +116,26 @@ const EvaluarIn: React.FC = () => {
         }
     };
 
+    const container = {
+        hidden: { opacity: 1, scale: 2 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                delayChildren: 0.5,
+                staggerChildren: 0.2
+            }
+        }
+    };
+
+    const item = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1
+        }
+    };
+
     return (
         <div className="py-8 px-12">
             <header className="flex justify-between items-center mb-8">
@@ -161,22 +182,33 @@ const EvaluarIn: React.FC = () => {
                 {loading ? ( // Condición para mostrar el mensaje de carga
                     <div className="text-center text-xl">Cargando...</div>
                 ) : (
-                    <Listbox
-                        aria-label="Seleccione una rúbrica"
-                        variant="flat"
-                        disallowEmptySelection
-                        selectionMode="single"
-                        selectedKeys={selectedRubrica ? [selectedRubrica] : []}
-                        onSelectionChange={(key) => handleRubricaSelection(key ? Array.from(key).join('') : null)}
-                    >
-                        {rubricas.map((rubrica) => (
-                            <ListboxItem key={rubrica.id.toString()} aria-label={rubrica.nombre}>
-                                <Card>
-                                    <CardBody>{rubrica.nombre}</CardBody>
-                                </Card>
-                            </ListboxItem>
-                        ))}
-                    </Listbox>
+                    <div className="flex place-content-center items-center">
+                        <motion.ul
+                            className="container"
+                            variants={container}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            <Listbox
+                                aria-label="Seleccione una rúbrica"
+                                variant="flat"
+                                disallowEmptySelection
+                                selectionMode="single"
+                                selectedKeys={selectedRubrica ? [selectedRubrica] : []}
+                                onSelectionChange={(key) => handleRubricaSelection(key ? Array.from(key).join('') : null)}
+                            >
+                                {rubricas.map((rubrica) => (
+                                    <ListboxItem key={rubrica.id.toString()} aria-label={rubrica.nombre}>
+                                        <Card>
+                                            <motion.li key={rubrica.id} className="item p-2 flex justify-between items-center" variants={item}>
+                                                <CardBody>{rubrica.nombre}</CardBody>
+                                            </motion.li>
+                                        </Card>
+                                    </ListboxItem>
+                                ))}
+                            </Listbox>
+                        </motion.ul>
+                    </div>
                 )}
             </section>
         </div>
