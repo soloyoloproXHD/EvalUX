@@ -296,7 +296,7 @@ export default function UXPrinciplesEvaluator() {
     };
 
     return (
-        <div>
+        <>
             <div className="mt-5 w-full mx-auto flex p-3 gap-3 justify-between items-center">
                 <div className="flex flex-col justify-center gap-3 px-8 items-center">
                     <div className="flex justify-center items-center gap-3">
@@ -342,6 +342,6 @@ export default function UXPrinciplesEvaluator() {
                     <FontAwesomeIcon icon={faArrowUp} />
                 </div>
             )}
-        </div>
+        </>
     );
 }

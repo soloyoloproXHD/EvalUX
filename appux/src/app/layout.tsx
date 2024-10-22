@@ -32,14 +32,14 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <section className="h-screen">
+        <section className="min-h-screen flex flex-col">
           <Providers>
             <Nav />
             <ToastContainer />
             {children}
           </Providers>
         </section>
-        <footer className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8" aria-labelledby="footer-heading">
+        <footer className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 mt-10" aria-labelledby="footer-heading">
           <div className="items-centers grid grid-cols-1 justify-between gap-4 border-t border-gray-100 py-6 md:grid-cols-2">
             <p className="text-sm/6 text-gray-600 max-md:text-center">
               ©

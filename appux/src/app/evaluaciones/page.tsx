@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, FormEvent } from 'react';
 import AdaptButton from '@/components/AdaptButton';
-import { faDownLong, faEye, faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from 'next-themes';
 import { Help } from '@/components/ui/help';
 import { Image } from '@nextui-org/react';
@@ -81,8 +81,7 @@ export default function IndexEvaluacion() {
                                         <p className="ml-4">{evaluacion.descripcion}</p>
                                     </div>
                                     <div className="gap-x-3 flex mr-32">
-                                        <AdaptButton texto="Descargar PDF" icon={faDownLong} />
-                                        <AdaptButton texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
+                                        <AdaptButton size='md' texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
                                     </div>
                                 </div>
                             </AccordionItem>
@@ -117,7 +116,7 @@ export default function IndexEvaluacion() {
             <div className="flex justify-between items-center mb-5">
                 <p className="text-2xl font-bold">Evaluaciones</p>
                 <div className="flex gap-x-2">
-                    <AdaptButton texto="Nueva evaluación" icon={faPlus} onClick={handleNewEvaluation} />
+                    <AdaptButton size='md' texto="Nueva evaluación" icon={faPlus} onClick={handleNewEvaluation} />
                     <Help text='Pulse "Nueva evaluación" para iniciar una nueva evaluación' icon={faQuestion} />
                 </div>
             </div>
