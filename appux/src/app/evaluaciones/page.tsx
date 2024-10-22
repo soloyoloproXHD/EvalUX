@@ -8,6 +8,7 @@ import { Image } from '@nextui-org/react';
 import { Accordion, AccordionItem } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import Loanding from '../loading';
+import { motion } from "framer-motion";
 
 type Reporte = {
     id: number;
@@ -59,34 +60,63 @@ export default function IndexEvaluacion() {
         sessionStorage.setItem('reporteId', id.toString());
         router.push('/evaluaciones/reporte');
     }
+    const container = {
+        hidden: { opacity: 1, scale: 2 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                delayChildren: 0.5,
+                staggerChildren: 0.2
+            }
+        }
+    };
+
+    const item = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1
+        }
+    };
 
     const renderEvaluaciones = () => {
         if (evaluaciones && evaluaciones.length > 0) {
             return (
-                <div className="overflow-y-auto">
-                    <Accordion variant="splitted">
-                        {evaluaciones.map((evaluacion) => (
-                            <AccordionItem
-                                key={evaluacion.id}
-                                title={evaluacion.nombre}
-                                className="py-2 buttoneval mb-4"
-                                subtitle={
-                                    <span >
-                                        click para desplegar
-                                    </span>
-                                }
-                            >
-                                <div className="flex justify-between items-center">
-                                    <div className="w-1/2 flex">
-                                        <p className="ml-4">{evaluacion.descripcion}</p>
-                                    </div>
-                                    <div className="gap-x-3 flex mr-32">
-                                        <AdaptButton size='md' texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
-                                    </div>
-                                </div>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
+                <div className="flex overflow-y-auto place-content-center">
+                    <motion.ul
+                        className="container"
+                        variants={container}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <Accordion variant="splitted">
+                            {evaluaciones.map((evaluacion) => (
+                                
+                                    <AccordionItem
+                                        key={evaluacion.id}
+                                        title={evaluacion.nombre}
+                                        className="py-2 buttoneval mb-4"
+                                        subtitle={
+                                            <motion.li key={evaluacion.id} className="item p-2 flex justify-between items-center" variants={item}>
+                                            <span >
+                                                click para desplegar
+                                            </span>
+                                            </motion.li>
+                                        }
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <div className="w-1/2 flex">
+                                                <p className="ml-4">{evaluacion.descripcion}</p>
+                                            </div>
+                                            <div className="gap-x-3 flex mr-32">
+                                                <AdaptButton size='md' texto="Ver más" icon={faEye} onClick={handleVermas(evaluacion.id)} />
+                                            </div>
+                                        </div>
+                                    </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </motion.ul>
                 </div>
             );
         }
