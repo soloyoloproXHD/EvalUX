@@ -106,100 +106,100 @@ function Resumen() {
         doc.setFontSize(18);
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight(); // Altura de la página
-      
+
         // Agregar imagen y texto en el lado izquierdo
         const img = new Image();
         img.src = '/img/Logo.png';
         img.onload = () => {
-          const imgWidth = 10; 
-          const imgHeight = 10; 
-          const imgX = 10; 
-          const imgY = 10; 
-          doc.addImage(img, 'PNG', imgX, imgY, imgWidth, imgHeight);
-          doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" });
-          doc.text("Rúbrica: " + data.nombreR, pageWidth / 2, imgY + imgHeight + 20, { align: "center" });
-          doc.setFontSize(10);
-      
-          let currentY = imgY + imgHeight + 30;
-          const tableColumns = [
-            "Categorías",
-            "Incógnitas de evaluación",
-            "Insatisfactorio (1)",
-            "Satisfactorio (2)",
-            "Aceptable (3)",
-            "Bueno (4)",
-            "Excelente (5)",
-          ];
-      
-          data.selectedP.forEach((principio) => {
-            doc.setFontSize(14);
-            doc.text(principio.label, pageWidth / 2, currentY, { align: "center" });
+            const imgWidth = 10;
+            const imgHeight = 10;
+            const imgX = 10;
+            const imgY = 10;
+            doc.addImage(img, 'PNG', imgX, imgY, imgWidth, imgHeight);
+            doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" });
+            doc.text("Rúbrica: " + data.nombreR, pageWidth / 2, imgY + imgHeight + 20, { align: "center" });
             doc.setFontSize(10);
-      
-            currentY += 5;
-      
-            const tableRows: (string | number)[][] = [];
-            principio.categorias.forEach((categoria) => {
-              const row = [
-                categoria.contenido,
-                categoria.incognitas || "",
-                categoria.escenarios?.[0]?.contenido || "",
-                categoria.escenarios?.[1]?.contenido || "",
-                categoria.escenarios?.[2]?.contenido || "",
-                categoria.escenarios?.[3]?.contenido || "",
-                categoria.escenarios?.[4]?.contenido || "",
-              ];
-              tableRows.push(row);
-            });
-      
-            // Verificar si necesitamos un salto de página
-            const rowsHeight = tableRows.length * 10; // Altura estimada de las filas
-            if (currentY + rowsHeight > pageHeight - 20) {
-              doc.addPage();
-              currentY = 20; // Reiniciar la posición Y en la nueva página
-            }
-      
-            // Dibujar la tabla sin repetir encabezados en el salto de página
-            autoTable(doc, {
-              head: [tableColumns],
-              body: tableRows,
-              startY: currentY,
-              showHead: 'firstPage', // Muestra los encabezados solo en la primera página de cada tabla
-              headStyles: {
-                fillColor: [41, 128, 185],
-                textColor: [255, 255, 255],
-                fontSize: 12,
-                fontStyle: 'bold',
-                halign: 'center',
-                valign: 'middle',
-              },
-              bodyStyles: {
-                fillColor: [245, 245, 245],
-                textColor: [0, 0, 0],
-                fontSize: 10,
-                halign: 'left',
-                valign: 'middle',
-              },
-              alternateRowStyles: {
-                fillColor: [255, 255, 255],
-              },
-              styles: {
-                cellPadding: 4,
-                lineWidth: 0.1,
-                lineColor: [0, 0, 0],
-              },
-              theme: "grid",
-              didDrawPage: (data) => {
-                if (data.cursor) {
-                  currentY = data.cursor.y + 10;
+
+            let currentY = imgY + imgHeight + 30;
+            const tableColumns = [
+                "Categorías",
+                "Incógnitas de evaluación",
+                "Insatisfactorio (1)",
+                "Satisfactorio (2)",
+                "Aceptable (3)",
+                "Bueno (4)",
+                "Excelente (5)",
+            ];
+
+            data.selectedP.forEach((principio) => {
+                doc.setFontSize(14);
+                doc.text(principio.label, pageWidth / 2, currentY, { align: "center" });
+                doc.setFontSize(10);
+
+                currentY += 5;
+
+                const tableRows: (string | number)[][] = [];
+                principio.categorias.forEach((categoria) => {
+                    const row = [
+                        categoria.contenido,
+                        categoria.incognitas || "",
+                        categoria.escenarios?.[0]?.contenido || "",
+                        categoria.escenarios?.[1]?.contenido || "",
+                        categoria.escenarios?.[2]?.contenido || "",
+                        categoria.escenarios?.[3]?.contenido || "",
+                        categoria.escenarios?.[4]?.contenido || "",
+                    ];
+                    tableRows.push(row);
+                });
+
+                // Verificar si necesitamos un salto de página
+                const rowsHeight = tableRows.length * 10; // Altura estimada de las filas
+                if (currentY + rowsHeight > pageHeight - 20) {
+                    doc.addPage();
+                    currentY = 20; // Reiniciar la posición Y en la nueva página
                 }
-              },
+
+                // Dibujar la tabla sin repetir encabezados en el salto de página
+                autoTable(doc, {
+                    head: [tableColumns],
+                    body: tableRows,
+                    startY: currentY,
+                    showHead: 'firstPage', // Muestra los encabezados solo en la primera página de cada tabla
+                    headStyles: {
+                        fillColor: [41, 128, 185],
+                        textColor: [255, 255, 255],
+                        fontSize: 12,
+                        fontStyle: 'bold',
+                        halign: 'center',
+                        valign: 'middle',
+                    },
+                    bodyStyles: {
+                        fillColor: [245, 245, 245],
+                        textColor: [0, 0, 0],
+                        fontSize: 10,
+                        halign: 'left',
+                        valign: 'middle',
+                    },
+                    alternateRowStyles: {
+                        fillColor: [255, 255, 255],
+                    },
+                    styles: {
+                        cellPadding: 4,
+                        lineWidth: 0.1,
+                        lineColor: [0, 0, 0],
+                    },
+                    theme: "grid",
+                    didDrawPage: (data) => {
+                        if (data.cursor) {
+                            currentY = data.cursor.y + 10;
+                        }
+                    },
+                });
             });
-          });
-      
-          doc.save("Rubrica_de_EvalUX.pdf");
+
+            doc.save("Rubrica_de_EvalUX.pdf");
         };
-      };
+    };
 
     const handleDownloadExcel = () => {
         const tableColumns = [
