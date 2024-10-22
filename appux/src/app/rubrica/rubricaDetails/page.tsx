@@ -28,9 +28,9 @@ interface SelectedP {
 }
 
 const evaluationCriteria = [
-    { label: "Insatisfactorio", value: 1, color: "#F44336" }, // Red
-    { label: "Satisfactorio", value: 2, color: "#FFC107" }, // Amber
-    { label: "Aceptable", value: 3, color: "#FFEB3B" }, // Yellow
+    { label: "Insatisfactorio", value: 1, color: "#881414" }, // Red
+    { label: "Satisfactorio", value: 2, color: "#bd3c11" }, // Amber
+    { label: "Aceptable", value: 3, color: "#f26b1d" }, // Yellow
     { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
     { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
 ];
@@ -242,6 +242,10 @@ function Detalles() {
         selectedP: [] as SelectedP[]
     });
 
+    const handleEvaluar = () => {
+        router.push("/evaluaciones/evaluarIn");
+    }
+
     useEffect(() => {
         const savedData = sessionStorage.getItem('principiosData');
         if (savedData) {
@@ -279,7 +283,7 @@ function Detalles() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <Button color="primary" className="w-full mb-4">
+                        <Button color="primary" className="w-full mb-4" onClick={handleEvaluar}>
                             Evaluar
                         </Button>
                     </motion.div>

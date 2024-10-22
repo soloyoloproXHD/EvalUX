@@ -51,14 +51,15 @@ const evaluationCriteria: EvaluationCriteria[] = [
 
 const EvaluationCell: React.FC<{
     subIdx: string;
+    subcategoryId: string;
     categoryName: string;
     evalIdx: number;
     isSelected: boolean;
-    onClick: (subIdx: string, evalIdx: number, categoryName: string) => void;
+    onClick: (subIdx: string, evalIdx: number, categoryName: string, subcatecoryId: string) => void;
     name: string;
-}> = ({ subIdx, categoryName, evalIdx, isSelected, onClick, name }) => {
+}> = ({ subIdx, categoryName, evalIdx, isSelected, onClick, name, subcategoryId }) => {
     const handleClick = () => {
-        onClick(subIdx, evalIdx, categoryName);
+        onClick(subIdx, evalIdx, categoryName, subcategoryId);
     };
 
     return (
@@ -80,6 +81,7 @@ const CategoryMatrix: React.FC<{
     category: {
         name: string;
         subcategories: {
+            id: string;
             name: string;
             incognitas: string;
             evaluations: Escenario[];
@@ -87,7 +89,7 @@ const CategoryMatrix: React.FC<{
         }[];
     };
     selectedEvaluations: { [subcategory: string]: number };
-    onCellClick: (subcategoryName: string, evalIdx: number, categoryName: string) => void;
+    onCellClick: (subcategoryName: string, evalIdx: number, categoryName: string, subcatecoryId: string) => void;
 }> = ({ category, selectedEvaluations, onCellClick }) => (
     <Card className="w-full mb-4">
 
@@ -112,9 +114,10 @@ const CategoryMatrix: React.FC<{
                         <div key={evalIdx} className="w-1/6 mx-2 overflow-y-hidden h-24">
                             <EvaluationCell
                                 subIdx={subcategory.name}
+                                subcategoryId={subcategory.id}
                                 categoryName={category.name}
                                 evalIdx={evalIdx}
-                                isSelected={selectedEvaluations[subcategory.name] === evalIdx}
+                                isSelected={selectedEvaluations[subcategory.id] === evalIdx}
                                 onClick={onCellClick}
                                 name={evaluation.contenido}
                             />
@@ -130,6 +133,7 @@ const UXEvaluationMatrix: React.FC = () => {
     const [rubrica, setRubrica] = useState<Rubrica | null>(null);
     const [categories, setCategories] = useState<{
         evaluacionFinal: number | null; name: string; subcategories: {
+            id: string;
             name: string;
             incognitas: string;
             evaluations: Escenario[];
@@ -167,6 +171,7 @@ const UXEvaluationMatrix: React.FC = () => {
             name: principle.label,
             evaluacionFinal: principle.evaluacionFinal,
             subcategories: principle.categorias.map(categoria => ({
+                id: categoria.id.toString(),
                 name: categoria.contenido,
                 incognitas: categoria.incognitas,
                 evaluations: categoria.escenarios,
@@ -220,6 +225,7 @@ const UXEvaluationMatrix: React.FC = () => {
         const nombreE = sessionStorage.getItem('tituloEv') || '';
         const descripcion = sessionStorage.getItem('descripcion') || '';
         let id = 1;
+        let idSub = 1;
         // Transformar de vuelta a la estructura original
         const transformedData = {
             nombreR: rubrica?.nombreR || '',
@@ -231,7 +237,7 @@ const UXEvaluationMatrix: React.FC = () => {
                 label: category.name,
                 evaluacionFinal: category.evaluacionFinal,
                 categorias: category.subcategories.map((subcategory) => ({
-                    id: subcategory.name, // Asigna un ID adecuado si está disponible
+                    id: idSub++, // Asigna un ID adecuado si está disponible
                     contenido: subcategory.name,
                     incognitas: subcategory.incognitas,
                     evaluacionIndividual: subcategory.evaluacionIndividual,
@@ -265,11 +271,11 @@ const UXEvaluationMatrix: React.FC = () => {
     };
 
 
-    const handleCellClick = (subcategoryName: string, evalIdx: number, categoryName: string) => {
+    const handleCellClick = (subcategoryName: string, evalIdx: number, categoryName: string, subcategoryId: string) => {
         categories.forEach((category) => {
             if (category.name === categoryName) {
                 category.subcategories.forEach((subcategory) => {
-                    if (subcategory.name === subcategoryName) {
+                    if (subcategory.id === subcategoryId) {
                         if (evalIdx == 4) {
                             subcategory.evaluacionIndividual = 5;
                         }
@@ -291,7 +297,7 @@ const UXEvaluationMatrix: React.FC = () => {
         });
         setSelectedEvaluations((prev) => ({
             ...prev,
-            [subcategoryName]: evalIdx,
+            [subcategoryId]: evalIdx,
         }));
     };
 
