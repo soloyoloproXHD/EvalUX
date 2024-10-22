@@ -119,7 +119,7 @@ function Detalles() {
             doc.text("Rúbrica: " + data.nombreR, pageWidth / 2, imgY + imgHeight + 20, { align: "center" });
             doc.setFontSize(10);
 
-            let currentY = imgY + imgHeight;
+            let currentY = imgY + imgHeight + 30;
             const tableColumns = [
                 "Categorías",
                 "Incógnitas de evaluación",
