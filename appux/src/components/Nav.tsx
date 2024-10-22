@@ -16,7 +16,7 @@ import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from '@nextui-org/react';
+import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
@@ -34,7 +34,11 @@ export const Nav = () => {
             const token = sessionStorage.getItem('token');
             const userlocal = sessionStorage.getItem('user');
             if (userlocal) {
-                setImgPerfil(JSON.parse(userlocal).img);
+                const userData = JSON.parse(userlocal);
+                // Si la imagen está en base64, añade el prefijo adecuado
+                if (userData.img) {
+                    setImgPerfil(`data:image/png;base64,${userData.img}`); // Cambia 'png' según el formato de la imagen original
+                }
             }
             if (token) {
                 setIsAuthenticated(true);
@@ -44,6 +48,9 @@ export const Nav = () => {
 
     const handleLogout = () => {
         sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('rubricaId');
         setIsAuthenticated(false);
         router.push('/');
     };

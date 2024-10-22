@@ -32,6 +32,7 @@ const Page: React.FC = () => {
     });
     const [isEditing, setIsEditing] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [imgTemp, setImgTemp] = useState<string | null>(null);
 
     const notify = (message: string, isError = false) => {
         const config = {
@@ -54,14 +55,22 @@ const Page: React.FC = () => {
         if (datauser && id) {
             const parsedUser: Profile = JSON.parse(datauser);
             parsedUser.userId = id;
+
             if (parsedUser.fecha_registro) {
                 parsedUser.fecha_registro = formatDate(parsedUser.fecha_registro);
             }
+
+            // Si la imagen está en base64, añade el prefijo adecuado
+            if (parsedUser.img) {
+                parsedUser.img = `data:image/png;base64,${parsedUser.img}`; // Cambia 'png' según el formato de la imagen original
+            }
+
             setProfile(parsedUser);
         } else {
             console.log('No hay datos de usuario');
         }
     };
+
 
     const handleUpdate = async () => {
         if (!profile || !profile.userId) {
@@ -95,8 +104,10 @@ const Page: React.FC = () => {
                 const updatedUser: Profile = response.data;
                 sessionStorage.setItem('user', JSON.stringify(updatedUser));
                 setProfile(updatedUser);
+                setImgTemp(null); // Limpiar la previsualización temporal
                 setIsEditing(false);
                 notify('Datos actualizados exitosamente!');
+                window.location.reload(); // Recargar la página
             } else {
                 notify(`Error al actualizar el perfil: ${response.data}`, true);
             }
@@ -105,6 +116,7 @@ const Page: React.FC = () => {
             console.error('Error en la solicitud de actualización:', error);
         }
     };
+
 
     const handleEditToggle = () => {
         setIsEditing(!isEditing);
@@ -119,10 +131,12 @@ const Page: React.FC = () => {
         return `${date.getDate()} de ${monthNames[date.getMonth()]} del ${date.getFullYear()}`;
     };
 
+
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
+            setImgTemp(imageUrl); // Mostrar la previsualización temporal
             setProfile({ ...profile, img: imageUrl });
         }
     };
@@ -144,13 +158,13 @@ const Page: React.FC = () => {
                 <form>
                     <div className='flex flex-col justify-center items-center gap-3'>
                         <div className="mt-6">
-                                <Image
-                                    src={profile.img || foto.src}
-                                    alt='Perfil'
-                                    width={160}
-                                    height={160}
-                                    className='h-40 w-40 rounded-full object-cover shadow-lg'
-                                />
+                            <Image
+                                src={imgTemp || (profile?.img ? profile.img : foto.src)}
+                                alt='Perfil'
+                                width={160}
+                                height={160}
+                                className='h-40 w-40 rounded-full object-cover shadow-lg'
+                            />
                         </div>
                         {isEditing && (
                             <>
