@@ -228,6 +228,7 @@ function ReporteEvaluacion() {
 
         const response = await axios.post("/api/getReporte", { reporteId });
         setReporte(response.data);
+        setData(response.data);
       } catch (error) {
         console.error("Error al obtener el reporte:", error);
       }
