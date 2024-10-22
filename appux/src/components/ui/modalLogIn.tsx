@@ -10,7 +10,6 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalR from "./modalRegister";
-import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -22,7 +21,6 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
-  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -92,9 +90,9 @@ export default function AppModalL({ show, onClose }: ModalProps) {
   }
 
   //Validación del Correo
-  const validateEmail = (value: string) =>
+  /*const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
-
+  */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -106,39 +104,46 @@ export default function AppModalL({ show, onClose }: ModalProps) {
         },
         body: JSON.stringify(formData),
       })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(error => {
-            console.error('Error en la respuesta:', error);
-            setErrors(prev => ({ ...prev, correoE: error.message }));
-            throw new Error('Error en el inicio de sesión');
-          });
-        }
-        return response.json();
-      })
-      .then(result => {
-        console.log('Login Success:', result);
-      
-        const { token } = result;
-        const { userId } = result;
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(error => {
+              console.error('Error en la respuesta:', error);
+              setErrors(prev => ({ ...prev, correoE: error.message }));
+              throw new Error('Error en el inicio de sesión');
+            });
+          }
+          return response.json();
+        })
+        .then(result => {
+          console.log('Login Success:', result);
 
-        if (token) {
-          sessionStorage.setItem('token', token);  // Guardar token en localStorage
-          sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
-          console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
-        } else {
-          console.error('Token no recibido en la respuesta');
-        }
-      
-        handleCloseModal();  // Cerrar el modal de inicio de sesión
-        setFormData(initialFormData);  // Restablecer el formulario
-        router.push('/rubrica');  // Redi rigir después de guardar el token
-      })
-      .catch(error => {
-        console.error('Error en el proceso de inicio de sesión:', error);
-      });
+          const { token, userId, user } = result;  // Obtenemos userId y los datos completos del usuario
+
+          if (token) {
+            sessionStorage.setItem('token', token);  // Guardar token en sessionStorage
+            sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
+            console.log('Token y userId guardados en sessionStorage', sessionStorage.getItem('userId'));
+          } else {
+            console.error('Token no recibido en la respuesta');
+          }
+
+          if (user) {
+            sessionStorage.setItem('user', JSON.stringify(user));  // Guardar los datos completos del usuario en sessionStorage
+            console.log('Datos del usuario guardados en sessionStorage', sessionStorage.getItem('user'));
+          } else {
+            console.error('Datos del usuario no recibidos en la respuesta');
+          }
+
+          handleCloseModal();  // Cerrar el modal de inicio de sesión
+          window.location.href = '/rubrica';  // Redirigir a la página de rubricas
+          setFormData(initialFormData);  // Restablecer el formulario
+        })
+        .catch(error => {
+          console.error('Error en el proceso de inicio de sesión:', error);
+        });
     }
   };
+
 
   if (!show) return null;
 

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightToBracket, faUserPlus, faTableList, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightToBracket, faUserPlus, faTableList, faClipboardList, faPerson } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { AdaptButton } from '../components/AdaptButton';
@@ -16,42 +16,44 @@ import AppModalR from '@/components/ui/modalRegister';
 import AppModalL from './ui/modalLogIn';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import  {Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem}  from '@nextui-org/react';
-
+import { Avatar as NextAvatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 
 export const Nav = () => {
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
+    const [imgPerfil, setImgPerfil] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalLOpen, setIsModalLOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Nuevo estado para autenticación
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
-        const token = sessionStorage.getItem('token');
-        console.log('Token', token);
-        if (token) {
-            setIsAuthenticated(true);
+        if (typeof window !== 'undefined') {
+            const token = sessionStorage.getItem('token');
+            const userlocal = sessionStorage.getItem('user');
+            if (userlocal) {
+                const userData = JSON.parse(userlocal);
+                // Si la imagen está en base64, añade el prefijo adecuado
+                if (userData.img) {
+                    setImgPerfil(`data:image/png;base64,${userData.img}`); // Cambia 'png' según el formato de la imagen original
+                }
+            }
+            if (token) {
+                setIsAuthenticated(true);
+            }
         }
     }, []);
 
     const handleLogout = () => {
-        sessionStorage.removeItem('token'); // Elimina el token al cerrar sesión
-        setIsAuthenticated(false); // Cambia el estado a no autenticado
-        router.push('/'); // Redirige al inicio
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('rubricaId');
+        setIsAuthenticated(false);
+        router.push('/');
     };
-
-    // Simulación de usuario (null para no autenticado)
-    const user = { name: 'Usuario', photoURL: '/img/avatar.png' };
-
-    // const user = null;
-
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
 
     if (!mounted) {
         return null;
@@ -76,6 +78,10 @@ export const Nav = () => {
         }
     };
 
+    const handlePerfil = () => {
+        router.push('/perfil');
+    }
+
     const menuItems = [
         "Rubricas",
         "Evaluaciones",
@@ -93,17 +99,24 @@ export const Nav = () => {
                 />
                 <div className="flex justify-start items-center gap-2 text-white">
                     <Image src={theme === 'dark' ? LogoW : Logo} alt="Logo" className='h-7 w-auto' onClick={handleRedirect} />
-                    <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p>
+                    {!isAuthenticated || isAuthenticated ?
+                        <p className='text-lg font-semibold mr-4' onClick={handleRedirect}>EvalUX</p> :
+                        <div className='w-5'></div>
+                    }
                 </div>
                 {isAuthenticated ? (
                     <NavbarContent className="hidden sm:flex gap-4" justify="start">
-                        <NavbarItem>
-                            <FontAwesomeIcon icon={faTableList} className='me-1' />
-                            <Link href="/rubrica">Rubricas</Link>
+                        <NavbarItem className='hover:bg-blue-700 rounded-md p-1 transition-colors ease-in-out duration-300'>
+                            <Link href="/rubrica" className='hover:text-white transition-colors ease-in-out duration-300'>
+                                <FontAwesomeIcon icon={faTableList} className='me-1' />
+                                Rubricas
+                            </Link>
                         </NavbarItem>
-                        <NavbarItem>
-                            <FontAwesomeIcon icon={faClipboardList} className='me-1' />
-                            <Link href="/evaluaciones">Evaluaciones</Link>
+                        <NavbarItem className='hover:bg-blue-700 rounded-md p-1 transition-colors ease-in-out duration-300'>
+                            <Link href="/evaluaciones" className='hover:text-white transition-colors ease-in-out duration-300'>
+                                <FontAwesomeIcon icon={faClipboardList} className='me-1' />
+                                Evaluaciones
+                            </Link>
                         </NavbarItem>
                     </NavbarContent>
                 ) : null}
@@ -112,28 +125,29 @@ export const Nav = () => {
             <NavbarContent justify="end">
                 {!isAuthenticated ?
                     <>
-                        <AdaptButton texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
-                        <AdaptButton texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
+                        <AdaptButton size='md' texto='Registro' icon={faUserPlus} onClick={handleOpenModal} />
+                        <AdaptButton size='md' texto='Iniciar Sesión' icon={faArrowRightToBracket} onClick={handleOpenModalL} />
                         <CustomIcon icon={faGithub} size='lg' />
                     </>
                     :
                     <>
                         <Dropdown placement="bottom-end">
                             <DropdownTrigger>
-                                <NextAvatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar image" />
+                                <NextAvatar src={imgPerfil || "/img/avatar.png"} alt="Avatar image" />
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Profile Actions" variant="flat">
-                                <DropdownItem key="logout" color="danger" className='flex justify-center items-center' onClick={handleLogout}>
+                                <DropdownItem key="perfil" color="primary" className='flex justify-center items-center' onClick={handlePerfil}>
+                                    <FontAwesomeIcon icon={faPerson} className='hover:bounce text-white mr-2' />
+                                    Perfil
+                                </DropdownItem>
+                                <DropdownItem key="logout" color="primary" className='flex justify-center items-center' onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faArrowRightToBracket} className='hover:bounce text-white mr-2' />
                                     Cerrar sesión
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        {/* <Avatar src={user?.photoURL || "/img/avatar.png"} alt="Avatar Image" /> */}
-                        {/* <button >Cerrar Sesión</button> */}
                     </>
                 }
-
                 <ThemeSwitcher />
             </NavbarContent>
 
@@ -144,7 +158,6 @@ export const Nav = () => {
                             {item}
                         </Link>
                     </NavbarMenuItem>
-
                 ))}
             </NavbarMenu>
 

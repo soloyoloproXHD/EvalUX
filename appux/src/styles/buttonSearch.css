@@ -1,0 +1,139 @@
+:root {
+  --mainbox-bg-color: rgba(0, 0, 0, 0);
+  --search-input-color: rgb(0, 0, 0);
+  --search-input-placeholder-color: rgba(0, 0, 0, 0.776);
+  --search-icon-fill: rgb(0, 0, 0);
+}
+
+.dark {
+  --mainbox-bg-color: var(--mainbox-bg-color-dark, #333);
+  --search-input-color: var(--search-input-color-dark, #ccc);
+  --search-input-placeholder-color: var(--search-input-placeholder-color-dark, rgba(200, 200, 200, 0.776));
+  --search-icon-fill: var(--search-icon-fill-dark, #ccc);
+}
+
+.container.buscarContainer {
+  position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.mainbox.buscarMainbox {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+  width: 230px;
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 160px;
+  background-color: var(--mainbox-bg-color);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.checkbox.buscarCheckbox:focus {
+  border: none;
+  outline: none;
+}
+
+.checkbox.buscarCheckbox:checked {
+  right: 10px;
+}
+
+.checkbox.buscarCheckbox:checked ~ .mainbox.buscarMainbox {
+  width: 50px;
+}
+
+.checkbox.buscarCheckbox:checked ~ .mainbox.buscarMainbox .search_input.buscarInput {
+  width: 0;
+  height: 0px;
+}
+
+.checkbox.buscarCheckbox:checked ~ .mainbox.buscarMainbox .iconContainer.buscarIconContainer {
+  padding-right: 8px;
+}
+
+.checkbox.buscarCheckbox {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 17px;
+  top: 10px;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.search_input.buscarInput {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 100%;
+  width: 170px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  font-size: 1em;
+  color: var(--search-input-color);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.search_input.buscarInput::-webkit-input-placeholder {
+  color: var(--search-input-placeholder-color);
+}
+
+.search_input.buscarInput::-moz-placeholder {
+  color: var(--search-input-placeholder-color);
+}
+
+.search_input.buscarInput:-ms-input-placeholder {
+  color: var(--search-input-placeholder-color);
+}
+
+.search_input.buscarInput::-ms-input-placeholder {
+  color: var(--search-input-placeholder-color);
+}
+
+.search_input.buscarInput::placeholder {
+  color: var(--search-input-placeholder-color);
+}
+
+.iconContainer.buscarIconContainer {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding-top: 5px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.search_icon.buscarSearchIcon {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  fill: var(--search-icon-fill);
+  font-size: 1.3em;
+}

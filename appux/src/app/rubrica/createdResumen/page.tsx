@@ -1,17 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Button } from "@nextui-org/react";
+import { Button, ScrollShadow } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
 import { NotificationTypewriter } from "../../../components/ui/notificacionwrite";
 import { motion } from 'framer-motion';
-import { faDownload, faCircleRight, faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { jsPDF } from "jspdf";
-import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
-import AdaptButton from "@/components/AdaptButton";
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
-import axios from 'axios';
+import AdaptButton from '../../../components/AdaptButton'; // Import the AdaptButton component
 
 interface Escenario {
     puntaje: number;
@@ -31,230 +28,176 @@ interface SelectedP {
     categorias: Subcategory[];
 }
 
-interface UnifiedCategory {
-    name: string;
-    subcategories: Subcategory[];
-}
-
-const initialCategories: UnifiedCategory[] = [
-    {
-        name: "Usabilidad",
-        subcategories: [
-            { id: "1", contenido: "Satisfacción del usuario", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "2", contenido: "Claridad de la interfaz", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "3", contenido: "Facilidad de aprendizaje", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-        ],
-    },
-    {
-        name: "Accesibilidad",
-        subcategories: [
-            { id: "4", contenido: "Perceptible", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "5", contenido: "Operable", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-            { id: "6", contenido: "Comprensible", incognitas: "", escenarios: Array(5).fill({ puntaje: 0, contenido: "" }) },
-        ],
-    },
-];
-
 const evaluationCriteria = [
-    { label: "Excelente", value: 5, color: "bg-success" },
-    { label: "Bueno", value: 4, color: "bg-success-300" },
-    { label: "Aceptable", value: 3, color: "bg-primary-100" },
-    { label: "Satisfactorio", value: 2, color: "bg-warning" },
-    { label: "Insatisfactorio", value: 1, color: "bg-danger" },
+    { label: "Insatisfactorio", value: 1, color: "#881414" }, // Red
+    { label: "Satisfactorio", value: 2, color: "#bd3c11" }, // Amber
+    { label: "Aceptable", value: 3, color: "#f26b1d" }, // Yellow
+    { label: "Bueno", value: 4, color: "#8BC34A" }, // Light Green
+    { label: "Excelente", value: 5, color: "#4CAF50" }, // Green
 ];
 
-const EvaluationCell: React.FC<{ value: string | null; onChange: (value: string) => void }> = ({ value, onChange }) => (
-    <Textarea
-        className="w-full h-24 text-sm font-normal"
-        placeholder="Ingrese evaluación"
-        disabled
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-    />
-);
-
-const CategoryMatrix: React.FC<{
-    selectedP: SelectedP;
-    onUpdateSelectedP: (updatedSelectedP: SelectedP) => void
-}> = ({ selectedP, onUpdateSelectedP }) => {
-    const handleCellChange = (categoriaIndex: number, evaluationIndex: number, value: string) => {
-        const updatedSelectedP = { ...selectedP };
-        if (!updatedSelectedP.categorias[categoriaIndex].escenarios) {
-            updatedSelectedP.categorias[categoriaIndex].escenarios = Array(5).fill({ puntaje: 0, contenido: "" });
-        }
-        updatedSelectedP.categorias[categoriaIndex].escenarios[evaluationIndex] = {
-            puntaje: evaluationCriteria[evaluationIndex].value,
-            contenido: value
-        };
-        onUpdateSelectedP(updatedSelectedP);
-    };
-
-    const handleUnknownChange = (categoriaIndex: number, value: string) => {
-        const updatedSelectedP = { ...selectedP };
-        updatedSelectedP.categorias[categoriaIndex].incognitas = value;
-        onUpdateSelectedP(updatedSelectedP);
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <Card className="w-full mb-4 ">
-                <CardHeader className="flex flex-col px-4 pt-4 pb-0">
-                    <h2 className="text-lg font-bold justify-center items-center">{selectedP.label}</h2>
-                    <div className="flex w-full justify-between mt-2">
-                        <div className="w-1/6">Categorías</div>
-                        <div className="w-1/6">Incógnitas de evaluación</div>
-                        {evaluationCriteria.map((criteria) => (
-                            <div key={criteria.value} className={`w-1/6 text-center rounded-md py-1 mx-2 ${criteria.color}`}>
-                                <span className="font-bold">{criteria.value}</span> {criteria.label}
-                            </div>
-                        ))}
-                    </div>
-                </CardHeader>
-                <CardBody className="px-4">
-                    {selectedP.categorias.map((categoria, categoriaIndex) => (
-                        <div key={categoria.id} className="flex w-full mb-2">
-                            <div className="w-1/6 flex items-center">{categoria.contenido}</div>
-                            <div className="w-1/6 pr-2">
-                                <Textarea
-                                    className="w-full h-24 text-sm font-normal"
-                                    placeholder="Ingrese incógnitas"
-                                    disabled
-                                    value={categoria.incognitas || ""}
-                                    onChange={(e) => handleUnknownChange(categoriaIndex, e.target.value)}
-                                />
-                            </div>
-                            {evaluationCriteria.map((criteria, evaluationIndex) => (
-                                <div key={evaluationIndex} className="w-1/6 mx-2 overflow-hidden">
-                                    <EvaluationCell
-                                        value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
-                                        onChange={(value) => handleCellChange(categoriaIndex, evaluationIndex, value)}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </CardBody>
-            </Card>
-        </motion.div>
-    );
-};
-
-const Header: React.FC<{ handleAtras: () => void; handleNext: () => void }> = ({ handleAtras, handleNext }) => (
-    <div className="flex justify-between items-center mb-8">
-        <p className="text-2xl font-bold">Creación de Rubrica</p>
-        <div className="flex gap-x-2 px-4">
-            <AdaptButton texto="Atras" onClick={handleAtras} />
-            <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleNext} />
+const CategoryMatrix: React.FC<{ selectedP: SelectedP }> = ({ selectedP }) => (
+    <div className="w-full mb-5 px-5">
+        <div className="mt-5 w-1/3 mx-auto flex flex-col p-3">
+            <div className="flex">
+                <div className="text-center w-4/5 text-xl h-12 flex items-center justify-center">
+                    {selectedP.label}
+                </div>
+            </div>
         </div>
+        <table className="w-full text-left border border-separate border-spacing-2 rounded-2xl p-4 tablenombrequeyoquieraponer">
+            <thead>
+                <tr className="aqui">
+                    <th className=" p-2 text-center">Categorías</th>
+                    <th className=" p-2 text-center">Incógnitas de evaluación</th>
+                    {evaluationCriteria.map((criteria) => (
+                        <th
+                            key={criteria.value}
+                            className=" p-2 text-center rounded-xl"
+                            style={{ backgroundColor: criteria.color }}
+                        >
+                            {criteria.label}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {selectedP.categorias.map((categoria) => (
+                    <tr key={categoria.id}>
+                        <td className="px-2 rounded-lg">
+                            <textarea
+                                value={categoria.contenido}
+                                disabled
+                                className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                            />
+                        </td>
+                        <td className=" p-2 rounded-lg">
+                            <textarea
+                                value={categoria.incognitas || ""}
+                                disabled
+                                className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                            />
+                        </td>
+                        {evaluationCriteria.map((criteria, evaluationIndex) => (
+                            <td key={evaluationIndex} className="border rounded-lg">
+                                <textarea
+                                    value={categoria.escenarios?.[evaluationIndex]?.contenido || ""}
+                                    disabled
+                                    className="w-full h-24 rounded-lg p-2 bg-transparent resize-none"
+                                />
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     </div>
 );
 
 function Resumen() {
     const router = useRouter();
-    const [categories, setCategories] = useState<UnifiedCategory[]>(initialCategories);
-
-    const handleUpdateCategory = (updatedCategory: UnifiedCategory) => {
-        setCategories(categories.map(category =>
-            category.name === updatedCategory.name ? updatedCategory : category
-        ));
-    };
-
-    const handleEvaluate = () => {
-        console.log("Evaluating...");
-    };
 
     const handleCreateNewRubric = () => {
         router.push("/rubrica/created");
     };
 
     const handleDownloadPDF = () => {
-        const doc = new jsPDF({ orientation: "landscape" });
+        const doc = new jsPDF({ orientation: "l" });
         doc.setFontSize(18);
-    
         const pageWidth = doc.internal.pageSize.getWidth();
-    
+        const pageHeight = doc.internal.pageSize.getHeight(); // Altura de la página
+
         // Agregar imagen y texto en el lado izquierdo
         const img = new Image();
         img.src = '/img/Logo.png';
         img.onload = () => {
-            const imgWidth = 10; // Ancho de la imagen
-            const imgHeight = 10; // Alto de la imagen
-            const imgX = 10; // Posición X en el lado izquierdo
-            const imgY = 10; // Posición Y
+            const imgWidth = 10;
+            const imgHeight = 10;
+            const imgX = 10;
+            const imgY = 10;
             doc.addImage(img, 'PNG', imgX, imgY, imgWidth, imgHeight);
-            doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" }); // Reducir la separación
-            doc.text(data.nombreR, pageWidth / 2, imgY + imgHeight + 10, { align: "center" });
-            doc.setFontSize(10); // Reducir tamaño de fuente para la fecha
+            doc.text("EvalUX", imgX + imgWidth + 5, imgY + imgHeight / 2 + 3, { align: "left" });
+            doc.text("Rúbrica: " + data.nombreR, pageWidth / 2, imgY + imgHeight + 20, { align: "center" });
+            doc.setFontSize(10);
 
-    
-            // Definir las columnas de la tabla
+            let currentY = imgY + imgHeight + 30;
             const tableColumns = [
-                "Principio",
                 "Categorías",
                 "Incógnitas de evaluación",
-                "Excelente (5)",
-                "Bueno (4)",
-                "Aceptable (3)",
-                "Satisfactorio (2)",
                 "Insatisfactorio (1)",
+                "Satisfactorio (2)",
+                "Aceptable (3)",
+                "Bueno (4)",
+                "Excelente (5)",
             ];
-    
-            // Formatear los datos del JSON para las filas de la tabla
-            const tableRows: (string | number)[][] = [];
-    
+
             data.selectedP.forEach((principio) => {
+                doc.setFontSize(14);
+                doc.text(principio.label, pageWidth / 2, currentY, { align: "center" });
+                doc.setFontSize(10);
+
+                currentY += 5;
+
+                const tableRows: (string | number)[][] = [];
                 principio.categorias.forEach((categoria) => {
                     const row = [
-                        principio.label, // Columna 'Principio'
-                        categoria.contenido, // Columna 'Categorías'
-                        categoria.incognitas || "", // Columna 'Incógnitas de evaluación'
-                        categoria.escenarios?.[0]?.contenido || "", // Columna '5 Excelente'
-                        categoria.escenarios?.[1]?.contenido || "", // Columna '4 Bueno'
-                        categoria.escenarios?.[2]?.contenido || "", // Columna '3 Aceptable'
-                        categoria.escenarios?.[3]?.contenido || "", // Columna '2 Satisfactorio'
-                        categoria.escenarios?.[4]?.contenido || "", // Columna '1 Insatisfactorio'
+                        categoria.contenido,
+                        categoria.incognitas || "",
+                        categoria.escenarios?.[0]?.contenido || "",
+                        categoria.escenarios?.[1]?.contenido || "",
+                        categoria.escenarios?.[2]?.contenido || "",
+                        categoria.escenarios?.[3]?.contenido || "",
+                        categoria.escenarios?.[4]?.contenido || "",
                     ];
                     tableRows.push(row);
                 });
+
+                // Verificar si necesitamos un salto de página
+                const rowsHeight = tableRows.length * 10; // Altura estimada de las filas
+                if (currentY + rowsHeight > pageHeight - 20) {
+                    doc.addPage();
+                    currentY = 20; // Reiniciar la posición Y en la nueva página
+                }
+
+                // Dibujar la tabla sin repetir encabezados en el salto de página
+                autoTable(doc, {
+                    head: [tableColumns],
+                    body: tableRows,
+                    startY: currentY,
+                    showHead: 'firstPage', // Muestra los encabezados solo en la primera página de cada tabla
+                    headStyles: {
+                        fillColor: [41, 128, 185],
+                        textColor: [255, 255, 255],
+                        fontSize: 12,
+                        fontStyle: 'bold',
+                        halign: 'center',
+                        valign: 'middle',
+                    },
+                    bodyStyles: {
+                        fillColor: [245, 245, 245],
+                        textColor: [0, 0, 0],
+                        fontSize: 10,
+                        halign: 'left',
+                        valign: 'middle',
+                    },
+                    alternateRowStyles: {
+                        fillColor: [255, 255, 255],
+                    },
+                    styles: {
+                        cellPadding: 4,
+                        lineWidth: 0.1,
+                        lineColor: [0, 0, 0],
+                    },
+                    theme: "grid",
+                    didDrawPage: (data) => {
+                        if (data.cursor) {
+                            currentY = data.cursor.y + 10;
+                        }
+                    },
+                });
             });
-    
-            // Generar la tabla en el PDF con autoTable
-            autoTable(doc, {
-                head: [tableColumns],
-                body: tableRows,
-                startY: imgY + imgHeight + 20,
-                headStyles: {
-                    fillColor: [41, 128, 185], // Color de fondo azul
-                    textColor: [255, 255, 255], // Color de texto blanco
-                    fontSize: 12, // Tamaño de fuente
-                    fontStyle: 'bold', // Estilo de fuente
-                    halign: 'center', // Alineación horizontal
-                    valign: 'middle', // Alineación vertical
-                },
-                bodyStyles: {
-                    fillColor: [245, 245, 245], // Color de fondo gris claro
-                    textColor: [0, 0, 0], // Color de texto negro
-                    fontSize: 10, // Tamaño de fuente
-                    halign: 'left', // Alineación horizontal
-                    valign: 'middle', // Alineación vertical
-                },
-                alternateRowStyles: {
-                    fillColor: [255, 255, 255], // Color de fondo blanco para filas alternas
-                },
-                styles: {
-                    cellPadding: 4, // Relleno de celda
-                    lineWidth: 0.1, // Ancho de línea
-                    lineColor: [0, 0, 0], // Color de línea
-                },
-                theme: "grid",
-            });
-    
-            // Guardar el archivo PDF
-            doc.save("Rubrica_de_AutoUX.pdf");
+
+            doc.save("Rubrica_de_EvalUX.pdf");
         };
     };
 
@@ -300,6 +243,10 @@ function Resumen() {
         selectedP: [] as SelectedP[]
     });
 
+    const handleEvaluar = () => {
+        router.push("/evaluaciones/evaluarIn");
+    };
+
     useEffect(() => {
         const savedData = sessionStorage.getItem('principiosData');
         if (savedData) {
@@ -308,51 +255,36 @@ function Resumen() {
         }
     }, []);
 
-    const handleNext = () => {
-        sessionStorage.setItem('principiosData', JSON.stringify(data));
-        console.log(sessionStorage.getItem('principiosData'));
-
-        router.push("/rubrica/createdResumen");
-    };
-
-    const handleAtras = () => {
-        router.push("/rubrica/created1");
-    };
-
-    const handleUpdateSelectedP = (updatedSelectedP: SelectedP) => {
-        setData(prevData => ({
-            ...prevData,
-            selectedP: prevData.selectedP.map(p =>
-                p.id === updatedSelectedP.id ? updatedSelectedP : p
-            )
-        }));
-    };
-
     return (
         <div className="py-8 px-12 min-h-screen">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-4">
                 <p className="text-2xl">Creación de Rúbrica</p>
             </div>
             <div className="flex gap-8">
-                <div className="w-2/3 p-4 rounded-lg">
+
+                <div className="w-3/4 p-4 rounded-lg">
                     <p className="text-xl font-semibold mb-4">Vista Previa de Rúbrica</p>
-                    <div className="max-h-[600px] overflow-y-auto">
+
+                    <ScrollShadow className="max-h-[600px]">
                         {data.selectedP.map((selectedP) => (
                             <CategoryMatrix
                                 key={selectedP.id}
                                 selectedP={selectedP}
-                                onUpdateSelectedP={handleUpdateSelectedP}
                             />
                         ))}
-                    </div>
+                    </ScrollShadow>
+
+                    {/* <div className="max-h-[600px] overflow-y-auto">
+
+                    </div> */}
                 </div>
-                <div className="w-1/3 p-10">
+                <div className="w-1/4 h-[70%] bg-gray-300 bg-opacity-5 transition duration-300 rounded-lg my-auto p-5 border shadow-md hover:shadow-lg flex justify-center items-center flex-col">
                     <p className="text-xl font-semibold mb-4"><NotificationTypewriter /></p>
                     <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <Button color="primary" className="w-full mb-4" onClick={handleEvaluate}>
+                        <Button color="primary" className="w-full mb-4" onClick={handleEvaluar}>
                             Evaluar
                         </Button>
                     </motion.div>
@@ -379,22 +311,28 @@ function Resumen() {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                         >
-                            <Button color="danger" className="bg-red-800" onClick={handleDownloadPDF}>
+
+                            <AdaptButton icon={faFilePdf} texto='PDF' onPress={handleDownloadPDF} size='md' />
+                            {/* <Button color="danger" className="bg-red-800" onClick={handleDownloadPDF}>
                                 <FontAwesomeIcon icon={faFilePdf} />
                                 PDF
-                            </Button>
+                            </Button> */}
                         </motion.div>
                         <motion.div
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                         >
-                            <Button color="success" onClick={handleDownloadExcel}>
+
+                            <AdaptButton icon={faFileExcel} texto='Excel' onPress={handleDownloadExcel} size='md' />
+
+                            {/* <Button color="success" onClick={handleDownloadExcel}>
                                 <FontAwesomeIcon icon={faFileExcel} />
                                 Excel
-                            </Button>
+                            </Button> */}
                         </motion.div>
                     </div>
                 </div>
+                {/* <ModalPremium show={isModalProOPen} onClose={handleProCloseModal} /> */}
             </div>
         </div>
     );

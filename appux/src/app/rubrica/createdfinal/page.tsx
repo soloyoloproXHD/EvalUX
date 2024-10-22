@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Textarea } from "@nextui-org/react";
 import AdaptButton from "@/components/AdaptButton";
@@ -6,6 +6,7 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion'; // Importamos motion de framer-motion
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 interface Escenario {
@@ -71,7 +72,7 @@ const CategoryMatrix: React.FC<{
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <Card className="w-full mb-4 ">
+            <Card className="w-full mb-4">
                 <CardHeader className="flex flex-col px-4 pt-4 pb-0">
                     <h2 className="text-lg font-bold justify-center items-center">{selectedP.label}</h2>
                     <div className="flex w-full justify-between mt-2">
@@ -140,23 +141,35 @@ export default function UXEvaluationMatrix() {
         }
     }, []
     );
-    const userId = sessionStorage.getItem('userId');
+    const notify = () => toast.success('Rubrica creada exitosamente!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+    });
     const handleNext = () => {
+        const userId = sessionStorage.getItem('userId');
         const dataWithUserId = { ...data, userId };
         sessionStorage.setItem('principiosData', JSON.stringify(dataWithUserId));
 
-        console.log("si",dataWithUserId);
+        console.log("si", dataWithUserId);
 
         axios.post('/api/postJsonR', {
             dataWithUserId,
         })
             .then((response) => {
-                response.status
+                sessionStorage.setItem('idRubrica', response.data().id);
+                console.log("Rubrica creada exitosamente: ", response.data().id);
+                notify();
+                response.data();
             })
             .catch((error) => {
                 console.error("Error al obtener las rúbricas: ", error);
             });
-
         router.push("/rubrica/createdResumen");
     };
 
@@ -173,9 +186,8 @@ export default function UXEvaluationMatrix() {
         }));
     };
 
-
     return (
-        <div className="p-4 text-white min-h-screen">
+        <div className="p-4 min-h-screen">
             <div className="py-8 px-12">
                 <Header handleAtras={handleAtras} handleNext={handleNext} />
                 {data.selectedP.map((selectedP) => (

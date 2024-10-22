@@ -10,7 +10,6 @@ import Logo from '../../../public/img/Logo.png';
 import LogoW from '../../../public/img/Logo.png';
 import AdaptButton from "../AdaptButton";
 import AppModalL from "./modalLogIn";
-import { useRouter } from "next/navigation";
 
 
 interface ModalProps {
@@ -22,7 +21,6 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   const [isModalLOpen, setIsModalLOpen] = useState(false);
   const { isOpen, onOpen } = useDisclosure();
   const { theme } = useTheme();
-  const router = useRouter();
 
   useEffect(() => {
     if (!show) return;
@@ -120,12 +118,12 @@ export default function AppModalR({ show, onClose }: ModalProps) {
   }
 
   //Validación del Correo
-  const validateEmail = (value: string) =>
+  /*const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
-
+  */
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      const { ccontrasena, ...dataToSend } = formData;
+      const { ...dataToSend } = formData;
   
       if (validateForm()) {
           fetch('/api/register', {
@@ -147,20 +145,27 @@ export default function AppModalR({ show, onClose }: ModalProps) {
           })
           .then(result => {
               console.log('Success:', result.message);
+  
+              const { token, userId, user } = result;  // Obtenemos userId y los datos completos del usuario
 
-              const { userId } = result;
-              const { token } = result;
               if (token) {
                   sessionStorage.setItem('token', token);  // Guardar token en sessionStorage
                   sessionStorage.setItem('userId', userId);  // Guardar userId en sessionStorage
-                  console.log('Token guardado en sessionStorage', sessionStorage.getItem('userId'));
+                  console.log('Token y userId guardados en sessionStorage', sessionStorage.getItem('userId'));
               } else {
                   console.error('Token no recibido en la respuesta');
               }
   
+              if (user) {
+                  sessionStorage.setItem('user', JSON.stringify(user));  // Guardar los datos completos del usuario en sessionStorage
+                  console.log('Datos del usuario guardados en sessionStorage', sessionStorage.getItem('user'));
+              } else {
+                  console.error('Datos del usuario no recibidos en la respuesta');
+              }
+  
               handleCloseModalL();  // Cerrar el modal de registro
+              window.location.href = '/rubrica';    // Redirigir después de guardar el token
               setFormData(initialFormData);  // Restablecer el formulario
-              router.push('/rubrica');  // Redirigir después de guardar el token
           })
           .catch(error => {
               console.error('Error en el proceso de registro:', error);
