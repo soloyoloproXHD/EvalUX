@@ -172,10 +172,10 @@ function ReporteEvaluacion() {
 
       // Agregar el resultado general
       doc.setFontSize(18);
-      doc.text(`Puntuación General: ${data.evaluacionGeneral} de 5`, pageWidth / 2, currentY, { align: "center" });
+      doc.text(`Puntuación General: ${data.evaluacionGeneral} de 5`, pageWidth / 2, 5, { align: "center" });
       //currentY += 10;
       // Agregar gráfica de barras horizontal
-      drawBarChart(doc, 30);
+      drawBarChart(doc, 60);
       doc.save("Rubrica_de_EvalUX.pdf");
     };
   };
