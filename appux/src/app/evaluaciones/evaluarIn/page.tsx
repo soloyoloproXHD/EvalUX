@@ -120,8 +120,8 @@ const EvaluarIn: React.FC = () => {
             <header className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold title">Evaluación</h1>
                 <div className="flex gap-x-2 px-6">
-                    <AdaptButton texto="Cancelar" icon={faCancel} onClick={handleCancel} />
-                    <AdaptButton texto="Siguiente" icon={faCircleRight} onClick={handleSubmit} />
+                    <AdaptButton size='md' texto="Cancelar" icon={faCancel} onClick={handleCancel} />
+                    <AdaptButton size='md' texto="Siguiente" icon={faCircleRight} onClick={handleSubmit} />
                 </div>
             </header>
             <section className="grid grid-cols-2 px-6 mb-6">

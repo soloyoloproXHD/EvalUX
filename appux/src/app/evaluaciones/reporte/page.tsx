@@ -80,8 +80,8 @@ function ReporteEvaluacion() {
             <p className="title font-semibold text-3xl">Descargar Reporte</p>
           </div>
           <div className="flex flex-col justify-center items-center gap-y-4">
-            <AdaptButton texto="PDF" />
-            <AdaptButton texto="EXCEL" />
+            <AdaptButton size='md' texto="PDF" />
+            <AdaptButton size='md' texto="EXCEL" />
           </div>
         </div>
       </div>

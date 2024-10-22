@@ -102,7 +102,7 @@ const IndexRubrica = () => {
             <div className="flex justify-between items-center mb-5">
                 <p className="text-2xl font-bold">Rúbricas</p>
                 <div className="flex gap-x-2">
-                    <AdaptButton texto="Nueva rúbrica" icon={faPlus} onPress={onOpen} />
+                    <AdaptButton size='md' texto="Nueva rúbrica" icon={faPlus} onPress={onOpen} />
                     <Help text='Pulse "Nueva rúbrica" para crear una rúbrica' icon={faQuestion} />
                 </div>
             </div>
@@ -123,7 +123,7 @@ const IndexRubrica = () => {
                                             <p className="text-sm pe-6">Utiliza nuestra plantilla la cual ya engloba gran parte de las categorías mas importantes de los principios UX, siempre puedes modificarla!</p>
                                         </div>
 
-                                        <AdaptButton texto="Cargar" icon={faTableList} onClick={handleDefault} />
+                                        <AdaptButton size='md' texto="Cargar" icon={faTableList} onClick={handleDefault} />
                                     </div>
                                     <div className="flex items-center justify-between p-5 m-2 border border-white rounded-lg hover:bg-gray-400 hover:bg-opacity-25 transition duration-300">
                                         <div className="">
@@ -131,7 +131,7 @@ const IndexRubrica = () => {
                                             <p className="text-sm">Crea una rubrica a tu gusto</p>
                                         </div>
 
-                                        <AdaptButton texto="Crear" icon={faPlus} onClick={handleCreated} />
+                                        <AdaptButton size='md' texto="Crear" icon={faPlus} onClick={handleCreated} />
                                     </div>
                                 </div>
                             </ModalBody>

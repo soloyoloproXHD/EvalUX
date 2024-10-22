@@ -304,7 +304,7 @@ const UXEvaluationMatrix: React.FC = () => {
             <header className="flex justify-between items-center mb-8">
                 <p className="text-2xl font-bold">Evaluación<Help text="Para evaluar selecciona una celda" icon={faCircleQuestion} /></p>
 
-                <AdaptButton icon={faCircleRight} texto="Finalizar" onClick={handleFinish} />
+                <AdaptButton size='md' icon={faCircleRight} texto="Finalizar" onClick={handleFinish} />
             </header>
             {categories.map((category, idx) => (
                 <CategoryMatrix

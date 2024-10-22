@@ -317,8 +317,8 @@ export default function UXPrinciplesEvaluator() {
                     </div>
                 </div>
                 <div className="flex justify-center items-center gap-2.5 me-5">
-                    <AdaptButton texto="Atras" onClick={handleAtras} />
-                    <AdaptButton texto="Siguiente" icon={faArrowRight} onClick={handleNext} />
+                    <AdaptButton size='md' texto="Atras" onClick={handleAtras} />
+                    <AdaptButton size='md' texto="Siguiente" icon={faArrowRight} onClick={handleNext} />
                 </div>
             </div>
             {data.selectedP.map((selectedP) => (

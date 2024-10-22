@@ -1,9 +1,19 @@
 // app/page.tsx
+'use client';
+import { useState } from "react";
 import { Button } from "@nextui-org/react";
+import AppModalL from '../components/ui/modalLogIn';
 import TypewriterC from '@/components/ui/TypewriterC';
 
 
 export default function Home() {
+  const [isModalLOpen, setIsModalLOpen] = useState(false);
+  const handleCloseModalL = () => {
+    setIsModalLOpen(false);
+  };
+  const handleOpenModalL = () => {
+    setIsModalLOpen(true);
+  };
   return (
     <div className="p-3 overflow-y-hidden">
       <div className="">
@@ -26,7 +36,7 @@ export default function Home() {
               informes y mejorar la calidad de sus productos digitales.
             </p>
             <div className='flex justify-start items-center w-full mt-5'>
-              <Button color="default" className='font-semibold hover:scale-105 transition duration-300'>
+              <Button color="default" className='font-semibold hover:scale-105 transition duration-300' onClick={handleOpenModalL}>
                 Comenzar {'>'}
               </Button>
             </div>
@@ -39,6 +49,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <AppModalL show={isModalLOpen} onClose={handleCloseModalL} />
     </div>
   );
 }
